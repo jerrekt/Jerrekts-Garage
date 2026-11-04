@@ -1,0 +1,33 @@
+{
+  "slug": "e36-m3",
+  "name": "BMW E36 M3",
+  "role": "Project car (engine build paused)",
+  "odometer": null,
+  "odometer_note": "unconfirmed: last logged 193.5k in 7/2025",
+  "intervals": [
+    {"item": "Oil change", "miles": 5000, "match": "oil change", "confirmed": false},
+    {"item": "Engine air filter", "miles": 15000, "match": "air filter", "confirmed": false},
+    {"item": "Diff oil", "miles": 30000, "match": "diff oil", "confirmed": false},
+    {"item": "Spark plugs", "miles": 30000, "match": "spark plugs", "confirmed": false},
+    {"item": "Alignment", "miles": 12000, "match": "alignment", "confirmed": false}
+  ],
+  "history": [
+    {"date": "2022-07-16", "miles": 175200, "work": ["Bought"]},
+    {"date": "2022-07-21", "miles": 175300, "work": ["Oil change 10W-40 Pennzoil"]},
+    {"date": "2022-07", "miles": 175300, "work": ["Valve cover gasket", "Idle control hose", "Spark plugs"]},
+    {"date": "2022-08-14", "miles": null, "work": ["Trunk latch reinforcement"]},
+    {"date": "2022-08-18", "miles": 175800, "work": ["Rotors and pads", "Rear left squeak: grease and anti-seize on brake parts"]},
+    {"date": "2022-12-12", "miles": 177500, "work": ["Alignment", "Coilovers", "Engine air filter"]},
+    {"date": "2023-01-03", "miles": 177700, "work": ["Oil change 10W-40 Mobil 1"]},
+    {"date": "2023-01-31", "miles": null, "work": ["Sway bar end link"]},
+    {"date": "2023-02-01", "miles": null, "work": ["ASC throttle cable"]},
+    {"date": "2023-04/05", "miles": 178800, "work": ["Radiator", "Upper and lower hoses", "Electric fan", "Clutch fan delete", "Pulley kit", "Oil change 5W-40 Castrol", "Diff oil 75W-140"]},
+    {"date": "2024-01", "miles": 182000, "work": ["Oil change 5W-40 Castrol"]},
+    {"date": "2024-02-13", "miles": 183000, "work": ["Radiator", "Camshaft position sensor", "M50 manifold", "Oil pan gasket", "Power steering pump rebuild", "Inner and outer tie rods", "Coolant", "Steering lines", "Camber arm bushings", "Oil change 5W-40 Castrol", "Throttle cable", "Inner and outer ball joints", "Lollipop bushing"]},
+    {"date": "2024-03-07", "miles": null, "work": ["Alignment (Tech 3)"]},
+    {"date": null, "miles": 186000, "work": ["Oil change 5W-40"]},
+    {"date": null, "miles": 189000, "work": ["Oil change 5W-40", "Radiator", "Radiator fan"]},
+    {"date": null, "miles": 189700, "work": ["Tires on RK003", "Alignment"]},
+    {"date": "2025-07", "miles": 193500, "work": ["Oil change 5W-40"]}
+  ]
+}

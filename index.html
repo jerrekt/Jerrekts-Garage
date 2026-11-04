@@ -1,0 +1,73 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jerrekt's Garage</title><style>*{box-sizing:border-box}body{margin:0;font:16px/1.4 system-ui,sans-serif}main{max-width:1000px;margin:0 auto;padding:24px 16px}
+h1{margin:0 0 4px;font-size:28px}.sub{margin:0 0 16px;opacity:.7}.cars{display:flex;gap:10px;margin-bottom:12px}.car{border:1px solid;border-radius:10px;padding:8px 14px;opacity:.5}.car.on{opacity:1}
+svg{width:100%;height:auto;display:block}.t{font-weight:600;font-size:15px}.s{font-size:12px;opacity:.75}.hint{font-size:13px;opacity:.6;margin-top:10px}
+body{background:#0f1115;color:#e8eaf0}.car{border-color:#2a2f3a}.car.on{border-color:#5b9cff}
+.stage{background:linear-gradient(#171a21,#101318);border:1px solid #2a2f3a;border-radius:14px;padding:10px}
+.pillar,.seam{stroke:#7d838c;stroke-width:2;fill:none}.spoke{stroke:#777;stroke-width:3}.ld{stroke:#5b9cff;stroke-width:1.5}.pt{fill:#5b9cff}
+.box rect{fill:#1c2130;stroke:#5b9cff;stroke-width:1.2}.box text{fill:#e8eaf0}.box{cursor:pointer}
+
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,sans-serif}
+main{max-width:960px;margin:0 auto;padding:24px 16px}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:18px;margin:28px 0 10px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.sub{color:var(--mute);margin:0 0 20px}
+.cars{display:flex;gap:10px;flex-wrap:wrap}.car{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;cursor:pointer}
+.car.active{border-color:var(--accent)}.car small{display:block;color:var(--mute)}
+.car.soon{opacity:.45;cursor:default}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.tile b{display:block}.tile span{display:block;color:var(--mute);font-size:14px}
+.tile.ok{border-left:4px solid var(--ok)}.tile.due{border-left:4px solid var(--due)}.tile.over{border-left:4px solid var(--over)}
+.odo{display:flex;gap:10px;align-items:center;flex-wrap:wrap}input{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:16px;width:130px}
+table{width:100%;border-collapse:collapse}td,th{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+th{color:var(--mute);font-weight:500;font-size:14px}td.m{white-space:nowrap;color:var(--mute)}
+.flag{font-size:13px;color:var(--due)}
+@media(max-width:480px){td.d{display:none}th.d{display:none}}
+
+.stage{margin-bottom:8px}.box.sel rect{fill:#2a3f6b}
+</style></head><body><main>
+<h1>Jerrekt's Garage</h1><p class="sub">Pick a car, then a system to see what's been done and what's due.</p>
+<div class="cars"><div class="car on">E36 M3</div><div class="car">E90 328i</div><div class="car">E46</div></div>
+<div class="stage"><svg viewBox="0 0 900 350"><g id="car">
+<path d="M78,222 L72,190 Q74,172 92,168 L205,160 L300,104 Q310,98 330,98 L470,100 Q490,100 505,108 L565,150 L735,168 Q752,172 752,190 L748,222 Z" fill="#c9ccd2" class="body"/>
+<path d="M78,222 L748,222 L744,230 L82,230 Z" fill="#1b1e24" class="body"/>
+<path d="M215,196 L725,194 L725,204 L215,206 Z" fill="#1b1e24" class="body"/>
+<path d="M218,158 L303,110 L335,106 L470,108 L495,114 L548,152 Z" fill="#2b3340" class="glass"/>
+<path d="M395,109 L395,156" class="pillar"/>
+<path d="M235,160 L235,214 M395,158 L395,214 M560,152 L560,214" class="seam"/>
+<rect x="300" y="166" width="22" height="5" rx="2" class="seam" fill="#9ea3ab"/><rect x="470" y="166" width="22" height="5" rx="2" class="seam" fill="#9ea3ab"/>
+<path d="M700,172 L748,176 L748,186 L700,184 Z" fill="#f2f2d8" class="lamp"/><path d="M74,176 L96,172 L96,186 L74,188 Z" fill="#b8302c" class="lamp"/>
+<path d="M620,166 L735,168 L738,172 L618,170 Z" fill="#9ea3ab" class="seam"/>
+<path d="M300,104 L470,100" class="seam"/>
+<circle cx="180" cy="222" r="46" fill="#15181d" class="tire"/><circle cx="180" cy="222" r="28" fill="#d8dadd" class="rim"/><line x1="180" y1="222" x2="206.0" y2="222.0" class="spoke"/><line x1="180" y1="222" x2="198.4" y2="240.4" class="spoke"/><line x1="180" y1="222" x2="180.0" y2="248.0" class="spoke"/><line x1="180" y1="222" x2="161.6" y2="240.4" class="spoke"/><line x1="180" y1="222" x2="154.0" y2="222.0" class="spoke"/><line x1="180" y1="222" x2="161.6" y2="203.6" class="spoke"/><line x1="180" y1="222" x2="180.0" y2="196.0" class="spoke"/><line x1="180" y1="222" x2="198.4" y2="203.6" class="spoke"/><circle cx="180" cy="222" r="6" fill="#888"/><circle cx="620" cy="222" r="46" fill="#15181d" class="tire"/><circle cx="620" cy="222" r="28" fill="#d8dadd" class="rim"/><line x1="620" y1="222" x2="646.0" y2="222.0" class="spoke"/><line x1="620" y1="222" x2="638.4" y2="240.4" class="spoke"/><line x1="620" y1="222" x2="620.0" y2="248.0" class="spoke"/><line x1="620" y1="222" x2="601.6" y2="240.4" class="spoke"/><line x1="620" y1="222" x2="594.0" y2="222.0" class="spoke"/><line x1="620" y1="222" x2="601.6" y2="203.6" class="spoke"/><line x1="620" y1="222" x2="620.0" y2="196.0" class="spoke"/><line x1="620" y1="222" x2="638.4" y2="203.6" class="spoke"/><circle cx="620" cy="222" r="6" fill="#888"/>
+</g><line x1="650" y1="150" x2="705" y2="74" class="ld"/><circle cx="650" cy="150" r="5" class="pt"/><line x1="735" y1="180" x2="825" y2="114" class="ld"/><circle cx="735" cy="180" r="5" class="pt"/><line x1="618" y1="222" x2="765" y2="290" class="ld"/><circle cx="618" cy="222" r="5" class="pt"/><line x1="180" y1="222" x2="125" y2="290" class="ld"/><circle cx="180" cy="222" r="5" class="pt"/><line x1="205" y1="185" x2="105" y2="74" class="ld"/><circle cx="205" cy="185" r="5" class="pt"/><line x1="400" y1="228" x2="425" y2="300" class="ld"/><circle cx="400" cy="228" r="5" class="pt"/><line x1="560" y1="210" x2="585" y2="300" class="ld"/><circle cx="560" cy="210" r="5" class="pt"/><line x1="330" y1="170" x2="365" y2="74" class="ld"/><circle cx="330" cy="170" r="5" class="pt"/><g class="box " transform="translate(640,30)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Engine</text><text x="10" y="35" class="s">17 jobs · last 193.5k</text></g><g class="box " transform="translate(760,70)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Cooling</text><text x="10" y="35" class="s">9 jobs · last 189.0k</text></g><g class="box " transform="translate(700,290)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Brakes</text><text x="10" y="35" class="s">2 jobs · last 175.8k</text></g><g class="box " transform="translate(60,290)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Tires</text><text x="10" y="35" class="s">1 jobs · last 189.7k</text></g><g class="box " transform="translate(40,30)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Suspension</text><text x="10" y="35" class="s">9 jobs · last 189.7k</text></g><g class="box " transform="translate(360,300)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Drivetrain</text><text x="10" y="35" class="s">1 jobs · last 178.8k</text></g><g class="box " transform="translate(520,300)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Steering</text><text x="10" y="35" class="s">2 jobs · last 183.0k</text></g><g class="box " transform="translate(300,30)"><rect width="130" height="44" rx="6"/><text x="10" y="18" class="t">Body</text><text x="10" y="35" class="s">2 jobs · last 177.5k</text></g></svg></div>
+<p class="hint">Click a system box to filter the history. Click again to clear.</p>
+<h2>Maintenance due</h2>
+<div class="odo"><label>Odometer <input id="odo" type="number" step="100"></label><span id="odonote" class="flag"></span></div>
+<div class="grid" id="due" style="margin-top:12px"></div>
+<p class="flag" id="intflag"></p>
+<h2>Service history</h2>
+<table><thead><tr><th class="d">Date</th><th>Miles</th><th>Work</th></tr></thead><tbody id="hist"></tbody></table>
+</main>
+<script>
+fetch('data/e36-m3.json').then(r=>r.json()).then(car=>{
+const odo=document.getElementById('odo'),note=document.getElementById('odonote');
+const last=Math.max(...car.history.map(h=>h.miles||0));
+odo.value=car.odometer||last; note.textContent=car.odometer?'':car.odometer_note;
+const fmt=m=>m==null?'':(m/1000).toFixed(1)+'k';
+document.getElementById('hist').innerHTML=[...car.history].reverse().map(h=>`<tr><td class="d m">${h.date||'—'}</td><td class="m">${fmt(h.miles)}</td><td>${h.work.join(', ')}</td></tr>`).join('');
+function render(){const now=+odo.value||last;document.getElementById('due').innerHTML=car.intervals.map(i=>{
+ const done=car.history.filter(h=>h.miles&&h.work.some(w=>w.toLowerCase().includes(i.match)));
+ const lastAt=done.length?Math.max(...done.map(h=>h.miles)):null;
+ const next=lastAt==null?null:lastAt+i.miles;const left=next==null?null:next-now;
+ const cls=left==null?'':left<0?'over':left<i.miles*0.15?'due':'ok';
+ const txt=left==null?'no record':left<0?`overdue by ${fmt(-left)}`:`${fmt(left)} left`;
+ return `<div class="tile ${cls}"><b>${i.item}</b><span>every ${fmt(i.miles)} · last ${fmt(lastAt)||'—'}</span><span>${txt}</span></div>`}).join('')}
+odo.oninput=render;render();
+let sel=null;const cats={Engine:['valve cover','spark','idle','oil change','oil pan','camshaft','manifold','throttle','pulley','air filter'],Cooling:['radiator','hose','fan','coolant'],Drivetrain:['diff'],Suspension:['coilover','sway','tie rod','ball joint','bushing','camber','alignment'],Steering:['steering'],Brakes:['rotor','pad','brake'],Tires:['tire','rk003'],Body:['trunk']};
+function hist(){const rows=[...car.history].reverse().filter(h=>!sel||h.work.some(w=>cats[sel].some(k=>w.toLowerCase().includes(k))));
+document.getElementById('hist').innerHTML=rows.map(h=>`<tr><td class="d m">${h.date||'—'}</td><td class="m">${fmt(h.miles)}</td><td>${h.work.join(', ')}</td></tr>`).join('')||'<tr><td colspan=3>No jobs logged.</td></tr>'}
+document.querySelectorAll('.box').forEach(b=>{const c=b.querySelector('.t').textContent;b.onclick=()=>{sel=sel===c?null:c;document.querySelectorAll('.box').forEach(x=>x.classList.toggle('sel',x.querySelector('.t').textContent===sel));hist()}});hist();
+if(car.intervals.some(i=>!i.confirmed))document.getElementById('intflag').textContent='Intervals are placeholders until BJ confirms them (q74).';
+});
+</script></body></html>
