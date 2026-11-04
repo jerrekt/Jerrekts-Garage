@@ -1,12 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Jerrekt's Garage</title><style>*{box-sizing:border-box}body{margin:0;font:16px/1.4 system-ui,sans-serif}main{max-width:1000px;margin:0 auto;padding:24px 16px}
-h1{margin:0 0 4px;font-size:28px}.sub{margin:0 0 16px;opacity:.7}.cars{display:flex;gap:10px;margin-bottom:12px}.car{border:1px solid;border-radius:10px;padding:8px 14px;opacity:.5}.car.on{opacity:1}
-svg{width:100%;height:auto;display:block}.t{font-weight:600;font-size:15px}.s{font-size:12px;opacity:.75}.hint{font-size:13px;opacity:.6;margin-top:10px}
-body{background:#0f1115;color:#e8eaf0}.car{border-color:#2a2f3a}.car.on{border-color:#5b9cff}
-.stage{background:linear-gradient(#171a21,#101318);border:1px solid #2a2f3a;border-radius:14px;padding:10px}
-.pillar,.seam{stroke:#7d838c;stroke-width:2;fill:none}.spoke{stroke:#777;stroke-width:3}.ld{stroke:#5b9cff;stroke-width:1.5}.pt{fill:#5b9cff}
-.box rect{fill:#1c2130;stroke:#5b9cff;stroke-width:1.2}.box text{fill:#e8eaf0}.box{cursor:pointer}
-
+<title>Jerrekt's Garage</title><style>
+:root{--bg:#0f1115;--card:#171a21;--line:#2a2f3a;--fg:#e8eaf0;--mute:#9aa3b2;--ok:#4caf7d;--due:#e0a640;--over:#e05a4f;--accent:#5b9cff}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,sans-serif}
 main{max-width:960px;margin:0 auto;padding:24px 16px}
 h1{font-size:28px;margin:0 0 4px}h2{font-size:18px;margin:28px 0 10px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
@@ -24,8 +18,14 @@ th{color:var(--mute);font-weight:500;font-size:14px}td.m{white-space:nowrap;colo
 .flag{font-size:13px;color:var(--due)}
 @media(max-width:480px){td.d{display:none}th.d{display:none}}
 
-.stage{margin-bottom:8px}.box.sel rect{fill:#2a3f6b}
-</style></head><body><main>
+.cars{display:flex;gap:10px;margin-bottom:12px}.car{border:1px solid;border-radius:10px;padding:8px 14px;opacity:.5}.car.on{opacity:1}
+svg{width:100%;height:auto;display:block}.t{font-weight:600;font-size:15px}.s{font-size:12px;opacity:.75}.hint{font-size:13px;opacity:.6;margin-top:10px}
+body{background:#0f1115;color:#e8eaf0}.car{border-color:#2a2f3a}.car.on{border-color:#5b9cff}
+.stage{background:linear-gradient(#171a21,#101318);border:1px solid #2a2f3a;border-radius:14px;padding:10px}
+.pillar,.seam{stroke:#7d838c;stroke-width:2;fill:none}.spoke{stroke:#777;stroke-width:3}.ld{stroke:#5b9cff;stroke-width:1.5}.pt{fill:#5b9cff}
+.box rect{fill:#1c2130;stroke:#5b9cff;stroke-width:1.2}.box text{fill:#e8eaf0}.box{cursor:pointer}
+
+.stage{margin-bottom:8px}.box.sel rect{fill:#2a3f6b}.car{opacity:.5}.car.on{opacity:1;border-color:var(--accent)}.hint{font-size:13px;color:var(--mute)}</style></head><body><main>
 <h1>Jerrekt's Garage</h1><p class="sub">Pick a car, then a system to see what's been done and what's due.</p>
 <div class="cars"><div class="car on">E36 M3</div><div class="car">E90 328i</div><div class="car">E46</div></div>
 <div class="stage"><svg viewBox="0 0 900 350"><g id="car">
