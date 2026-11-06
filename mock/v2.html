@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jerrekt's Garage</title>
+<meta name="description" content="Jerrekt's Garage. Service log for my cars.">
+<style>
+@font-face{font-family:Archivo;src:url(fonts/archivo-latin-wdth-normal.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:Caveat;src:url(fonts/caveat-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+
+/* Three directions, picked with ?v=neon | shop | day. Same markup, different tokens. */
+:root,[data-v=neon]{
+  --bg:#0e0e0f; --card:#17171a; --card2:#1f1f23; --line:#2a2a2e; --text:#ece9e2; --muted:#9a968d;
+  --accent:#c9a24a; --accent-soft:rgba(201,162,74,.14);
+  --neon:#fffbd0; --n1:#fff38a; --n2:#ffe94d; --n3:#f5d000; --n4:rgba(245,208,0,.55);
+  --over:#e06a5a; --soon:#e0a640; --ok:#6fbf8f; --unk:#8a8780;
+  --drum:#0a0a0b; --headband:transparent;
+}
+[data-v=shop]{
+  --bg:#121518; --card:#1a1e22; --card2:#22272c; --line:#2d3339; --text:#e9eef2; --muted:#93a0ab;
+  --accent:#6cc3ff; --accent-soft:rgba(108,195,255,.10);
+  --neon:#f2fbff; --n1:#d8f2ff; --n2:#9edcff; --n3:#3fb0ff; --n4:rgba(63,176,255,.5);
+  --over:#ff7a66; --soon:#f2b84b; --ok:#7fd6a3; --unk:#8794a0;
+  --drum:#0b0e10; --headband:transparent;
+}
+[data-v=day]{
+  --bg:#d5d7d9; --card:#eef0f1; --card2:#e3e6e8; --line:#c3c7cb; --text:#1f2328; --muted:#4d545c;
+  --accent:#0a5bb5; --accent-soft:rgba(10,91,181,.08);
+  --neon:#fffbd0; --n1:#fff38a; --n2:#ffe94d; --n3:#f5d000; --n4:rgba(245,208,0,.55);
+  --over:#c0392b; --soon:#c47f00; --ok:#2e7d4f; --unk:#7b818a;
+  --drum:#15181b; --headband:#16191c;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- Intro, borrowed from Jerrekt's Bar & Bar ---------- */
+header.intro{text-align:center;padding:44px 0 30px;background:var(--headband);position:relative}
+[data-v=day] header.intro{color:#ece9e2;padding-bottom:36px}
+.eyebrow{color:var(--accent);letter-spacing:.3em;font-size:11px;text-transform:uppercase}
+[data-v=day] .eyebrow{color:#c9a24a}
+h1{font-size:clamp(34px,8vw,56px);line-height:1.05;margin:10px 0 6px;font-weight:800;font-stretch:75%}
+.logo{font-family:Caveat,cursive;font-weight:700;font-size:1.5em;line-height:.95;color:var(--neon);display:inline-flex;align-items:flex-start;
+  text-shadow:0 0 3px var(--n1),0 0 10px var(--n2),0 0 24px var(--n3),0 0 48px var(--n4)}
+.crown{width:.5em;height:.5em;margin:.12em 0 0 .02em;transform:rotate(40deg);fill:none;stroke:var(--neon);stroke-width:2.1;stroke-linejoin:round;stroke-linecap:round;
+  filter:drop-shadow(0 0 2px var(--n1)) drop-shadow(0 0 8px var(--n3)) drop-shadow(0 0 18px var(--n4))}
+.word{display:block;font-size:.62em;letter-spacing:.06em;margin-top:.1em;text-transform:uppercase}
+.tag{color:var(--muted);font-size:14px;font-style:italic}
+[data-v=day] .tag{color:#a8a59d}
+.logo.f1{animation:flick 2.2s ease-out 1}.logo.f2{animation:flick2 .9s steps(1,end) 1}.logo.f3{animation:flick3 1.6s ease-in-out 1}
+@keyframes flick{0%,8%,14%,22%{opacity:.25}4%,11%,18%,30%,100%{opacity:1}}
+@keyframes flick2{0%{opacity:1}15%{opacity:.2}25%{opacity:1}45%{opacity:.3}55%,100%{opacity:1}}
+@keyframes flick3{0%,100%{opacity:1}30%{opacity:.55}40%{opacity:.85}55%{opacity:.4}70%{opacity:1}}
+
+/* shop direction: a fluorescent tube over the sign strikes on first */
+.tube{display:none}
+[data-v=shop] .tube{display:block;width:min(420px,70%);height:6px;margin:0 auto 26px;border-radius:3px;background:#f4fbff;
+  box-shadow:0 0 6px #e6f7ff,0 0 22px rgba(160,220,255,.7),0 18px 80px 30px rgba(120,200,255,.10)}
+[data-v=shop] .tube.strike{animation:strike 1.4s steps(1,end) 1}
+@keyframes strike{0%{opacity:.1}8%{opacity:.9}12%{opacity:.15}22%{opacity:1}26%{opacity:.3}40%{opacity:.85}44%{opacity:.4}60%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.logo,.tube{animation:none!important}}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);margin:26px auto;max-width:640px}
+[data-v=day] .divider{background:linear-gradient(90deg,transparent,#c9a24a,transparent)}
+.rules{border:1px solid var(--accent);border-radius:12px;padding:16px 20px;background:var(--accent-soft);max-width:480px;margin:0 auto;text-align:left}
+[data-v=day] .rules{border-color:#c9a24a;background:rgba(201,162,74,.12)}
+.rules h2{font-size:19px;color:var(--accent);text-align:center;margin-bottom:8px;font-stretch:75%;font-weight:800}
+[data-v=day] .rules h2{color:#c9a24a}
+.rules ol{padding-left:22px}.rules li{margin:3px 0}
+.draft{display:block;text-align:center;font-size:12px;color:var(--soon);margin-top:8px;font-style:italic}
+
+/* ---------- Car picker ---------- */
+.picker{margin:30px 0 8px}
+.picker h2{font-size:15px;color:var(--muted);font-weight:600;margin-bottom:10px}
+.cars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.car{all:unset;cursor:pointer;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 16px 14px;position:relative;overflow:hidden}
+.car .chassis{display:block;font-size:40px;line-height:1;font-weight:800;font-stretch:70%;letter-spacing:.01em}
+.car .model{display:block;font-size:15px;margin-top:6px}
+.car .meta{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.car[aria-checked=true]{border-color:var(--accent);background:var(--card2)}
+.car[aria-checked=true] .chassis{color:var(--neon);text-shadow:0 0 6px var(--n2),0 0 18px var(--n4)}
+[data-v=day] .car[aria-checked=true] .chassis{color:var(--accent);text-shadow:none}
+.car[aria-checked=true]::after{content:"";position:absolute;left:16px;right:16px;bottom:0;height:3px;border-radius:3px 3px 0 0;background:var(--accent)}
+
+/* ---------- Selected car ---------- */
+.panel{margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+.phead{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end}
+.phead h3{font-size:30px;font-weight:800;font-stretch:75%;line-height:1.1}
+.phead p{color:var(--muted);font-size:15px}
+.drum{display:flex;gap:3px;background:#2a2f35;padding:5px;border-radius:6px}
+.drum span{width:30px;height:44px;display:grid;place-items:center;background:linear-gradient(#0d0f11,#25292d 50%,#0d0f11);color:#f2f2f2;font-weight:700;font-size:30px;font-stretch:75%;border-radius:3px}
+.drum span.u{width:auto;padding:0 8px;font-size:14px;color:#9aa1a9;background:none}
+.asof{font-size:13px;color:var(--muted);text-align:right;margin-top:6px}
+.due{margin-top:18px}
+.row{display:grid;grid-template-columns:4px 1fr auto;gap:0 14px;align-items:center;padding:11px 0;border-top:1px solid var(--line)}
+.row .bar{align-self:stretch;border-radius:2px}
+.row.over .bar{background:var(--over)}.row.soon .bar{background:var(--soon)}.row.ok .bar{background:var(--ok)}.row.unk .bar{background:repeating-linear-gradient(45deg,var(--unk) 0 3px,transparent 3px 6px)}
+.row b{font-weight:600}.row .s{font-size:14px;color:var(--muted)}
+.st{font-weight:700;font-size:14px;white-space:nowrap}.over .st{color:var(--over)}.soon .st{color:var(--soon)}.ok .st{color:var(--ok)}.unk .st{color:var(--unk)}
+.links{display:flex;gap:18px;flex-wrap:wrap;margin-top:16px;font-size:15px;font-weight:600}
+.empty{padding:18px 0 4px;color:var(--muted)}
+.empty .btn{display:inline-block;margin-top:12px;background:var(--accent);color:var(--bg);font-weight:700;text-decoration:none;padding:10px 14px;border-radius:8px}
+[data-v=day] .empty .btn{color:#fff}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:36px 0 50px}
+
+@media(max-width:720px){
+  .cars{grid-template-columns:1fr 1fr}
+  .car .chassis{font-size:34px}
+  .phead{align-items:flex-start}.asof{text-align:left}
+}
+</style>
+</head>
+<body>
+<header class="intro">
+  <div class="wrap">
+    <div class="tube" id="tube" aria-hidden="true"></div>
+    <div class="eyebrow">Service Log</div>
+    <h1><span class="logo" id="logo">Jerrekt&rsquo;s<svg class="crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19 L4 7.5 L9 12.5 L12 5 L15 12.5 L20 7.5 L21.5 19 Z"/></svg></span><span class="word">Garage</span></h1>
+    <div class="tag">Self-certified. Torqued to spec, mostly.</div>
+    <div class="divider"></div>
+    <div class="rules">
+      <h2>Shop Rules</h2>
+      <ol>
+        <li>Borrow a 10 mm, return a 10 mm</li>
+        <li>Torque specs are not suggestions</li>
+        <li>Lifetime warranty means I'm doing it again</li>
+        <li>You can never jerrekt jerrekt</li>
+      </ol>
+      <span class="draft">Draft rules and tagline. Write your own.</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="picker">
+    <h2 id="pick">Pick a car</h2>
+    <div class="cars" role="radiogroup" aria-labelledby="pick" id="cars"></div>
+  </section>
+  <section class="panel" id="panel" aria-live="polite"></section>
+</main>
+<footer>Jerrekt's Garage · a Jerman Engineering project</footer>
+
+<script src="data.js"></script>
+<script src="data-e90.js"></script>
+<script>
+const v=new URLSearchParams(location.search).get('v')||'neon';
+document.documentElement.dataset.v=v;
+const G=window.GARAGE, TODAY=new Date(G.today);
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const k=m=>m==null?null:(m/1000).toFixed(1).replace(/\.0$/,'')+'k';
+const pd=s=>{if(!s)return null;const p=s.split('-').map(Number);return new Date(p[0],(p[1]||1)-1,p[2]||1)};
+const fd=s=>{if(!s)return 'no date';const p=s.split('-').map(Number);return p[2]?`${MON[p[1]-1]} ${p[2]}, ${p[0]}`:p[1]?`${MON[p[1]-1]} ${p[0]}`:`${p[0]}`};
+const addM=(d,m)=>{const x=new Date(d);x.setMonth(x.getMonth()+m);return x};
+
+// The four cars BJ listed on 2026-11-05. Only the E36 has history so far.
+const CARS=[
+  {id:'e36',chassis:'E36',model:'M3 sedan',meta:'1997 · S52 · project',data:G},
+  {id:'e90',chassis:'E90',model:'328i',meta:'N51 · 163.5k mi',data:Object.assign({},window.GARAGE_E90,{plans:G.plans,today:G.today})},
+  {id:'f30',chassis:'F30',model:'328i',meta:'No history yet',data:null},
+  {id:'4r',chassis:'4Runner',model:'Toyota',meta:'Overland rig',data:null}
+];
+let sel=(()=>{try{return localStorage.getItem('garage-car')||'e36'}catch(e){return 'e36'}})();
+
+function dueRows(D){
+  const jobs=D.visits.flatMap(v=>v.jobs.map(([name,sys,type])=>({name,date:v.date,miles:v.miles})));
+  const last=m=>{const h=jobs.filter(j=>m.some(w=>j.name.toLowerCase().includes(w)));return h.length?h.reduce((a,b)=>((b.miles||0)>=(a.miles||0)?b:a)):null};
+  return D.plans.map(p=>{const l=last(p.match);if(!l)return {p,st:'unk',lab:'No record',txt:'Never logged'};
+    let w=1,parts=[];
+    if(p.miles&&l.miles){const left=l.miles+p.miles-D.odometer.miles;w=Math.min(w,left/p.miles);parts.push(left<0?`${k(-left)} mi over`:`${k(left)} mi left`)}
+    const ld=pd(l.date);if(p.months&&ld){const dd=addM(ld,p.months),days=(dd-TODAY)/864e5;w=Math.min(w,days/(p.months*30.4));parts.push(days<0?`${Math.round(-days/30.4)} months over`:`by ${MON[dd.getMonth()]} ${dd.getFullYear()}`)}
+    const st=w<0?'over':w<.15?'soon':'ok';if(st==='over')parts.sort((a,b)=>(b.includes('over')?1:0)-(a.includes('over')?1:0));
+    return {p,st,lab:{over:'Overdue',soon:'Due soon',ok:'OK'}[st],txt:parts.join(', ')}}).sort((a,b)=>({over:0,soon:1,unk:2,ok:3}[a.st]-{over:0,soon:1,unk:2,ok:3}[b.st]));
+}
+function render(){
+  const cars=document.getElementById('cars');
+  cars.innerHTML=CARS.map(c=>`<button class="car" role="radio" aria-checked="${c.id===sel}" data-id="${c.id}"><span class="chassis">${c.chassis}</span><span class="model">${c.model}</span><span class="meta">${c.meta}</span></button>`).join('');
+  cars.querySelectorAll('.car').forEach(b=>b.onclick=()=>{sel=b.dataset.id;try{localStorage.setItem('garage-car',sel)}catch(e){};render()});
+  const c=CARS.find(x=>x.id===sel), P=document.getElementById('panel');
+  if(!c.data){P.innerHTML=`<div class="phead"><div><h3>${c.chassis} ${c.model}</h3><p>${c.meta==='No history yet'?'':c.meta}</p></div></div><div class="empty">Nothing logged for this car yet. Add the first job or the current mileage and the due list starts filling in.<br><a class="btn" href="#">Log the first job</a></div>`;return}
+  const D=c.data, all=dueRows(D), rows=all.filter(r=>r.st!=='unk').slice(0,5), unk=all.filter(r=>r.st==='unk');
+  const sub={e36:'Feb 1997 US sedan. S52, 240 hp, 240 lb-ft, manual. Engine work paused.',e90:'N51. History starts at 140.8k; most entries have no date.'}[c.id]||'';
+  P.innerHTML=`<div class="phead"><div><h3>${c.chassis} ${c.model}</h3><p>${sub}</p></div>
+   <div><div class="drum num">${String(D.odometer.miles).padStart(6,'0').split('').map(d=>`<span>${d}</span>`).join('')}<span class="u">mi</span></div><div class="asof">${D.odometer.asOf?'as of '+fd(D.odometer.asOf):'last logged reading, date unknown'}</div></div></div>
+   <div class="due">${rows.map(r=>`<div class="row ${r.st}"><div class="bar"></div><div><b>${r.p.job}</b> <span class="s">${r.txt}</span></div><span class="st">${r.lab}</span></div>`).join('')}</div>
+   ${unk.length?`<div class="row unk"><div class="bar"></div><div><b>Never logged</b> <span class="s">${unk.map(r=>r.p.job).join(', ')}</span></div><span class="st">${unk.length} items</span></div>`:''}<p class="s" style="margin-top:10px;font-size:13px;color:var(--soon)">Intervals are placeholders until you set your own.</p><div class="links"><a href="index.html#due">All due items</a><a href="index.html#jobs">Jobs and FCP parts</a><a href="index.html#history">History (${D.visits.length} visits)</a><a href="index.html#story">Repair stories</a></div>`;
+}
+render();
+
+// Intro: the bar's neon flicker, plus a tube strike in the shop direction
+(()=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const logo=document.getElementById('logo'), tube=document.getElementById('tube');
+  const play=c=>{logo.classList.remove('f1','f2','f3');void logo.offsetWidth;logo.classList.add(c)};
+  if(v==='shop'){tube.classList.add('strike');setTimeout(()=>play('f1'),900)}else play('f1');
+  const next=()=>setTimeout(()=>{if(!document.hidden)play(['f1','f2','f3'][Math.random()*3|0]);next()},15000+Math.random()*15000);
+  next();
+})();
+</script>
+</body>
+</html>
