@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jerrekt's Garage</title>
+<meta name="description" content="Jerrekt's Garage. A service log for my cars, and a bay for yours.">
+<meta name="theme-color" content="#0e0e0f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2.5 19 L4 7.5 L9 12.5 L12 5 L15 12.5 L20 7.5 L21.5 19 Z' fill='none' stroke='%23fff38a' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="intro"><div class="wrap">
+  <div class="eyebrow">Service log</div>
+  <h1><span class="logo" id="logo">Jerrekt&rsquo;s<svg class="crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19 L4 7.5 L9 12.5 L12 5 L15 12.5 L20 7.5 L21.5 19 Z"/></svg></span><span class="word">Garage</span></h1>
+  <div class="tag">Self-certified. Torqued to spec, mostly.</div>
+  <div class="divider"></div>
+  <div class="rules"><h2>Shop Rules</h2><ol><li>Borrow a 10 mm, return a 10 mm</li><li>Torque specs are not suggestions</li><li>Lifetime warranty means I'm doing it again</li><li>You can never jerrekt jerrekt</li></ol></div>
+</div></header>
+
+<main class="wrap">
+  <h2 id="cars-h">The bays <span class="pill">Public</span></h2>
+  <div id="cars" aria-live="polite"><div class="card small">Loading the garage…</div></div>
+  <p class="small gap">Every job is logged with date and mileage from Discord; the garage works out what's due by miles or months, whichever comes first. Only cars switched to public show here. VINs and plates never do.</p>
+
+  <h2>Add your car</h2>
+  <div class="card">
+    <ol class="how">
+      <li><b>Ask Jerrekt on Discord.</b> Tell him the car. He adds you to the garage list, which is the spam filter: no sign-ups, no passwords.</li>
+      <li><b>Add it yourself</b> from your phone: <code>/garage addcar name:2008 Civic Si chassis:civic miles:112000</code></li>
+      <li><b>Jerrekt approves it.</b> Every car is approved by hand. Until then it's just a request.</li>
+      <li><b>Log as you go:</b> <code>/garage log car:civic job:Oil change miles:112300</code> and <code>/garage due car:civic</code> tells you what's next.</li>
+    </ol>
+    <div id="ask" class="ask"></div>
+  </div>
+
+  <h2>Questions</h2>
+  <div class="card faq">
+    <details open><summary>Who can see my car?</summary><p>You and Jerrekt. Nothing about your car shows on this page unless you turn that on later, and even then: no VIN, no plate, no name.</p></details>
+    <details><summary>Why Discord?</summary><p>The garage runs as a Discord bot, so you log work with slash commands anyway. Same account, nothing new to sign up for.</p></details>
+    <details><summary>What do I get?</summary><p>A due list by miles and months, a history of every job, and for BMWs parts kits with FCP Euro links (lifetime warranty, so you want to know what you bought). <code>/garage parts job:valve-cover</code>.</p></details>
+    <details><summary>Can I delete it?</summary><p>Yes. <code>/garage remove car:civic</code> deletes the car and its whole log. Jerrekt can't read a deleted log either.</p></details>
+  </div>
+</main>
+<footer>Jerrekt's Garage · a Jerman Engineering project · <a href="https://github.com/jerrekt/Jerrekts-Garage">source</a></footer>
+<script src="app.js"></script>
+</body>
+</html>
