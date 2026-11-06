@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jerrekt's Garage</title>
+<style>
+:root{--bg:#0f1115;--card:#171a21;--card2:#1c2130;--line:#2a2f3a;--fg:#e8eaf0;--mute:#9aa3b2;--acc:#5b9cff;--ok:#4caf7d;--soon:#e0a640;--over:#e05a4f;--unk:#7d8594}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,sans-serif}
+a{color:var(--acc);text-decoration:none}
+header{border-bottom:1px solid var(--line);background:#12151b}
+.bar{max-width:1080px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;font-size:17px}.brand small{color:var(--mute);font-weight:400;margin-left:6px}
+nav{display:flex;gap:4px;flex-wrap:wrap}nav a{color:var(--mute);padding:6px 10px;border-radius:8px}nav a.on{background:var(--card2);color:var(--fg)}
+.mode{margin-left:auto;font-size:12px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+main{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:24px;margin:0 0 4px}h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:26px 0 10px;font-weight:600}
+.sub{color:var(--mute);margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.grid{display:grid;gap:12px}.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.kpi b{display:block;font-size:26px}.kpi span{color:var(--mute);font-size:13px}
+.flag{display:inline-block;font-size:11px;color:var(--soon);border:1px dashed var(--soon);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:600;font-size:15px;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
+table{width:100%;border-collapse:collapse}td,th{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mute);font-weight:500;font-size:13px}
+.st{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px}
+.st.ok{background:rgba(76,175,125,.15);color:var(--ok)}.st.soon{background:rgba(224,166,64,.15);color:var(--soon)}.st.over{background:rgba(224,90,79,.15);color:var(--over)}.st.unk{background:rgba(125,133,148,.18);color:var(--unk)}
+.st.blocked{background:rgba(224,90,79,.15);color:var(--over)}
+.safety{font-size:11px;color:var(--over);border:1px solid var(--over);border-radius:6px;padding:0 5px;margin-left:6px}
+.chip{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;margin:2px 4px 2px 0;color:var(--mute)}
+.chip.t-preventive{color:var(--ok);border-color:rgba(76,175,125,.5)}.chip.t-corrective{color:var(--over);border-color:rgba(224,90,79,.5)}.chip.t-upgrade{color:var(--acc);border-color:rgba(91,156,255,.5)}.chip.t-diagnostic{color:var(--soon);border-color:rgba(224,166,64,.5)}
+.chip.sel{background:var(--card2);color:var(--fg);border-color:var(--acc)}
+.filters{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.filters .chip{cursor:pointer}
+input[type=search]{background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:9px 12px;font-size:15px;width:100%;max-width:340px;margin-bottom:10px}
+.year{color:var(--mute);font-weight:700;margin:18px 0 8px}
+.visit{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px 14px;margin-bottom:8px}
+.visit .when b{display:block}.visit .when span{color:var(--mute);font-size:13px}
+.visit details{margin-top:6px}.visit summary{cursor:pointer;color:var(--mute);font-size:13px}
+.raw{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--mute);background:#0c0e12;border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:6px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.step{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--card2)}.step b{display:block;font-size:13px}.step span{font-size:13px;color:var(--mute)}.step.missing{border-style:dashed}.step.missing span{color:var(--soon)}
+.track{position:relative;height:96px;margin:10px 6px 0}.track .ln{position:absolute;left:0;right:0;top:30px;height:2px;background:var(--line)}
+.track .ev{position:absolute;top:22px;transform:translateX(-50%);text-align:center;font-size:12px;color:var(--mute);white-space:nowrap}.track .ev i{display:block;width:18px;height:18px;border-radius:50%;background:var(--over);margin:0 auto 6px;border:3px solid var(--bg)}
+.gap{position:absolute;top:2px;transform:translateX(-50%);font-size:12px;color:var(--fg)}
+.phone{width:390px;max-width:100%;margin:0 auto;border:1px solid var(--line);border-radius:28px;padding:18px 16px 22px;background:#12151b}
+.field{margin-bottom:12px}.field label{display:block;font-size:13px;color:var(--mute);margin-bottom:5px}
+.field input,.field select,.field textarea{width:100%;background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit}
+.seg{display:flex;flex-wrap:wrap;gap:6px}.seg span{border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:14px}.seg span.on{border-color:var(--acc);background:var(--card2)}
+.more{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;color:var(--mute);font-size:14px}
+.bars .row{display:grid;grid-template-columns:100px 1fr 30px;gap:8px;align-items:center;margin:6px 0;font-size:13px}.bars .b{height:10px;border-radius:5px;background:var(--acc)}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:center}
+.carph{aspect-ratio:2.4;border:1px dashed var(--line);border-radius:12px;display:grid;place-items:center;color:var(--mute);font-size:13px}
+.note{font-size:12px;color:var(--mute);margin-top:8px}
+.view{display:none}.view.on{display:block}
+@media(max-width:640px){.visit{grid-template-columns:1fr}.hero{grid-template-columns:1fr}td.hide,th.hide{display:none}}
+</style>
+</head>
+<body>
+<header><div class="bar">
+  <div class="brand">Jerrekt's Garage<small>E36 M3</small></div>
+  <nav id="nav">
+    <a href="#dash">Dashboard</a><a href="#log">Quick Log</a><a href="#history">History</a><a href="#story">Repair stories</a><a href="#public">Public page</a>
+  </nav>
+  <span class="mode" id="mode">Private</span>
+</div></header>
+<main>
+
+<section class="view" id="dash">
+  <h1>BMW E36 M3 <span class="sub" style="font-size:15px">· S52 · project car</span></h1>
+  <p class="sub">Engine work paused.</p>
+  <h2>Now</h2>
+  <div class="grid g3">
+    <div class="card kpi"><b id="odo"></b><span id="odoasof"></span><div style="margin-top:10px"><button class="btn" onclick="location.hash='log'">Update mileage</button></div></div>
+    <div class="card kpi"><b id="ndue"></b><span>items overdue or due soon</span></div>
+    <div class="card kpi"><b id="nunk"></b><span>items with no record (Unknown)</span></div>
+  </div>
+  <h2>Maintenance due <span class="flag">intervals are placeholders until q74</span></h2>
+  <div class="card" style="padding:4px 6px"><table id="due"><thead><tr><th>Job</th><th>Status</th><th class="hide">Last done</th><th>Next due</th><th class="hide">Interval</th></tr></thead><tbody></tbody></table></div>
+  <p class="note">Due when either limit is reached. "Due soon" inside 15% of the interval. Safety items are flagged separately from urgency.</p>
+  <h2>Open work</h2>
+  <div class="card" id="work"></div>
+</section>
+
+<section class="view" id="log">
+  <div class="phone">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><b style="font-size:17px">Log work · E36 M3</b><span class="sub" style="font-size:13px">under 30 sec</span></div>
+    <div class="field"><label>What did you do?</label><input value="Oil change 5W-40"></div>
+    <div class="field"><label>Odometer</label><input inputmode="numeric" placeholder="last: 193,500 (Jul 2025)"></div>
+    <div class="field"><label>Date</label><input value="Nov 5, 2026"></div>
+    <div class="field"><label>System</label><div class="seg"><span class="on">Engine</span><span>Cooling</span><span>Brakes</span><span>Suspension</span><span>Steering</span><span>Drivetrain</span><span>Tires</span><span>Body</span></div></div>
+    <div class="field"><label>Type</label><div class="seg"><span class="on">Preventive</span><span>Corrective</span><span>Diagnostic</span><span>Upgrade</span></div></div>
+    <button class="btn" style="width:100%;margin-top:4px">Save</button>
+    <div class="more">+ Parts and cost &nbsp; + Photos &nbsp; + Notes &nbsp; + Link to a repair story</div>
+    <div class="more" style="border:0;padding-top:4px">Or just <a href="#">update mileage</a></div>
+  </div>
+</section>
+
+<section class="view" id="history">
+  <h1>Service history</h1>
+  <p class="sub" id="hcount"></p>
+  <h2>Filter</h2>
+  <input type="search" id="q" placeholder="Search jobs, e.g. radiator">
+  <div class="filters" id="sysf"></div>
+  <div class="filters" id="typef"></div>
+  <div id="visits"></div>
+</section>
+
+<section class="view" id="story">
+  <h1 id="stitle"></h1>
+  <p class="sub">Repair story: what failed, what was seen, how it was diagnosed, what changed, and whether it held.</p>
+  <h2>Replacement history</h2>
+  <div class="card"><div class="track" id="track"><div class="ln"></div></div><p class="note" id="mtbr"></p></div>
+  <h2>Defect to fix</h2>
+  <div class="steps" id="steps"></div>
+  <p class="note">Dashed boxes are not recorded yet. Only the dates, mileage and parts come from the log; nothing here is filled in by guesswork.</p>
+</section>
+
+<section class="view" id="public">
+  <div class="hero">
+    <div><h1>BMW E36 M3 sedan</h1><p class="sub">S52, bought at 175.2k miles in July 2022. Worked on in my own garage. Every job logged with date and mileage.</p></div>
+    <div class="carph">car illustration (parked, q77)</div>
+  </div>
+  <h2>At a glance</h2>
+  <div class="grid g3" id="pkpi"></div>
+  <h2>Where the work went</h2>
+  <div class="card bars" id="bars"></div>
+  <h2>Documented work</h2>
+  <div class="card"><b>Cooling system: three radiators in about 10k miles</b><p class="sub" style="margin-top:4px">Replacement history and the defect-to-fix write-up. <a href="#story">Read</a></p></div>
+  <p class="note">Public view shows no VIN, plates, addresses, receipts or costs. Built from a sanitized export, not from the private database.</p>
+</section>
+
+</main>
+<script src="data.js"></script>
+<script>
+const G=window.GARAGE, TODAY=new Date(G.today);
+const k=m=>m==null?'—':(m/1000).toFixed(1).replace(/\.0$/,'')+'k';
+const fmtMiles=m=>m==null?'—':m.toLocaleString('en-US')+' mi';
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const pd=s=>{if(!s)return null;const p=s.split('-').map(Number);return new Date(p[0],(p[1]||1)-1,p[2]||1)};
+const fd=s=>{if(!s)return 'date not logged';const p=s.split('-').map(Number);return p[2]?`${MON[p[1]-1]} ${p[2]}, ${p[0]}`:p[1]?`${MON[p[1]-1]} ${p[0]}`:`${p[0]}`};
+const addM=(d,m)=>{const x=new Date(d);x.setMonth(x.getMonth()+m);return x};
+const jobs=G.visits.flatMap(v=>v.jobs.map(([name,sys,type])=>({name,sys,type,date:v.date,miles:v.miles})));
+
+// due logic: whichever first, percent thresholds, Unknown when no record
+function due(p){
+  const hits=jobs.filter(j=>p.match.some(w=>j.name.toLowerCase().includes(w)));
+  if(!hits.length) return {st:'unk',label:'Unknown',last:null,next:'no record'};
+  const last=hits.reduce((a,b)=>((b.miles||0)>=(a.miles||0)?b:a));
+  let worst=1, parts=[];
+  if(p.miles&&last.miles){const left=last.miles+p.miles-G.odometer.miles;worst=Math.min(worst,left/p.miles);parts.push(left<0?`${k(-left)} mi over`:`${k(left)} mi left`)}
+  const ld=pd(last.date)||null;
+  if(p.months&&ld){const dd=addM(ld,p.months);const days=(dd-TODAY)/864e5;worst=Math.min(worst,days/(p.months*30.4));parts.push(days<0?`${Math.round(-days/30.4)} mo over`:`${MON[dd.getMonth()]} ${dd.getFullYear()}`)}
+  if(!parts.length) return {st:'unk',label:'Unknown',last,next:'mileage or date missing'};
+  const st=worst<0?'over':worst<0.15?'soon':'ok';
+  return {st,label:{over:'Overdue',soon:'Due soon',ok:'OK'}[st],last,next:parts.join(' · ')};
+}
+const rows=G.plans.map(p=>({p,d:due(p)})).sort((a,b)=>({over:0,soon:1,unk:2,ok:3}[a.d.st]-{over:0,soon:1,unk:2,ok:3}[b.d.st]));
+document.querySelector('#due tbody').innerHTML=rows.map(({p,d})=>`<tr><td>${p.job}${p.safety?'<span class="safety">safety</span>':''}</td><td><span class="st ${d.st}">${d.label}</span></td><td class="hide">${d.last?k(d.last.miles)+' · '+fd(d.last.date):'—'}</td><td>${d.next}</td><td class="hide">${[p.miles?k(p.miles)+' mi':null,p.months?p.months+' mo':null].filter(Boolean).join(' or ')}</td></tr>`).join('');
+document.getElementById('odo').textContent=fmtMiles(G.odometer.miles);
+document.getElementById('odoasof').textContent=`as of ${fd(G.odometer.asOf)} · ${G.odometer.source.toLowerCase()}`;
+document.getElementById('ndue').textContent=rows.filter(r=>r.d.st==='over'||r.d.st==='soon').length;
+document.getElementById('nunk').textContent=rows.filter(r=>r.d.st==='unk').length;
+document.getElementById('work').innerHTML=G.work.map(w=>`<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><b>${w.title}</b><div class="sub" style="font-size:13px">${w.note}</div></div><div><span class="st blocked">${w.status}</span> <span class="chip">${w.priority} priority</span></div></div>`).join('');
+
+// history
+const SYS=['Engine','Cooling','Drivetrain','Suspension','Steering','Brakes','Tires','Body'], TYPES=['preventive','corrective','diagnostic','upgrade','unclassified'];
+let fs=null, ft=null;
+function chips(id,list,get,set){document.getElementById(id).innerHTML=list.map(x=>`<span class="chip ${get()===x?'sel':''}" data-x="${x}">${x[0].toUpperCase()+x.slice(1)}</span>`).join('');document.querySelectorAll('#'+id+' .chip').forEach(c=>c.onclick=()=>{set(get()===c.dataset.x?null:c.dataset.x);renderH()})}
+function renderH(){
+  chips('sysf',SYS,()=>fs,v=>fs=v);chips('typef',TYPES,()=>ft,v=>ft=v);
+  const q=document.getElementById('q').value.toLowerCase();
+  const vs=[...G.visits].reverse().map(v=>({...v,shown:v.jobs.filter(([n,s,t])=>(!fs||s===fs)&&(!ft||(t||'unclassified')===ft)&&(!q||n.toLowerCase().includes(q)))})).filter(v=>v.shown.length);
+  let html='',yr=null;
+  for(const v of vs){const y=v.date?v.date.slice(0,4):'Date not logged';if(y!==yr){html+=`<div class="year">${y}</div>`;yr=y}
+    html+=`<div class="card visit"><div class="when"><b>${v.miles?k(v.miles)+' mi':'<span class="sub" style="font-weight:400;font-size:13px">miles not logged</span>'}</b><span>${fd(v.date)}</span></div><div>${v.shown.map(([n,s,t])=>`<span class="chip ${t?'t-'+t:''}">${n}</span>`).join('')}${v.shown.length<v.jobs.length?`<span class="sub" style="font-size:12px"> +${v.jobs.length-v.shown.length} more</span>`:''}${v.attachment?' <span class="chip">📎 printout</span>':''}<details><summary>Original entry</summary><div class="raw">${v.raw}</div></details></div></div>`}
+  document.getElementById('visits').innerHTML=html||'<p class="sub">No matching jobs.</p>';
+  document.getElementById('hcount').textContent=`${G.visits.length} visits · ${jobs.length} jobs · ${k(175200)} to ${k(193500)} mi. Chip colour = work type (green preventive, red corrective, blue upgrade, grey unclassified).`;
+}
+document.getElementById('q').oninput=renderH;renderH();
+
+// story
+const S=G.stories[0];document.getElementById('stitle').textContent=S.title;
+const mn=Math.min(...S.events.map(e=>e.miles)),mx=Math.max(...S.events.map(e=>e.miles)),span=(mx-mn)||1;
+const pos=m=>8+84*(m-mn)/span;
+let tr='<div class="ln"></div>';S.events.forEach((e,i)=>{tr+=`<div class="ev" style="left:${pos(e.miles)}%"><i></i>${k(e.miles)} mi<br>${fd(e.date)}</div>`;if(i)tr+=`<div class="gap" style="left:${(pos(e.miles)+pos(S.events[i-1].miles))/2}%">${k(e.miles-S.events[i-1].miles)} mi</div>`});
+document.getElementById('track').innerHTML=tr;
+const gaps=S.events.slice(1).map((e,i)=>e.miles-S.events[i].miles);
+document.getElementById('mtbr').textContent=`Average ${k(gaps.reduce((a,b)=>a+b,0)/gaps.length)} mi between radiator replacements (${gaps.length} intervals, small sample).`;
+document.getElementById('steps').innerHTML=Object.entries(S.steps).map(([t,v])=>`<div class="step ${v?'':'missing'}"><b>${t}</b><span>${v||'Not recorded yet'}</span></div>`).join('');
+
+// public
+const bySys=SYS.map(s=>[s,jobs.filter(j=>j.sys===s&&j.name!=='Bought').length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);
+const mxs=bySys[0][1];
+document.getElementById('bars').innerHTML=bySys.map(([s,n])=>`<div class="row"><span>${s}</span><div class="b" style="width:${100*n/mxs}%"></div><span>${n}</span></div>`).join('');
+document.getElementById('pkpi').innerHTML=[[k(193500-175200)+' mi','driven while owned (logged)'],[jobs.length-1,'jobs logged'],[G.visits.length,'visits since 2022']].map(([b,s])=>`<div class="card kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+
+// router
+function route(){const h=(location.hash||'#dash').slice(1);document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===h));document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));document.getElementById('mode').textContent=h==='public'?'Public view':'Private';scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
