@@ -3,7 +3,7 @@
 # Safe to run again: it pulls, reinstalls requirements, and restarts.
 set -euo pipefail
 name=garage-bot
-user=bot-$name
+user=bot-garage
 repo=https://github.com/jerrekt/Jerrekts-Garage
 branch="${GARAGE_BRANCH:-main}"
 
