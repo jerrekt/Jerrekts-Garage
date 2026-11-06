@@ -5,198 +5,391 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Jerrekt's Garage</title>
 <style>
-:root{--bg:#0f1115;--card:#171a21;--card2:#1c2130;--line:#2a2f3a;--fg:#e8eaf0;--mute:#9aa3b2;--acc:#5b9cff;--ok:#4caf7d;--soon:#e0a640;--over:#e05a4f;--unk:#7d8594}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.45 system-ui,-apple-system,sans-serif}
-a{color:var(--acc);text-decoration:none}
-header{border-bottom:1px solid var(--line);background:#12151b}
-.bar{max-width:1080px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.brand{font-weight:700;font-size:17px}.brand small{color:var(--mute);font-weight:400;margin-left:6px}
-nav{display:flex;gap:4px;flex-wrap:wrap}nav a{color:var(--mute);padding:6px 10px;border-radius:8px}nav a.on{background:var(--card2);color:var(--fg)}
-.mode{margin-left:auto;font-size:12px;color:var(--mute);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
-main{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
-h1{font-size:24px;margin:0 0 4px}h2{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:26px 0 10px;font-weight:600}
-.sub{color:var(--mute);margin:0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-.grid{display:grid;gap:12px}.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.kpi b{display:block;font-size:26px}.kpi span{color:var(--mute);font-size:13px}
-.flag{display:inline-block;font-size:11px;color:var(--soon);border:1px dashed var(--soon);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
-.btn{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:600;font-size:15px;cursor:pointer}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
-table{width:100%;border-collapse:collapse}td,th{padding:9px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mute);font-weight:500;font-size:13px}
-.st{display:inline-block;font-size:12px;font-weight:600;border-radius:999px;padding:2px 9px}
-.st.ok{background:rgba(76,175,125,.15);color:var(--ok)}.st.soon{background:rgba(224,166,64,.15);color:var(--soon)}.st.over{background:rgba(224,90,79,.15);color:var(--over)}.st.unk{background:rgba(125,133,148,.18);color:var(--unk)}
-.st.blocked{background:rgba(224,90,79,.15);color:var(--over)}
-.safety{font-size:11px;color:var(--over);border:1px solid var(--over);border-radius:6px;padding:0 5px;margin-left:6px}
-.chip{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 9px;margin:2px 4px 2px 0;color:var(--mute)}
-.chip.t-preventive{color:var(--ok);border-color:rgba(76,175,125,.5)}.chip.t-corrective{color:var(--over);border-color:rgba(224,90,79,.5)}.chip.t-upgrade{color:var(--acc);border-color:rgba(91,156,255,.5)}.chip.t-diagnostic{color:var(--soon);border-color:rgba(224,166,64,.5)}
-.chip.sel{background:var(--card2);color:var(--fg);border-color:var(--acc)}
-.filters{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
-.filters .chip{cursor:pointer}
-input[type=search]{background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:9px 12px;font-size:15px;width:100%;max-width:340px;margin-bottom:10px}
-.year{color:var(--mute);font-weight:700;margin:18px 0 8px}
-.visit{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px 14px;margin-bottom:8px}
-.visit .when b{display:block}.visit .when span{color:var(--mute);font-size:13px}
-.visit details{margin-top:6px}.visit summary{cursor:pointer;color:var(--mute);font-size:13px}
-.raw{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--mute);background:#0c0e12;border:1px solid var(--line);border-radius:8px;padding:8px;margin-top:6px}
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
-.step{border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--card2)}.step b{display:block;font-size:13px}.step span{font-size:13px;color:var(--mute)}.step.missing{border-style:dashed}.step.missing span{color:var(--soon)}
-.track{position:relative;height:96px;margin:10px 6px 0}.track .ln{position:absolute;left:0;right:0;top:30px;height:2px;background:var(--line)}
-.track .ev{position:absolute;top:22px;transform:translateX(-50%);text-align:center;font-size:12px;color:var(--mute);white-space:nowrap}.track .ev i{display:block;width:18px;height:18px;border-radius:50%;background:var(--over);margin:0 auto 6px;border:3px solid var(--bg)}
-.gap{position:absolute;top:2px;transform:translateX(-50%);font-size:12px;color:var(--fg)}
-.phone{width:390px;max-width:100%;margin:0 auto;border:1px solid var(--line);border-radius:28px;padding:18px 16px 22px;background:#12151b}
-.field{margin-bottom:12px}.field label{display:block;font-size:13px;color:var(--mute);margin-bottom:5px}
-.field input,.field select,.field textarea{width:100%;background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:11px 12px;font-size:16px;font-family:inherit}
-.seg{display:flex;flex-wrap:wrap;gap:6px}.seg span{border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:14px}.seg span.on{border-color:var(--acc);background:var(--card2)}
-.more{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;color:var(--mute);font-size:14px}
-.bars .row{display:grid;grid-template-columns:100px 1fr 30px;gap:8px;align-items:center;margin:6px 0;font-size:13px}.bars .b{height:10px;border-radius:5px;background:var(--acc)}
-.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:16px;align-items:center}
-.carph{aspect-ratio:2.4;border:1px dashed var(--line);border-radius:12px;display:grid;place-items:center;color:var(--mute);font-size:13px}
-.note{font-size:12px;color:var(--mute);margin-top:8px}
+@font-face{font-family:Archivo;src:url(fonts/archivo-latin-wdth-normal.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+/* Concrete floor, graphite ink, BMW blue for actions. Status colours are the only loud thing besides the odometer. */
+:root{
+  --floor:#d5d7d9; --panel:#eef0f1; --panel2:#e3e6e8; --ink:#1f2328; --ink2:#4d545c; --rule:#c3c7cb;
+  --blue:#0a5bb5; --over:#c0392b; --soon:#c47f00; --ok:#2e7d4f; --unk:#7b818a; --life:#1d6b55;
+  --drum:#15181b; --drumtxt:#f2f2f2;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--floor);color:var(--ink);font-family:Archivo,system-ui,sans-serif;font-size:16px;line-height:1.5;font-variation-settings:"wdth" 100}
+a{color:var(--blue)} a:focus-visible,button:focus-visible,[tabindex]:focus-visible,input:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.cond{font-variation-settings:"wdth" 75}
+
+header{background:var(--ink);color:#fff}
+.hbar{max-width:1120px;margin:0 auto;padding:0 20px;display:flex;align-items:stretch;gap:28px;overflow-x:auto}
+.brand{font-variation-settings:"wdth" 75;font-weight:800;font-size:20px;letter-spacing:.01em;padding:14px 0;white-space:nowrap}
+nav{display:flex;gap:2px}
+nav a{color:#b9c0c7;text-decoration:none;padding:16px 12px 13px;border-bottom:3px solid transparent;white-space:nowrap;font-size:15px}
+nav a.on{color:#fff;border-bottom-color:#5aa0ec}
+.viewmode{margin-left:auto;align-self:center;font-size:13px;color:#b9c0c7;white-space:nowrap}
+
+main{max-width:1120px;margin:0 auto;padding:28px 20px 80px}
 .view{display:none}.view.on{display:block}
-@media(max-width:640px){.visit{grid-template-columns:1fr}.hero{grid-template-columns:1fr}td.hide,th.hide{display:none}}
+h1{font-variation-settings:"wdth" 75;font-weight:800;font-size:44px;line-height:1.02;margin:0;letter-spacing:-.005em}
+h2{font-variation-settings:"wdth" 75;font-weight:700;font-size:24px;margin:40px 0 12px}
+h3{font-size:17px;margin:0}
+p{margin:0}
+.lede{color:var(--ink2);max-width:62ch;margin-top:8px}
+.small{font-size:14px;color:var(--ink2)}
+.sheet{background:var(--panel);border-radius:4px}
+.btn{display:inline-block;background:var(--blue);color:#fff;border:0;border-radius:4px;padding:11px 16px;font:inherit;font-weight:700;text-decoration:none;cursor:pointer}
+.btn.quiet{background:transparent;color:var(--blue);border:1.5px solid var(--blue);padding:9.5px 14px}
+
+/* Odometer: the one loud element */
+.carhead{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.odo{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.drum{display:flex;gap:3px;background:#2a2f35;padding:6px;border-radius:6px;box-shadow:inset 0 2px 0 rgba(255,255,255,.06)}
+.drum span{width:38px;height:56px;display:grid;place-items:center;background:linear-gradient(#0d0f11,#22262a 50%,#0d0f11);color:var(--drumtxt);font-variation-settings:"wdth" 75;font-weight:700;font-size:40px;border-radius:3px}
+.drum span.unit{width:auto;padding:0 10px;font-size:16px;color:#9aa1a9;background:none}
+.odometa{font-size:14px;color:var(--ink2);text-align:right}
+.odometa b{color:var(--ink)}
+
+/* Due list */
+.due{margin-top:12px}
+.drow{display:grid;grid-template-columns:6px 1.4fr 1.4fr 1fr auto;gap:0 18px;align-items:center;background:var(--panel);padding:14px 16px 14px 0;margin-bottom:4px;border-radius:2px}
+.drow .bar{align-self:stretch;border-radius:2px 0 0 2px}
+.drow.over .bar{background:var(--over)}.drow.soon .bar{background:var(--soon)}.drow.ok .bar{background:var(--ok)}.drow.unk .bar{background:repeating-linear-gradient(45deg,var(--unk) 0 4px,transparent 4px 8px)}
+.drow .job b{display:block;font-size:17px}.drow .job span{font-size:14px;color:var(--ink2)}
+.state{font-weight:700}.over .state{color:var(--over)}.soon .state{color:var(--soon)}.ok .state{color:var(--ok)}.unk .state{color:var(--unk)}
+.safety{font-size:12px;font-weight:700;color:var(--over);border:1.5px solid var(--over);border-radius:3px;padding:0 5px;margin-left:8px;vertical-align:2px}
+.kitlink{font-size:14px;font-weight:600;white-space:nowrap}
+.placeholder-note{font-size:14px;color:var(--soon);margin-top:10px}
+
+.work{background:var(--panel);padding:16px;border-left:6px solid var(--over);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+/* Jobs & parts */
+.jobs{display:grid;grid-template-columns:260px 1fr;gap:20px;margin-top:20px}
+.joblist{display:flex;flex-direction:column;gap:2px}
+.joblist button{all:unset;cursor:pointer;background:var(--panel2);padding:12px 14px;border-radius:2px;display:flex;justify-content:space-between;gap:8px}
+.joblist button[aria-selected=true]{background:var(--ink);color:#fff}
+.joblist button small{color:inherit;opacity:.65}
+.kit{background:var(--panel);padding:22px;border-radius:2px}
+.kithead{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.buykit{background:var(--panel2);padding:14px 16px;margin:18px 0;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-radius:2px}
+.buykit .price{font-variation-settings:"wdth" 75;font-weight:800;font-size:28px}
+table{width:100%;border-collapse:collapse}
+th{font-size:13px;color:var(--ink2);font-weight:600;text-align:left;padding:8px 8px;border-bottom:2px solid var(--ink)}
+td{padding:11px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+td.r,th.r{text-align:right}
+.pn{font-variation-settings:"wdth" 80;letter-spacing:.02em}
+.life{display:inline-block;font-size:12px;font-weight:700;color:var(--life);border:1.5px solid var(--life);border-radius:3px;padding:0 5px;white-space:nowrap}
+.have{width:18px;height:18px;accent-color:var(--blue)}
+tr.got td{color:var(--ink2);text-decoration:line-through}
+tr.got td:first-child,tr.got td:last-child{text-decoration:none}
+.kitactions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.extras{margin-top:22px;border-top:2px solid var(--ink);padding-top:12px}
+.mob{display:none}
+.empty{padding:28px;text-align:left;color:var(--ink2)}
+
+/* Ledger */
+.ledger td.ex{color:var(--ink2);font-style:italic}
+.claim{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2px;margin-top:12px}
+.claim div{background:var(--panel);padding:14px}
+.claim b{display:block;font-size:15px;margin-bottom:4px}
+
+/* Log */
+.logwrap{display:grid;grid-template-columns:400px 1fr;gap:24px;align-items:start}
+.phone{background:var(--panel);border-radius:22px;padding:22px 18px;border:8px solid var(--ink)}
+.field{margin-bottom:14px}.field label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.field input,.field select{width:100%;font:inherit;font-size:17px;background:#fff;border:1.5px solid var(--rule);border-radius:4px;padding:11px 12px;color:var(--ink)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{all:unset;cursor:pointer;border:1.5px solid var(--rule);background:#fff;border-radius:4px;padding:7px 11px;font-size:15px}
+.seg button[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:#fff}
+.partcheck{background:#fff;border:1.5px solid var(--rule);border-radius:4px;padding:6px 10px}
+.partcheck label{display:flex;gap:10px;align-items:center;padding:6px 0;font-size:15px;font-weight:400}
+.partcheck label+label{border-top:1px solid var(--panel2)}
+
+/* History */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0 6px}
+.toolbar input{font:inherit;background:var(--panel);border:1.5px solid var(--rule);border-radius:4px;padding:9px 12px;min-width:240px}
+.toggles{display:flex;gap:4px;flex-wrap:wrap}
+.toggles button{all:unset;cursor:pointer;font-size:14px;padding:5px 10px;border-radius:3px;background:var(--panel2)}
+.toggles button[aria-pressed=true]{background:var(--ink);color:#fff}
+.yr{font-variation-settings:"wdth" 75;font-weight:800;font-size:28px;margin:28px 0 8px;color:var(--ink2)}
+.visit{display:grid;grid-template-columns:120px 1fr;gap:18px;background:var(--panel);padding:14px 16px;margin-bottom:3px}
+.visit .mi{font-variation-settings:"wdth" 75;font-weight:700;font-size:22px;line-height:1.1}
+.visit .dt{font-size:14px;color:var(--ink2)}
+.jobs-in{display:flex;flex-wrap:wrap;gap:4px 14px}
+.jobs-in span{font-size:15px}
+.jobs-in i{font-style:normal;font-size:12px;font-weight:700;margin-left:4px}
+.t-preventive{color:var(--ok)}.t-corrective{color:var(--over)}.t-upgrade{color:var(--blue)}.t-diagnostic{color:var(--soon)}
+.visit details{margin-top:6px}.visit summary{cursor:pointer;font-size:14px;color:var(--ink2)}
+.raw{font-size:14px;color:var(--ink2);background:var(--panel2);padding:8px 10px;margin-top:6px;border-left:3px solid var(--rule)}
+
+/* Story */
+.line{position:relative;height:120px;margin:16px 24px 8px}
+.line .track{position:absolute;left:0;right:0;top:52px;height:4px;background:var(--ink)}
+.line .ev{position:absolute;top:0;transform:translateX(-50%);text-align:center}
+.line .ev .tick{width:4px;height:28px;background:var(--over);margin:38px auto 8px}
+.line .ev b{display:block;font-variation-settings:"wdth" 75;font-size:20px}
+.line .ev span{font-size:13px;color:var(--ink2)}
+.line .gap{position:absolute;top:18px;transform:translateX(-50%);font-size:14px;font-weight:700;background:var(--floor);padding:0 6px}
+.chain{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;margin-top:12px}
+.chain div{background:var(--panel);padding:14px;min-height:110px}
+.chain div.missing{background:transparent;border:2px dashed var(--rule)}
+.chain b{display:block;font-size:15px;margin-bottom:6px}
+.chain .missing span{color:var(--soon);font-size:14px}
+
+/* Public */
+.pubhero{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.carslot{aspect-ratio:2.3;background:repeating-linear-gradient(-45deg,var(--panel2) 0 10px,var(--panel) 10px 20px);display:grid;place-items:center;color:var(--ink2);font-size:14px;border-radius:2px}
+.facts{display:flex;gap:40px;flex-wrap:wrap;margin-top:22px}
+.facts b{display:block;font-variation-settings:"wdth" 75;font-weight:800;font-size:40px;line-height:1}
+.facts span{font-size:14px;color:var(--ink2)}
+.bars .row{display:grid;grid-template-columns:110px 1fr 36px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule)}
+.bars .b{height:14px;background:var(--ink);border-radius:1px}
+.bars .row:first-child .b{background:var(--blue)}
+
+@media (max-width:760px){
+  h1{font-size:34px}
+  .carhead{grid-template-columns:1fr}.odo{align-items:flex-start}.odometa{text-align:left}
+  .drum span{width:30px;height:46px;font-size:32px}
+  .drow{grid-template-columns:6px 1fr auto;row-gap:4px}
+  .drow .last{display:none}.drow .next{grid-column:2/4}.drow .kitcell{grid-column:2/4}
+  .jobs{grid-template-columns:1fr}.joblist{flex-direction:row;overflow-x:auto}.joblist button{white-space:nowrap}
+  .logwrap{grid-template-columns:1fr}
+  .visit{grid-template-columns:1fr;gap:6px}
+  .chain{grid-template-columns:1fr 1fr}
+  .pubhero{grid-template-columns:1fr}
+  td.hide,th.hide{display:none}
+  .mob{display:block}
+  .kit{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
 </style>
 </head>
 <body>
-<header><div class="bar">
-  <div class="brand">Jerrekt's Garage<small>E36 M3</small></div>
-  <nav id="nav">
-    <a href="#dash">Dashboard</a><a href="#log">Quick Log</a><a href="#history">History</a><a href="#story">Repair stories</a><a href="#public">Public page</a>
+<header><div class="hbar">
+  <div class="brand">Jerrekt's Garage</div>
+  <nav id="nav" aria-label="Sections">
+    <a href="#due">Due</a><a href="#jobs">Jobs and parts</a><a href="#log">Log work</a><a href="#history">History</a><a href="#lifetime">Lifetime parts</a><a href="#story">Repair stories</a><a href="#public">Public page</a>
   </nav>
-  <span class="mode" id="mode">Private</span>
+  <span class="viewmode" id="mode"></span>
 </div></header>
+
 <main>
-
-<section class="view" id="dash">
-  <h1>BMW E36 M3 <span class="sub" style="font-size:15px">· S52 · project car</span></h1>
-  <p class="sub">Engine work paused.</p>
-  <h2>Now</h2>
-  <div class="grid g3">
-    <div class="card kpi"><b id="odo"></b><span id="odoasof"></span><div style="margin-top:10px"><button class="btn" onclick="location.hash='log'">Update mileage</button></div></div>
-    <div class="card kpi"><b id="ndue"></b><span>items overdue or due soon</span></div>
-    <div class="card kpi"><b id="nunk"></b><span>items with no record (Unknown)</span></div>
+<!-- DUE -->
+<section class="view" id="due">
+  <div class="carhead">
+    <div><h1>E36 M3 sedan</h1><p class="lede">1997 US sedan, S52, manual, built Feb 1997. Project car; engine work is paused. <a id="roem" target="_blank" rel="noopener">Parts diagrams on RealOEM</a></p></div>
+    <div class="odo">
+      <div class="drum num" id="drum" aria-label="Odometer"></div>
+      <div class="odometa">Last reading <b id="odoasof"></b> from a service entry. <a href="#log">Update mileage</a></div>
+    </div>
   </div>
-  <h2>Maintenance due <span class="flag">intervals are placeholders until q74</span></h2>
-  <div class="card" style="padding:4px 6px"><table id="due"><thead><tr><th>Job</th><th>Status</th><th class="hide">Last done</th><th>Next due</th><th class="hide">Interval</th></tr></thead><tbody></tbody></table></div>
-  <p class="note">Due when either limit is reached. "Due soon" inside 15% of the interval. Safety items are flagged separately from urgency.</p>
+  <h2>What's due</h2>
+  <div class="due" id="duelist"></div>
+  <p class="placeholder-note">Intervals here are placeholders until you set your own (q74). Due when either the miles or the months run out.</p>
   <h2>Open work</h2>
-  <div class="card" id="work"></div>
+  <div id="work"></div>
 </section>
 
-<section class="view" id="log">
-  <div class="phone">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><b style="font-size:17px">Log work · E36 M3</b><span class="sub" style="font-size:13px">under 30 sec</span></div>
-    <div class="field"><label>What did you do?</label><input value="Oil change 5W-40"></div>
-    <div class="field"><label>Odometer</label><input inputmode="numeric" placeholder="last: 193,500 (Jul 2025)"></div>
-    <div class="field"><label>Date</label><input value="Nov 5, 2026"></div>
-    <div class="field"><label>System</label><div class="seg"><span class="on">Engine</span><span>Cooling</span><span>Brakes</span><span>Suspension</span><span>Steering</span><span>Drivetrain</span><span>Tires</span><span>Body</span></div></div>
-    <div class="field"><label>Type</label><div class="seg"><span class="on">Preventive</span><span>Corrective</span><span>Diagnostic</span><span>Upgrade</span></div></div>
-    <button class="btn" style="width:100%;margin-top:4px">Save</button>
-    <div class="more">+ Parts and cost &nbsp; + Photos &nbsp; + Notes &nbsp; + Link to a repair story</div>
-    <div class="more" style="border:0;padding-top:4px">Or just <a href="#">update mileage</a></div>
+<!-- JOBS -->
+<section class="view" id="jobs">
+  <h1>Jobs and parts</h1>
+  <p class="lede">Pick a job to see every part it needs, with FCP Euro links. Tick what you already have and open the rest in one go.</p>
+  <div class="jobs">
+    <div class="joblist" id="joblist" role="tablist" aria-label="Jobs"></div>
+    <div class="kit" id="kit"></div>
   </div>
 </section>
 
+<!-- LOG -->
+<section class="view" id="log">
+  <h1>Log work</h1>
+  <p class="lede">Built for the phone in the garage. Pick the job and the parts from its kit come up to tick off.</p>
+  <div class="logwrap" style="margin-top:22px">
+    <div class="phone">
+      <div class="field"><label for="lj">Job</label><select id="lj"></select></div>
+      <div class="field"><label for="lm">Odometer</label><input id="lm" inputmode="numeric" placeholder="Last: 193,500 (Jul 2025)"></div>
+      <div class="field"><label for="ld">Date</label><input id="ld" value="Nov 5, 2026"></div>
+      <div class="field"><label>Type</label><div class="seg" id="ltype"></div></div>
+      <div class="field" id="lparts"></div>
+      <button class="btn" style="width:100%">Save work</button>
+      <p class="small" style="margin-top:12px">Add parts, cost, photos or notes after saving.</p>
+    </div>
+    <div class="small" style="max-width:46ch">
+      <p><b style="color:var(--ink)">What saving does</b></p>
+      <p style="margin-top:6px">Adds a visit to the history, moves the next due point for that job, and marks the ticked parts as installed. Parts from FCP Euro land in Lifetime parts with the job and mileage they went in at, so a failed one is easy to claim.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY -->
 <section class="view" id="history">
   <h1>Service history</h1>
-  <p class="sub" id="hcount"></p>
-  <h2>Filter</h2>
-  <input type="search" id="q" placeholder="Search jobs, e.g. radiator">
-  <div class="filters" id="sysf"></div>
-  <div class="filters" id="typef"></div>
+  <p class="lede" id="hcount"></p>
+  <div class="toolbar"><input type="search" id="q" placeholder="Search, e.g. radiator" aria-label="Search jobs"></div>
+  <div class="toggles" id="sysf" aria-label="Filter by system"></div>
+  <div class="toggles" id="typef" style="margin-top:6px" aria-label="Filter by work type"></div>
   <div id="visits"></div>
 </section>
 
+<!-- LIFETIME -->
+<section class="view" id="lifetime">
+  <h1>Lifetime parts</h1>
+  <p class="lede">Every FCP Euro part on the car, where it went in, and what you'd get back if it fails.</p>
+  <h2>On the car</h2>
+  <div class="sheet" style="padding:6px 16px 10px">
+    <table class="ledger"><thead><tr><th>Part</th><th class="hide">Bought</th><th>Installed</th><th class="r">Paid</th><th class="r">Credit if it fails</th></tr></thead>
+    <tbody id="ledger"></tbody></table>
+  </div>
+  <p class="small" style="margin-top:10px">No FCP orders are entered yet. The grey row shows what one looks like. Orders can come in from your FCP order emails or be added by hand.</p>
+  <h2>When a part fails</h2>
+  <div class="claim">
+    <div><b>Buy the same part again</b><span class="small">FCP needs a replacement order for the same item first.</span></div>
+    <div><b>Send the old one back</b><span class="small">With their return form, in the maker's box. Return shipping is on you.</span></div>
+    <div><b>Get store credit</b><span class="small">At the price you paid originally, not today's price.</span></div>
+    <div><b>Not covered</b><span class="small">Bad installs or misdiagnosis, one-time consumables like additives and cleaners, and parts not bought from FCP.</span></div>
+  </div>
+  <p class="small" style="margin-top:10px">From FCP Euro's guarantee page as of Nov 2026. Check it before a claim.</p>
+</section>
+
+<!-- STORY -->
 <section class="view" id="story">
   <h1 id="stitle"></h1>
-  <p class="sub">Repair story: what failed, what was seen, how it was diagnosed, what changed, and whether it held.</p>
-  <h2>Replacement history</h2>
-  <div class="card"><div class="track" id="track"><div class="ln"></div></div><p class="note" id="mtbr"></p></div>
+  <p class="lede">What failed, what was seen, how it was diagnosed, what changed, and whether it held.</p>
+  <h2>Radiator replacements</h2>
+  <div class="line" id="line"></div>
+  <p class="small" id="mtbr" style="margin:22px 0 0 24px"></p>
   <h2>Defect to fix</h2>
-  <div class="steps" id="steps"></div>
-  <p class="note">Dashed boxes are not recorded yet. Only the dates, mileage and parts come from the log; nothing here is filled in by guesswork.</p>
+  <div class="chain" id="chain"></div>
+  <p class="small" style="margin-top:10px">Dashed steps are not written yet. Only dates, miles and parts come from the log.</p>
 </section>
 
+<!-- PUBLIC -->
 <section class="view" id="public">
-  <div class="hero">
-    <div><h1>BMW E36 M3 sedan</h1><p class="sub">S52, bought at 175.2k miles in July 2022. Worked on in my own garage. Every job logged with date and mileage.</p></div>
-    <div class="carph">car illustration (parked, q77)</div>
+  <div class="pubhero">
+    <div><h1>BMW E36 M3 sedan</h1><p class="lede">S52, bought at 175,200 miles in July 2022. Every job since is logged with date and mileage, and the repeat failures are written up.</p></div>
+    <div class="carslot">Car illustration goes here</div>
   </div>
-  <h2>At a glance</h2>
-  <div class="grid g3" id="pkpi"></div>
+  <div class="facts" id="facts"></div>
   <h2>Where the work went</h2>
-  <div class="card bars" id="bars"></div>
-  <h2>Documented work</h2>
-  <div class="card"><b>Cooling system: three radiators in about 10k miles</b><p class="sub" style="margin-top:4px">Replacement history and the defect-to-fix write-up. <a href="#story">Read</a></p></div>
-  <p class="note">Public view shows no VIN, plates, addresses, receipts or costs. Built from a sanitized export, not from the private database.</p>
+  <div class="bars" id="bars"></div>
+  <h2>Written up</h2>
+  <div class="sheet" style="padding:16px"><h3>Cooling system: three radiators in about 10,000 miles</h3><p class="small" style="margin-top:4px">Replacement history and the defect-to-fix write-up. <a href="#story">Read it</a></p></div>
+  <p class="small" style="margin-top:14px">This page shows no VIN, plates, receipts or costs. It's built from a cleaned export, not the private log.</p>
 </section>
-
 </main>
+
 <script src="data.js"></script>
 <script>
 const G=window.GARAGE, TODAY=new Date(G.today);
-const k=m=>m==null?'—':(m/1000).toFixed(1).replace(/\.0$/,'')+'k';
-const fmtMiles=m=>m==null?'—':m.toLocaleString('en-US')+' mi';
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const k=m=>m==null?null:(m/1000).toFixed(1).replace(/\.0$/,'')+'k';
 const pd=s=>{if(!s)return null;const p=s.split('-').map(Number);return new Date(p[0],(p[1]||1)-1,p[2]||1)};
-const fd=s=>{if(!s)return 'date not logged';const p=s.split('-').map(Number);return p[2]?`${MON[p[1]-1]} ${p[2]}, ${p[0]}`:p[1]?`${MON[p[1]-1]} ${p[0]}`:`${p[0]}`};
+const fd=s=>{if(!s)return 'no date';const p=s.split('-').map(Number);return p[2]?`${MON[p[1]-1]} ${p[2]}, ${p[0]}`:p[1]?`${MON[p[1]-1]} ${p[0]}`:`${p[0]}`};
+const usd=n=>'$'+n.toFixed(2);
 const addM=(d,m)=>{const x=new Date(d);x.setMonth(x.getMonth()+m);return x};
 const jobs=G.visits.flatMap(v=>v.jobs.map(([name,sys,type])=>({name,sys,type,date:v.date,miles:v.miles})));
+const lastOf=match=>{const h=jobs.filter(j=>match.some(w=>j.name.toLowerCase().includes(w)));return h.length?h.reduce((a,b)=>((b.miles||0)>=(a.miles||0)?b:a)):null};
 
-// due logic: whichever first, percent thresholds, Unknown when no record
+// Odometer drum
+document.getElementById('drum').innerHTML=String(G.odometer.miles).padStart(6,'0').split('').map(d=>`<span>${d}</span>`).join('')+'<span class="unit">mi</span>';
+document.getElementById('odoasof').textContent=fd(G.odometer.asOf);
+document.getElementById('roem').href=G.car.realoem;
+
+// Due logic: whichever first, percent thresholds, Unknown when nothing recorded
 function due(p){
-  const hits=jobs.filter(j=>p.match.some(w=>j.name.toLowerCase().includes(w)));
-  if(!hits.length) return {st:'unk',label:'Unknown',last:null,next:'no record'};
-  const last=hits.reduce((a,b)=>((b.miles||0)>=(a.miles||0)?b:a));
-  let worst=1, parts=[];
+  const last=lastOf(p.match);
+  if(!last) return {st:'unk',label:'No record',last:null,next:'Never logged'};
+  let worst=1,parts=[];
   if(p.miles&&last.miles){const left=last.miles+p.miles-G.odometer.miles;worst=Math.min(worst,left/p.miles);parts.push(left<0?`${k(-left)} mi over`:`${k(left)} mi left`)}
-  const ld=pd(last.date)||null;
-  if(p.months&&ld){const dd=addM(ld,p.months);const days=(dd-TODAY)/864e5;worst=Math.min(worst,days/(p.months*30.4));parts.push(days<0?`${Math.round(-days/30.4)} mo over`:`${MON[dd.getMonth()]} ${dd.getFullYear()}`)}
-  if(!parts.length) return {st:'unk',label:'Unknown',last,next:'mileage or date missing'};
+  const ld=pd(last.date);
+  if(p.months&&ld){const dd=addM(ld,p.months),days=(dd-TODAY)/864e5;worst=Math.min(worst,days/(p.months*30.4));parts.push(days<0?`${Math.round(-days/30.4)} months over`:`by ${MON[dd.getMonth()]} ${dd.getFullYear()}`)}
+  if(!parts.length) return {st:'unk',label:'No record',last,next:'Mileage or date missing'};
   const st=worst<0?'over':worst<0.15?'soon':'ok';
-  return {st,label:{over:'Overdue',soon:'Due soon',ok:'OK'}[st],last,next:parts.join(' · ')};
+  if(st==='over')parts.sort((a,b)=>(b.includes('over')?1:0)-(a.includes('over')?1:0));
+  return {st,label:{over:'Overdue',soon:'Due soon',ok:'OK'}[st],last,next:parts.join(', ')};
 }
-const rows=G.plans.map(p=>({p,d:due(p)})).sort((a,b)=>({over:0,soon:1,unk:2,ok:3}[a.d.st]-{over:0,soon:1,unk:2,ok:3}[b.d.st]));
-document.querySelector('#due tbody').innerHTML=rows.map(({p,d})=>`<tr><td>${p.job}${p.safety?'<span class="safety">safety</span>':''}</td><td><span class="st ${d.st}">${d.label}</span></td><td class="hide">${d.last?k(d.last.miles)+' · '+fd(d.last.date):'—'}</td><td>${d.next}</td><td class="hide">${[p.miles?k(p.miles)+' mi':null,p.months?p.months+' mo':null].filter(Boolean).join(' or ')}</td></tr>`).join('');
-document.getElementById('odo').textContent=fmtMiles(G.odometer.miles);
-document.getElementById('odoasof').textContent=`as of ${fd(G.odometer.asOf)} · ${G.odometer.source.toLowerCase()}`;
-document.getElementById('ndue').textContent=rows.filter(r=>r.d.st==='over'||r.d.st==='soon').length;
-document.getElementById('nunk').textContent=rows.filter(r=>r.d.st==='unk').length;
-document.getElementById('work').innerHTML=G.work.map(w=>`<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><div><b>${w.title}</b><div class="sub" style="font-size:13px">${w.note}</div></div><div><span class="st blocked">${w.status}</span> <span class="chip">${w.priority} priority</span></div></div>`).join('');
+const order={over:0,soon:1,unk:2,ok:3};
+const rows=G.plans.map(p=>({p,d:due(p)})).sort((a,b)=>order[a.d.st]-order[b.d.st]);
+const kitFor=name=>G.jobs.find(j=>j.kit&&j.match.some(w=>name.toLowerCase().includes(w)));
+document.getElementById('duelist').innerHTML=rows.map(({p,d})=>{const kj=kitFor(p.job);return `<div class="drow ${d.st}"><div class="bar"></div>
+  <div class="job"><b>${p.job}${p.safety?'<span class="safety">Safety</span>':''}</b><span>Every ${[p.miles?p.miles.toLocaleString()+' mi':null,p.months?p.months+' months':null].filter(Boolean).join(' or ')}</span></div>
+  <div class="next"><span class="state">${d.label}</span> <span class="small">${d.next}</span></div>
+  <div class="last small">${d.last?`Last at ${k(d.last.miles)||'?'}, ${fd(d.last.date)}`:''}</div>
+  <div class="kitcell">${kj?`<a class="kitlink" href="#jobs" data-job="${kj.id}">Parts kit</a>`:''}</div></div>`}).join('');
+document.getElementById('work').innerHTML=G.work.map(w=>`<div class="work"><div><h3>${w.title}</h3><p class="small">${w.note}</p></div><div class="state" style="color:var(--over)">${w.status}</div></div>`).join('');
 
-// history
-const SYS=['Engine','Cooling','Drivetrain','Suspension','Steering','Brakes','Tires','Body'], TYPES=['preventive','corrective','diagnostic','upgrade','unclassified'];
-let fs=null, ft=null;
-function chips(id,list,get,set){document.getElementById(id).innerHTML=list.map(x=>`<span class="chip ${get()===x?'sel':''}" data-x="${x}">${x[0].toUpperCase()+x.slice(1)}</span>`).join('');document.querySelectorAll('#'+id+' .chip').forEach(c=>c.onclick=()=>{set(get()===c.dataset.x?null:c.dataset.x);renderH()})}
+// Jobs and parts
+let curJob=G.jobs[0].id;
+const have=new Set();
+function renderJobs(){
+  document.getElementById('joblist').innerHTML=G.jobs.map(j=>`<button role="tab" aria-selected="${j.id===curJob}" data-id="${j.id}"><span>${j.name}</span><small>${j.kit?'kit':'no kit yet'}</small></button>`).join('');
+  document.querySelectorAll('#joblist button').forEach(b=>b.onclick=()=>{curJob=b.dataset.id;have.clear();renderJobs()});
+  const j=G.jobs.find(x=>x.id===curJob), last=lastOf(j.match);
+  const lastTxt=last?`Last done at ${k(last.miles)||'unknown miles'}, ${fd(last.date)}.`:'Not in your log yet.';
+  if(!j.kit){document.getElementById('kit').innerHTML=`<h2 style="margin-top:0">${j.name}</h2><p class="small">${j.system} · ${lastTxt}</p><div class="empty">No parts list for this job yet. Build it once from FCP Euro and it's ready every time you do the job.<div style="margin-top:14px"><button class="btn quiet">Build parts list</button></div></div>`;return}
+  const need=j.parts.filter((p,i)=>!have.has(i));
+  const total=need.reduce((a,p)=>a+p.price,0);
+  document.getElementById('kit').innerHTML=`
+   <div class="kithead"><div><h2 style="margin:0">${j.name}</h2><p class="small">${j.system}. ${lastTxt}</p></div><span class="life">Lifetime replacement</span></div>
+   <div class="buykit"><div><b>Whole kit from FCP Euro</b><div class="small pn">${j.kit.sku} · fits ${j.kit.fits}</div></div><div style="display:flex;gap:14px;align-items:center"><span class="price num">${usd(j.kit.price)}</span><a class="btn" href="${j.kit.url}" target="_blank" rel="noopener">Open kit on FCP</a></div></div>
+   <p class="small" style="margin:-6px 0 14px">Check part numbers against <a href="${G.car.realoem}" target="_blank" rel="noopener">your car on RealOEM</a> (1997-02 US sedan, S52, manual).</p>
+   <table><thead><tr><th style="width:52px">Have</th><th>Part</th><th class="hide">Brand</th><th class="hide">Part no.</th><th class="r">Qty</th><th class="r">Price</th><th></th></tr></thead><tbody>
+   ${j.parts.map((p,i)=>`<tr class="${have.has(i)?'got':''}"><td><input type="checkbox" class="have" data-i="${i}" ${have.has(i)?'checked':''} aria-label="I already have ${p.name}"></td><td>${p.name}<div class="pn small mob">${p.brand} ${p.pn}</div></td><td class="hide">${p.brand}</td><td class="pn hide">${p.pn}</td><td class="r num">${p.qty}</td><td class="r num">${usd(p.price)}</td><td class="r">${p.url?`<a href="${p.url}" target="_blank" rel="noopener">FCP</a>`:`<span class="small">in kit</span>`}</td></tr>`).join('')}
+   </tbody></table>
+   <div class="kitactions"><button class="btn" id="openall" ${need.length?'':'disabled'}>Open ${need.length} part${need.length===1?'':'s'} on FCP</button><span class="small num">Still to buy: ${usd(total)}</span></div>
+   <div class="extras"><h3>While you're in there</h3>${j.extras.map(e=>`<p style="margin-top:8px"><b>${e.name}.</b> ${e.why}. <span class="small">${e.note}</span> <a href="${e.url}" target="_blank" rel="noopener">See options on FCP</a></p>`).join('')}</div>
+   <p class="small" style="margin-top:16px">Prices and kit contents read from fcpeuro.com on Nov 5, 2026. Parts without their own link are only sold inside the kit.</p>`;
+  document.querySelectorAll('#kit .have').forEach(c=>c.onchange=()=>{const i=+c.dataset.i;c.checked?have.add(i):have.delete(i);renderJobs()});
+  const oa=document.getElementById('openall');if(oa)oa.onclick=()=>{need.forEach(p=>window.open(p.url||j.kit.url,'_blank','noopener'))};
+}
+renderJobs();
+document.querySelectorAll('[data-job]').forEach(a=>a.addEventListener('click',()=>{curJob=a.dataset.job;renderJobs()}));
+
+// Log
+const lj=document.getElementById('lj');
+lj.innerHTML=G.jobs.map(j=>`<option value="${j.id}">${j.name}</option>`).join('')+'<option value="other">Something else</option>';
+const TYPES=['Preventive','Corrective','Diagnostic','Upgrade'];let ltype='Preventive';
+function renderLog(){
+  document.getElementById('ltype').innerHTML=TYPES.map(t=>`<button aria-pressed="${t===ltype}">${t}</button>`).join('');
+  document.querySelectorAll('#ltype button').forEach(b=>b.onclick=()=>{ltype=b.textContent;renderLog()});
+  const j=G.jobs.find(x=>x.id===lj.value);
+  document.getElementById('lparts').innerHTML=j&&j.kit?`<label>Parts installed</label><div class="partcheck">${j.parts.map(p=>`<label><input type="checkbox" class="have" checked> ${p.name}${p.qty>1?' ×'+p.qty:''} <span class="life" style="margin-left:auto">FCP</span></label>`).join('')}</div>`:'';
+}
+lj.onchange=renderLog;renderLog();
+
+// History
+const SYS=['Engine','Cooling','Drivetrain','Suspension','Steering','Brakes','Tires','Body'],WT=['preventive','corrective','diagnostic','upgrade','unclassified'];
+let fs=null,ft=null;
+function tog(id,list,get,set){const el=document.getElementById(id);el.innerHTML=list.map(x=>`<button aria-pressed="${get()===x}" data-x="${x}">${x[0].toUpperCase()+x.slice(1)}</button>`).join('');el.querySelectorAll('button').forEach(b=>b.onclick=()=>{set(get()===b.dataset.x?null:b.dataset.x);renderH()})}
 function renderH(){
-  chips('sysf',SYS,()=>fs,v=>fs=v);chips('typef',TYPES,()=>ft,v=>ft=v);
+  tog('sysf',SYS,()=>fs,v=>fs=v);tog('typef',WT,()=>ft,v=>ft=v);
   const q=document.getElementById('q').value.toLowerCase();
   const vs=[...G.visits].reverse().map(v=>({...v,shown:v.jobs.filter(([n,s,t])=>(!fs||s===fs)&&(!ft||(t||'unclassified')===ft)&&(!q||n.toLowerCase().includes(q)))})).filter(v=>v.shown.length);
-  let html='',yr=null;
-  for(const v of vs){const y=v.date?v.date.slice(0,4):'Date not logged';if(y!==yr){html+=`<div class="year">${y}</div>`;yr=y}
-    html+=`<div class="card visit"><div class="when"><b>${v.miles?k(v.miles)+' mi':'<span class="sub" style="font-weight:400;font-size:13px">miles not logged</span>'}</b><span>${fd(v.date)}</span></div><div>${v.shown.map(([n,s,t])=>`<span class="chip ${t?'t-'+t:''}">${n}</span>`).join('')}${v.shown.length<v.jobs.length?`<span class="sub" style="font-size:12px"> +${v.jobs.length-v.shown.length} more</span>`:''}${v.attachment?' <span class="chip">📎 printout</span>':''}<details><summary>Original entry</summary><div class="raw">${v.raw}</div></details></div></div>`}
-  document.getElementById('visits').innerHTML=html||'<p class="sub">No matching jobs.</p>';
-  document.getElementById('hcount').textContent=`${G.visits.length} visits · ${jobs.length} jobs · ${k(175200)} to ${k(193500)} mi. Chip colour = work type (green preventive, red corrective, blue upgrade, grey unclassified).`;
+  let h='',yr=null;
+  for(const v of vs){const y=v.date?v.date.slice(0,4):'No date logged';if(y!==yr){h+=`<div class="yr">${y}</div>`;yr=y}
+    h+=`<div class="visit"><div><div class="mi num">${v.miles?k(v.miles)+' mi':'—'}</div><div class="dt">${v.miles?fd(v.date):'Miles not logged · '+fd(v.date)}</div></div><div><div class="jobs-in">${v.shown.map(([n,s,t])=>`<span>${n}${t?`<i class="t-${t}">${t}</i>`:''}</span>`).join('')}</div>${v.attachment?'<p class="small" style="margin-top:4px">Alignment printout attached</p>':''}<details><summary>Original note</summary><div class="raw">${v.raw}</div></details></div></div>`}
+  document.getElementById('visits').innerHTML=h||'<p class="empty">Nothing matches. Clear a filter or search for something else.</p>';
+  document.getElementById('hcount').textContent=`${G.visits.length} visits and ${jobs.length-1} jobs between 175,200 and 193,500 miles. Work types shown where they're obvious; the rest are unclassified until you set them.`;
 }
 document.getElementById('q').oninput=renderH;renderH();
 
-// story
+// Ledger
+const ex=G.lifetimeExample;
+document.getElementById('ledger').innerHTML=G.lifetime.length?'':`<tr><td class="ex">${ex.part}</td><td class="ex hide">${ex.bought}</td><td class="ex">${ex.installed}</td><td class="ex r num">${usd(ex.paid)}</td><td class="ex r num">${usd(ex.paid)} store credit</td></tr>`;
+
+// Story
 const S=G.stories[0];document.getElementById('stitle').textContent=S.title;
-const mn=Math.min(...S.events.map(e=>e.miles)),mx=Math.max(...S.events.map(e=>e.miles)),span=(mx-mn)||1;
-const pos=m=>8+84*(m-mn)/span;
-let tr='<div class="ln"></div>';S.events.forEach((e,i)=>{tr+=`<div class="ev" style="left:${pos(e.miles)}%"><i></i>${k(e.miles)} mi<br>${fd(e.date)}</div>`;if(i)tr+=`<div class="gap" style="left:${(pos(e.miles)+pos(S.events[i-1].miles))/2}%">${k(e.miles-S.events[i-1].miles)} mi</div>`});
-document.getElementById('track').innerHTML=tr;
+const mn=Math.min(...S.events.map(e=>e.miles)),mx=Math.max(...S.events.map(e=>e.miles)),pos=m=>6+88*(m-mn)/(mx-mn);
+let L='<div class="track"></div>';S.events.forEach((e,i)=>{L+=`<div class="ev" style="left:${pos(e.miles)}%"><div class="tick"></div><b class="num">${k(e.miles)}</b><span>${fd(e.date)}</span></div>`;if(i)L+=`<div class="gap num" style="left:${(pos(e.miles)+pos(S.events[i-1].miles))/2}%">${(e.miles-S.events[i-1].miles).toLocaleString()} mi</div>`});
+document.getElementById('line').innerHTML=L;
 const gaps=S.events.slice(1).map((e,i)=>e.miles-S.events[i].miles);
-document.getElementById('mtbr').textContent=`Average ${k(gaps.reduce((a,b)=>a+b,0)/gaps.length)} mi between radiator replacements (${gaps.length} intervals, small sample).`;
-document.getElementById('steps').innerHTML=Object.entries(S.steps).map(([t,v])=>`<div class="step ${v?'':'missing'}"><b>${t}</b><span>${v||'Not recorded yet'}</span></div>`).join('');
+document.getElementById('mtbr').textContent=`Average ${Math.round(gaps.reduce((a,b)=>a+b)/gaps.length).toLocaleString()} miles between replacements. Two intervals, so it's a pattern to explain, not a statistic yet.`;
+document.getElementById('chain').innerHTML=Object.entries(S.steps).map(([t,v])=>`<div class="${v?'':'missing'}"><b>${t}</b><span>${v||'Not written yet'}</span></div>`).join('');
 
-// public
+// Public
 const bySys=SYS.map(s=>[s,jobs.filter(j=>j.sys===s&&j.name!=='Bought').length]).filter(x=>x[1]).sort((a,b)=>b[1]-a[1]);
-const mxs=bySys[0][1];
-document.getElementById('bars').innerHTML=bySys.map(([s,n])=>`<div class="row"><span>${s}</span><div class="b" style="width:${100*n/mxs}%"></div><span>${n}</span></div>`).join('');
-document.getElementById('pkpi').innerHTML=[[k(193500-175200)+' mi','driven while owned (logged)'],[jobs.length-1,'jobs logged'],[G.visits.length,'visits since 2022']].map(([b,s])=>`<div class="card kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+document.getElementById('bars').innerHTML=bySys.map(([s,n])=>`<div class="row"><span>${s}</span><div class="b" style="width:${100*n/bySys[0][1]}%"></div><span class="num" style="text-align:right">${n}</span></div>`).join('');
+document.getElementById('facts').innerHTML=[['18,300','miles driven since buying it'],[jobs.length-1,'jobs logged'],['3','radiators in 10,200 miles']].map(([b,s])=>`<div><b class="num">${b}</b><span>${s}</span></div>`).join('');
 
-// router
-function route(){const h=(location.hash||'#dash').slice(1);document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===h));document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));document.getElementById('mode').textContent=h==='public'?'Public view':'Private';scrollTo(0,0)}
+// Router
+function route(){const h=(location.hash||'#due').slice(1);document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===h));document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+h));document.getElementById('mode').textContent=h==='public'?'Public view':'Private';window.scrollTo(0,0)}
 addEventListener('hashchange',route);route();
 </script>
 </body>

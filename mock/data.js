@@ -3,7 +3,8 @@
 // placeholders until BJ confirms them (q74). Nothing here is invented history.
 window.GARAGE = {
   today: "2026-11-05",
-  car: { id: "e36-m3", name: "BMW E36 M3", body: "Sedan", engine: "S52", role: "Project car", status: "Engine work paused" },
+  car: { id: "e36-m3", name: "BMW E36 M3", body: "Sedan", engine: "S52", trans: "Manual", market: "USA", prod: "1997-02", role: "Project car", status: "Engine work paused",
+    realoem: "https://www.realoem.com/bmw/enUS/select?product=P&archive=1&series=E36&body=Lim&model=M3&market=USA&prod=19970200&engine=S52&trans=M" },
   odometer: { miles: 193500, asOf: "2025-07", source: "Last service entry" },
   // system, type: preventive | corrective | diagnostic | upgrade | null (unclassified)
   visits: [
@@ -51,5 +52,33 @@ window.GARAGE = {
       ],
       steps: { Symptom: null, Diagnosis: null, "Confirmed cause": null, Action: "Radiator replaced three times (see events)", Verification: null, "Follow-up": null }
     }
-  ]
+  ],
+  // FCP Euro job kits. Product data read from fcpeuro.com on 2026-11-05; prices change.
+  jobs: [
+    {
+      id: "valve-cover", name: "Valve cover gasket", system: "Engine", match: ["valve cover"],
+      kit: { title: "BMW Valve Cover Gasket Kit", sku: "11120034108KT", price: 154.09,
+             url: "https://www.fcpeuro.com/products/bmw-valve-cover-gasket-kit-11120034108kt",
+             fits: "1996-1999 M3, 3.2L S52 (per FCP fitment)" },
+      parts: [
+        { name: "Valve cover gasket set, incl. spark plug tube seals", qty: 1, brand: "Elring", pn: "11120034108", price: 31.12, lifetime: true,
+          url: "https://www.fcpeuro.com/products/bmw-engine-valve-cover-gasket-set-m3-z3-e36-11120034108" },
+        { name: "Valve cover grommet (rubber)", qty: 15, brand: "DPH", pn: "11121437395", price: 7.50, lifetime: true, url: null },
+        { name: "Valve cover washer (metal)", qty: 15, brand: "OE Supplier", pn: "11127838077", price: 79.35, each: 5.29, lifetime: true,
+          url: "https://www.fcpeuro.com/products/bmw-valve-cover-washer-metal-11127838077" },
+        { name: "Oil filler cap gasket", qty: 1, brand: "Genuine BMW", pn: "11127526447", price: 36.12, lifetime: true, url: null }
+      ],
+      extras: [
+        { name: "Spark plugs", why: "Coils are already out", note: "FCP does not list years for its M3 plugs. Confirm the 1996-99 S52 plug before buying.",
+          url: "https://www.fcpeuro.com/BMW-parts/M3/Spark-Plug/" }
+      ]
+    },
+    { id: "radiator", name: "Radiator and hoses", system: "Cooling", match: ["radiator", "hose"], kit: null },
+    { id: "oil", name: "Oil change", system: "Engine", match: ["oil change"], kit: null },
+    { id: "brakes", name: "Rotors and pads", system: "Brakes", match: ["rotors and pads"], kit: null },
+    { id: "front-end", name: "Tie rods, ball joints, bushings", system: "Suspension", match: ["tie rod", "ball joint", "bushing"], kit: null }
+  ],
+  // Lifetime ledger. Empty until BJ's FCP orders are entered; the row below is a labelled example.
+  lifetime: [],
+  lifetimeExample: { part: "Valve cover gasket set (Elring 11120034108)", bought: "Order date and number", installed: "Job, date, miles", paid: 31.12 }
 };
