@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Jerrekt's Garage</title>
+<meta name="description" content="Jerrekt's Garage. A service log for my cars, and a bay for yours.">
+<style>
+@font-face{font-family:Archivo;src:url(fonts/archivo-latin-wdth-normal.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:Caveat;src:url(fonts/caveat-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+:root{--bg:#0e0e0f;--card:#17171a;--card2:#1f1f23;--line:#2a2a2e;--text:#ece9e2;--muted:#9a968d;--gold:#c9a24a;--gold-soft:rgba(201,162,74,.14);--neon:#fffbd0;--n1:#fff38a;--n2:#ffe94d;--n3:#f5d000;--n4:rgba(245,208,0,.55);--over:#e06a5a;--soon:#e0a640;--ok:#6fbf8f;--unk:#8a8780;--disc:#5865f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--gold)}button{font:inherit}:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px}
+.num{font-variant-numeric:tabular-nums}
+header.intro{text-align:center;padding:40px 0 10px}
+.eyebrow{color:var(--gold);letter-spacing:.3em;font-size:11px;text-transform:uppercase}
+h1{font-size:clamp(34px,8vw,54px);line-height:1.05;margin:10px 0 4px;font-weight:800;font-stretch:75%}
+.logo{font-family:Caveat,cursive;font-weight:700;font-size:1.5em;line-height:.95;color:var(--neon);display:inline-flex;align-items:flex-start;text-shadow:0 0 3px var(--n1),0 0 10px var(--n2),0 0 24px var(--n3),0 0 48px var(--n4)}
+.crown{width:.5em;height:.5em;margin:.12em 0 0 .02em;transform:rotate(40deg);fill:none;stroke:var(--neon);stroke-width:2.1;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 0 2px var(--n1)) drop-shadow(0 0 8px var(--n3)) drop-shadow(0 0 18px var(--n4))}
+.word{display:block;font-size:.62em;letter-spacing:.06em;margin-top:.1em;text-transform:uppercase}
+.tag{color:var(--muted);font-size:14px;font-style:italic}
+.logo.f1{animation:flick 2.2s ease-out 1}@keyframes flick{0%,8%,14%,22%{opacity:.25}4%,11%,18%,30%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.logo{animation:none!important}}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:24px auto;max-width:520px}
+.rules{border:1px solid var(--gold);border-radius:12px;padding:16px 20px;background:var(--gold-soft);max-width:460px;margin:0 auto;text-align:left}
+.rules h2{font-size:19px;color:var(--gold);text-align:center;margin:0 0 8px;font-stretch:75%;font-weight:800}
+.rules ol{padding-left:22px}.rules li{margin:3px 0}
+h2{font-size:24px;font-weight:800;font-stretch:75%;margin:36px 0 12px}
+.small{font-size:14px;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.pill{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--gold);color:var(--gold);border-radius:999px;padding:2px 9px}
+.drum{display:inline-flex;gap:2px;background:#2a2f35;padding:4px;border-radius:5px;vertical-align:middle}
+.drum span{width:24px;height:34px;display:grid;place-items:center;background:linear-gradient(#0d0f11,#25292d 50%,#0d0f11);color:#f2f2f2;font-weight:700;font-size:24px;font-stretch:75%;border-radius:2px}
+.drum span.u{width:auto;padding:0 6px;font-size:12px;color:#9aa1a9;background:none}
+.row{display:grid;grid-template-columns:4px 1fr auto;gap:0 12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.row .bar{align-self:stretch;border-radius:2px}.row.over .bar{background:var(--over)}.row.soon .bar{background:var(--soon)}.row.ok .bar{background:var(--ok)}
+.row b{font-weight:600}.row .s{font-size:13px;color:var(--muted)}
+.st{font-weight:700;font-size:13px}.over .st{color:var(--over)}.soon .st{color:var(--soon)}.ok .st{color:var(--ok)}
+.big{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;border:0;border-radius:12px;font-weight:700;font-size:16px;cursor:pointer;text-decoration:none}
+.big.disc{background:var(--disc);color:#fff}.big.gold{background:var(--gold);color:#1a1405}.big.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.big svg{width:20px;height:20px;fill:currentColor}
+.choice{display:grid;gap:10px;margin-top:10px}
+.choice button{all:unset;cursor:pointer;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.choice button b{display:block;font-size:17px}.choice button span{font-size:14px;color:var(--muted)}
+.choice button[aria-pressed=true]{border-color:var(--gold)}
+.steps{display:flex;gap:6px;margin:0 0 14px}
+.steps i{flex:1;height:4px;border-radius:2px;background:var(--line);font-style:normal}.steps i.on{background:var(--gold)}
+.field{margin-bottom:12px}.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+.field input,.field select{width:100%;font:inherit;font-size:17px;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px}
+.who{display:flex;gap:12px;align-items:center;background:var(--card2);border-radius:12px;padding:12px 14px}
+.who .av{width:40px;height:40px;border-radius:50%;background:var(--disc);display:grid;place-items:center;font-weight:800}
+.note{font-size:13px;color:var(--soon);font-style:italic;margin-top:8px}
+.faq details{border-top:1px solid var(--line);padding:12px 0}.faq summary{cursor:pointer;font-weight:600;list-style:none}.faq summary::-webkit-details-marker{display:none}.faq p{margin-top:6px;font-size:15px;color:var(--muted)}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:40px 0 50px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header class="intro"><div class="wrap">
+  <div class="eyebrow">Service log</div>
+  <h1><span class="logo" id="logo">Jerrekt&rsquo;s<svg class="crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19 L4 7.5 L9 12.5 L12 5 L15 12.5 L20 7.5 L21.5 19 Z"/></svg></span><span class="word">Garage</span></h1>
+  <div class="tag">Self-certified. Torqued to spec, mostly.</div>
+  <div class="divider"></div>
+  <div class="rules"><h2>Shop Rules</h2><ol><li>Borrow a 10 mm, return a 10 mm</li><li>Torque specs are not suggestions</li><li>Lifetime warranty means I'm doing it again</li><li>You can never jerrekt jerrekt</li></ol></div>
+</div></header>
+
+<main class="wrap">
+  <h2>What it looks like <span class="pill" style="vertical-align:middle;margin-left:6px">Example</span></h2>
+  <div class="card" id="example"></div>
+  <p class="small" style="margin-top:8px">This is my E36. Every job is logged with date and mileage; the site works out what's due. My other cars and my friends' cars are private.</p>
+
+  <h2>Add your car</h2>
+  <div class="card" id="flow"></div>
+
+  <h2>Questions</h2>
+  <div class="card faq">
+    <details open><summary>Who can see my car?</summary><p>You and Jerrekt. Nothing about your car shows on this public page unless you turn that on later.</p></details>
+    <details><summary>Why sign in with Discord?</summary><p>The garage runs on a Discord bot, so you'll log work with slash commands anyway. Signing in with the same account means no passwords and no spam sign-ups.</p></details>
+    <details><summary>What do I get?</summary><p>A due list by miles and months, a history of every job, and parts kits with FCP Euro links for BMWs. Log from your phone with <code>/garage log</code>.</p></details>
+    <details><summary>Can I delete it?</summary><p>Yes. <code>/garage remove</code> deletes your car and its log. Jerrekt can't read a deleted log either.</p></details>
+  </div>
+</main>
+<footer>Jerrekt's Garage · a Jerman Engineering project</footer>
+
+<script src="data.js"></script>
+<script>
+const G=window.GARAGE,TODAY=new Date(G.today),MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const k=m=>(m/1000).toFixed(1).replace(/\.0$/,'')+'k';
+const pd=s=>{if(!s)return null;const p=s.split('-').map(Number);return new Date(p[0],(p[1]||1)-1,p[2]||1)};
+const addM=(x,m)=>{const y=new Date(x);y.setMonth(y.getMonth()+m);return y};
+const jobs=G.visits.flatMap(v=>v.jobs.map(([name])=>({name,date:v.date,miles:v.miles})));
+const last=m=>{const h=jobs.filter(j=>m.some(w=>j.name.toLowerCase().includes(w)));return h.length?h.reduce((a,b)=>((b.miles||0)>=(a.miles||0)?b:a)):null};
+const due=G.plans.map(p=>{const l=last(p.match);if(!l)return null;let w=1,parts=[];
+  if(p.miles&&l.miles){const left=l.miles+p.miles-G.odometer.miles;w=Math.min(w,left/p.miles);parts.push(left<0?`${k(-left)} mi over`:`${k(left)} mi left`)}
+  const ld=pd(l.date);if(p.months&&ld){const dd=addM(ld,p.months),days=(dd-TODAY)/864e5;w=Math.min(w,days/(p.months*30.4));parts.push(days<0?`${Math.round(-days/30.4)} mo over`:`by ${MON[dd.getMonth()]} ${dd.getFullYear()}`)}
+  const st=w<0?'over':w<.15?'soon':'ok';return{p,st,lab:{over:'Overdue',soon:'Due soon',ok:'OK'}[st],txt:parts.join(', ')}}).filter(Boolean).sort((a,b)=>({over:0,soon:1,ok:2}[a.st]-{over:0,soon:1,ok:2}[b.st])).slice(0,4);
+document.getElementById('example').innerHTML=`<div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><div><b style="font-size:22px;font-weight:800;font-stretch:70%">E36 M3 sedan</b><div class="small">1997 · S52 · ${G.visits.length} visits logged since 2022</div></div><span class="drum num">${String(G.odometer.miles).padStart(6,'0').split('').map(x=>`<span>${x}</span>`).join('')}<span class="u">mi</span></span></div>
+<div style="margin-top:12px">${due.map(x=>`<div class="row ${x.st}"><div class="bar"></div><div><b>${x.p.job}</b> <span class="s">${x.txt}</span></div><span class="st">${x.lab}</span></div>`).join('')}</div>
+<p class="small" style="margin-top:10px">Also on the full page: history by visit, FCP parts kits per job, and the cooling-system repair story (three radiators in 10,000 miles).</p>`;
+
+// Add-your-car flow (mock): 1 how, 2 sign in, 3 car, 4 done
+const DISC=`<svg viewBox="0 0 24 24"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.4a18 18 0 0 1 4.4 2.2 15.6 15.6 0 0 0-15.2 0A18 18 0 0 1 8.8 3.4L8.6 3a19.8 19.8 0 0 0-4.9 1.4C.6 9 .1 13.5.3 17.9a19.9 19.9 0 0 0 6 3l1.3-2a12.3 12.3 0 0 1-2-1l.5-.4a14.1 14.1 0 0 0 11.8 0l.5.4-2 1 1.3 2a19.9 19.9 0 0 0 6-3c.3-5-.9-9.4-3.4-13.5ZM8.4 15.2c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4Zm7.2 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4Z"/></svg>`;
+let step=+(new URLSearchParams(location.search).get('step')||1), how=null;
+const F=document.getElementById('flow');
+function bar(){return `<div class="steps">${[1,2,3,4].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div>`}
+function render(){
+ if(step===1)F.innerHTML=bar()+`<b>How do you want to start?</b><div class="choice">
+  <button aria-pressed="${how==='ask'}" data-how="ask"><b>Ask Jerrekt to set it up</b><span>Tell me the car and I'll add it. Good if you don't want to touch anything.</span></button>
+  <button aria-pressed="${how==='self'}" data-how="self"><b>Add it myself</b><span>Sign in with Discord, fill in the car, start logging. Two minutes.</span></button></div>
+  <div style="margin-top:12px"><button class="big gold" id="next" ${how?'':'disabled style="opacity:.5"'}>Continue</button></div>`;
+ if(step===2)F.innerHTML=bar()+`<b>Sign in so it's really you</b><p class="small" style="margin:6px 0 12px">No account to create. Discord tells the garage who you are, and that's the same account you'll log work from. ${how==='ask'?'Jerrekt gets a message with your request.':''}</p>
+  <button class="big disc" id="next">${DISC} Continue with Discord</button><p class="small" style="margin-top:10px;text-align:center">Not on Discord? <a href="#">Ask Jerrekt directly</a> and he'll add you by hand.</p><p class="note">Mock: the real button goes to Discord's sign-in and comes back here.</p>`;
+ if(step===3)F.innerHTML=bar()+`<div class="who"><div class="av">J</div><div><b>jason</b><div class="small">signed in with Discord</div></div></div>
+  <div style="margin-top:14px" class="field"><label>Car</label><input placeholder="e.g. 2008 Civic Si"></div>
+  <div class="field"><label>Current mileage</label><input inputmode="numeric" placeholder="e.g. 112000"></div>
+  <div class="field"><label>Nickname (optional)</label><input placeholder="what you call it"></div>
+  <button class="big gold" id="next">${how==='ask'?'Send to Jerrekt':'Add my car'}</button><p class="note">Nothing is saved until Jerrekt approves it. That's the spam filter.</p>`;
+ if(step===4)F.innerHTML=bar()+`<b>${how==='ask'?'Sent. Jerrekt will add it and ping you on Discord.':'Added, waiting for Jerrekt to approve.'}</b><p class="small" style="margin:8px 0 12px">Once approved you'll get a link to your private page and these commands work for your car:</p>
+  <code style="display:block;font-family:ui-monospace,Menlo,monospace;font-size:13px;background:#0a0a0b;border:1px solid var(--line);border-radius:8px;padding:9px 10px">/garage log car:civic job:"Oil change" miles:112300\n/garage due car:civic</code>
+  <div style="margin-top:12px"><a class="big ghost" href="?step=1">Start over</a></div>`;
+ F.querySelectorAll('[data-how]').forEach(b=>b.onclick=()=>{how=b.dataset.how;render()});
+ const n=document.getElementById('next');if(n)n.onclick=()=>{step++;render()};
+}
+if(step>1&&!how)how='self';render();
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.getElementById('logo').classList.add('f1');
+</script>
+</body>
+</html>
