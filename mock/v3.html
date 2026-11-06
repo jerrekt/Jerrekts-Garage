@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jerrekt's Garage</title>
+<style>
+@font-face{font-family:Archivo;src:url(fonts/archivo-latin-wdth-normal.woff2) format("woff2");font-weight:100 900;font-stretch:62% 125%;font-display:swap}
+@font-face{font-family:Caveat;src:url(fonts/caveat-latin-700-normal.woff2) format("woff2");font-weight:700;font-display:swap}
+/* Three layouts on the neon theme, picked with ?d=bays | board | tiles. */
+:root{--bg:#0e0e0f;--card:#17171a;--card2:#1f1f23;--line:#2a2a2e;--text:#ece9e2;--muted:#9a968d;--gold:#c9a24a;--gold-soft:rgba(201,162,74,.14);
+  --neon:#fffbd0;--n1:#fff38a;--n2:#ffe94d;--n3:#f5d000;--n4:rgba(245,208,0,.55);--over:#e06a5a;--soon:#e0a640;--ok:#6fbf8f;--unk:#8a8780;--disc:#5865f2}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:16px/1.5 Archivo,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--gold)}:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 18px}
+.num{font-variant-numeric:tabular-nums}
+h2{font-size:22px;font-weight:800;font-stretch:75%;margin:34px 0 12px}
+.small{font-size:14px;color:var(--muted)}
+button{font:inherit}
+/* intro (bar) */
+header.intro{text-align:center;padding:34px 0 10px}
+.eyebrow{color:var(--gold);letter-spacing:.3em;font-size:11px;text-transform:uppercase}
+h1{font-size:clamp(30px,7vw,48px);line-height:1.05;margin:8px 0 4px;font-weight:800;font-stretch:75%}
+.logo{font-family:Caveat,cursive;font-weight:700;font-size:1.5em;line-height:.95;color:var(--neon);display:inline-flex;align-items:flex-start;text-shadow:0 0 3px var(--n1),0 0 10px var(--n2),0 0 24px var(--n3),0 0 48px var(--n4)}
+.crown{width:.5em;height:.5em;margin:.12em 0 0 .02em;transform:rotate(40deg);fill:none;stroke:var(--neon);stroke-width:2.1;stroke-linejoin:round;stroke-linecap:round;filter:drop-shadow(0 0 2px var(--n1)) drop-shadow(0 0 8px var(--n3)) drop-shadow(0 0 18px var(--n4))}
+.word{display:block;font-size:.62em;letter-spacing:.06em;margin-top:.1em;text-transform:uppercase}
+.tag{color:var(--muted);font-size:14px;font-style:italic}
+.logo.f1{animation:flick 2.2s ease-out 1}@keyframes flick{0%,8%,14%,22%{opacity:.25}4%,11%,18%,30%,100%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.logo{animation:none!important}}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:22px auto 0;max-width:640px}
+
+/* shared pieces */
+.st{font-weight:700;font-size:14px;white-space:nowrap}.over .st{color:var(--over)}.soon .st{color:var(--soon)}.ok .st{color:var(--ok)}.unk .st{color:var(--unk)}
+.row{display:grid;grid-template-columns:4px 1fr auto;gap:0 12px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.row .bar{align-self:stretch;border-radius:2px}.row.over .bar{background:var(--over)}.row.soon .bar{background:var(--soon)}.row.ok .bar{background:var(--ok)}.row.unk .bar{background:repeating-linear-gradient(45deg,var(--unk) 0 3px,transparent 3px 6px)}
+.row b{font-weight:600}.row .s{font-size:14px;color:var(--muted)}
+.drum{display:inline-flex;gap:2px;background:#2a2f35;padding:4px;border-radius:5px;vertical-align:middle}
+.drum span{width:22px;height:32px;display:grid;place-items:center;background:linear-gradient(#0d0f11,#25292d 50%,#0d0f11);color:#f2f2f2;font-weight:700;font-size:22px;font-stretch:75%;border-radius:2px}
+.drum span.u{width:auto;padding:0 6px;font-size:12px;color:#9aa1a9;background:none}
+.chip{display:inline-block;font-size:12px;border:1px solid var(--line);border-radius:999px;padding:1px 9px;color:var(--muted)}
+.cmd{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;background:#0a0a0b;border:1px solid var(--line);border-radius:6px;padding:8px 10px;color:#d8d4c8;display:block;white-space:pre-wrap}
+.disc{display:inline-flex;align-items:center;gap:8px;background:var(--disc);color:#fff;border:0;border-radius:8px;padding:9px 13px;font-weight:700;cursor:pointer;text-decoration:none}
+.disc svg{width:18px;height:18px;fill:#fff}
+.ghost{background:transparent;border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 12px;cursor:pointer}
+details>summary{list-style:none;cursor:pointer}details>summary::-webkit-details-marker{display:none}
+.hint{font-size:12px;color:var(--soon);font-style:italic}
+
+/* ===== D: bays ===== */
+[data-d=bays] .bays{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+[data-d=bays] .bay{background:var(--card);border:1px solid var(--line);border-radius:12px 12px 6px 6px;overflow:hidden}
+[data-d=bays] .bay summary{padding:0}
+[data-d=bays] .door{height:110px;background:repeating-linear-gradient(180deg,#26262a 0 22px,#1c1c20 22px 26px);position:relative;transition:height .35s ease}
+[data-d=bays] .bay[open] .door{height:26px;background:#26262a}
+[data-d=bays] .door .no{position:absolute;left:12px;top:10px;font-size:13px;color:var(--muted);letter-spacing:.1em}
+[data-d=bays] .door .lamp{position:absolute;right:12px;top:10px;width:10px;height:10px;border-radius:50%;background:var(--unk)}
+[data-d=bays] .door .lamp.over{background:var(--over);box-shadow:0 0 10px var(--over)}[data-d=bays] .door .lamp.ok{background:var(--ok)}[data-d=bays] .door .lamp.soon{background:var(--soon)}
+[data-d=bays] .plate{padding:12px 14px 14px}
+[data-d=bays] .plate b{display:block;font-size:30px;font-weight:800;font-stretch:70%;line-height:1}
+[data-d=bays] .bay[open] .plate b{color:var(--neon);text-shadow:0 0 6px var(--n2),0 0 16px var(--n4)}
+[data-d=bays] .plate span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+[data-d=bays] .inside{padding:4px 14px 16px;border-top:1px solid var(--line)}
+[data-d=bays] .bay[open]{grid-column:1/-1}
+[data-d=bays] .bay[open] .inside{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;padding-top:14px}
+[data-d=bays] .guest .door{background:repeating-linear-gradient(180deg,#1d1f24 0 22px,#16181c 22px 26px)}
+[data-d=bays] .addbay{border:1px dashed var(--line);border-radius:12px;display:grid;place-items:center;color:var(--muted);min-height:170px;cursor:pointer;background:transparent}
+
+/* ===== E: board ===== */
+[data-d=board] .board{display:grid;grid-template-columns:230px 1fr;gap:18px;margin-top:14px}
+[data-d=board] .rail{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;align-self:start;position:sticky;top:12px}
+[data-d=board] .rail h3{font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;padding:8px 8px 4px;font-weight:600}
+[data-d=board] .rail button{all:unset;cursor:pointer;display:flex;justify-content:space-between;align-items:center;width:100%;padding:9px 10px;border-radius:8px}
+[data-d=board] .rail button[aria-selected=true]{background:var(--card2);color:var(--neon)}
+[data-d=board] .rail button i{font-style:normal;width:8px;height:8px;border-radius:50%;background:var(--unk)}
+[data-d=board] .rail button i.over{background:var(--over)}[data-d=board] .rail button i.ok{background:var(--ok)}[data-d=board] .rail button i.soon{background:var(--soon)}
+[data-d=board] .ticket{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+[data-d=board] .ticket summary{display:grid;grid-template-columns:1fr auto auto;gap:14px;align-items:center;padding:13px 16px}
+[data-d=board] .ticket summary b{font-size:17px}
+[data-d=board] .ticket summary .n{font-size:13px;color:var(--muted)}
+[data-d=board] .ticket .body{padding:4px 16px 16px;border-top:1px solid var(--line)}
+[data-d=board] .ticket[open] summary{background:var(--card2);border-radius:12px 12px 0 0}
+[data-d=board] .head{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap;margin-bottom:10px}
+[data-d=board] .head h2{margin:0;font-size:28px}
+
+/* ===== F: tiles ===== */
+[data-d=tiles] .cars{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+[data-d=tiles] .cars button{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:999px;padding:7px 14px}
+[data-d=tiles] .cars button[aria-pressed=true]{border-color:var(--gold);color:var(--neon);background:var(--card2)}
+[data-d=tiles] .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+[data-d=tiles] .tile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+[data-d=tiles] .tile[open]{grid-column:1/-1;background:var(--card2)}
+[data-d=tiles] .tile summary{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+[data-d=tiles] .tile summary b{font-size:19px;font-weight:800;font-stretch:75%}
+[data-d=tiles] .tile summary .k{font-size:26px;font-weight:800;font-stretch:75%}
+[data-d=tiles] .tile .peek{font-size:14px;color:var(--muted);margin-top:6px}
+[data-d=tiles] .tile[open] .peek{display:none}
+[data-d=tiles] .tile .full{margin-top:12px}
+
+/* friends */
+.friends{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.friend{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.friend b{display:block;font-size:20px;font-weight:800;font-stretch:75%}
+.friend .who{font-size:13px;color:var(--muted)}
+.friend .lock{float:right;font-size:12px;color:var(--muted)}
+.friend.add{border-style:dashed;background:transparent;display:grid;place-items:center;color:var(--muted);text-align:center;cursor:pointer}
+
+/* bot panel */
+.bot{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bot h3{font-size:16px;margin-bottom:8px}
+.bot ul{list-style:none}.bot li{margin:6px 0}
+.feed{background:#0a0a0b;border-radius:8px;padding:10px 12px;font-size:14px;border-left:3px solid var(--disc)}
+.feed .n{color:var(--disc);font-weight:700}
+footer{color:var(--muted);font-size:13px;text-align:center;padding:36px 0 50px}
+.switch{display:flex;gap:6px;justify-content:center;margin-top:14px}
+.switch a{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:4px 10px;text-decoration:none;color:var(--muted)}
+.switch a.on{border-color:var(--gold);color:var(--neon)}
+@media(max-width:760px){
+  [data-d=bays] .bays{grid-template-columns:1fr 1fr}[data-d=bays] .bay[open] .inside{grid-template-columns:1fr}
+  [data-d=board] .board{grid-template-columns:1fr}[data-d=board] .rail{position:static}
+  [data-d=tiles] .grid{grid-template-columns:1fr}
+  .friends{grid-template-columns:1fr}.bot{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="intro"><div class="wrap">
+  <div class="eyebrow">Service Log</div>
+  <h1><span class="logo" id="logo">Jerrekt&rsquo;s<svg class="crown" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 19 L4 7.5 L9 12.5 L12 5 L15 12.5 L20 7.5 L21.5 19 Z"/></svg></span><span class="word">Garage</span></h1>
+  <div class="tag">Self-certified. Torqued to spec, mostly.</div>
+  <div class="switch" id="switch"></div>
+  <div class="divider"></div>
+</div></header>
+
+<main class="wrap" id="main"></main>
+<footer>Jerrekt's Garage · a Jerman Engineering project</footer>
+
+<script src="data.js"></script>
+<script src="data-e90.js"></script>
+<script>
+const d=new URLSearchParams(location.search).get('d')||'bays';document.documentElement.dataset.d=d;
+document.getElementById('switch').innerHTML=[['bays','Bays'],['board','Work orders'],['tiles','Tiles']].map(([k,l])=>`<a href="?d=${k}" class="${k===d?'on':''}">${l}</a>`).join('');
+const G=window.GARAGE,TODAY=new Date(G.today),MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const k=m=>m==null?null:(m/1000).toFixed(1).replace(/\.0$/,'')+'k';
+const pd=s=>{if(!s)return null;const p=s.split('-').map(Number);return new Date(p[0],(p[1]||1)-1,p[2]||1)};
+const fd=s=>{if(!s)return 'no date';const p=s.split('-').map(Number);return p[2]?`${MON[p[1]-1]} ${p[2]}, ${p[0]}`:p[1]?`${MON[p[1]-1]} ${p[0]}`:`${p[0]}`};
+const addM=(x,m)=>{const y=new Date(x);y.setMonth(y.getMonth()+m);return y};
+const E90=Object.assign({},window.GARAGE_E90,{plans:G.plans});
+const CARS=[
+ {id:'e36',chassis:'E36',model:'M3 sedan',meta:'1997 · S52 · project',data:G,sub:'Feb 1997 US sedan. S52, 240 hp, manual. Engine work paused.'},
+ {id:'e90',chassis:'E90',model:'328i',meta:'N51 · daily',data:E90,sub:'N51. History starts at 140.8k; most entries have no date.'},
+ {id:'f30',chassis:'F30',model:'328i',meta:'No history yet',data:null,sub:''},
+ {id:'4r',chassis:'4Runner',model:'Toyota',meta:'Overland rig',data:null,sub:''}];
+// Friends' cars: placeholders. Real ones are added through the bot and live behind a login.
+const FRIENDS=[{chassis:'Example',model:"friend's car",who:'Owner sees the full log; you see this card',lock:'private'}];
+function due(D){if(!D)return[];const jobs=D.visits.flatMap(v=>v.jobs.map(([name])=>({name,date:v.date,miles:v.miles})));
+ const last=m=>{const h=jobs.filter(j=>m.some(w=>j.name.toLowerCase().includes(w)));return h.length?h.reduce((a,b)=>((b.miles||0)>=(a.miles||0)?b:a)):null};
+ return D.plans.map(p=>{const l=last(p.match);if(!l)return{p,st:'unk',lab:'No record',txt:'Never logged'};let w=1,parts=[];
+  if(p.miles&&l.miles){const left=l.miles+p.miles-D.odometer.miles;w=Math.min(w,left/p.miles);parts.push(left<0?`${k(-left)} mi over`:`${k(left)} mi left`)}
+  const ld=pd(l.date);if(p.months&&ld){const dd=addM(ld,p.months),days=(dd-TODAY)/864e5;w=Math.min(w,days/(p.months*30.4));parts.push(days<0?`${Math.round(-days/30.4)} months over`:`by ${MON[dd.getMonth()]} ${dd.getFullYear()}`)}
+  const st=w<0?'over':w<.15?'soon':'ok';return{p,st,lab:{over:'Overdue',soon:'Due soon',ok:'OK'}[st],txt:parts.join(', ')}}).sort((a,b)=>({over:0,soon:1,unk:2,ok:3}[a.st]-{over:0,soon:1,unk:2,ok:3}[b.st]))}
+const worst=D=>{const r=due(D);return r.some(x=>x.st==='over')?'over':r.some(x=>x.st==='soon')?'soon':r.length?'ok':'unk'};
+const drum=D=>`<span class="drum num">${String(D.odometer.miles).padStart(6,'0').split('').map(x=>`<span>${x}</span>`).join('')}<span class="u">mi</span></span> <span class="small">${D.odometer.asOf?'as of '+fd(D.odometer.asOf):'date unknown'}</span>`;
+const rows=(D,n=5)=>{const all=due(D),r=all.filter(x=>x.st!=='unk').slice(0,n),u=all.filter(x=>x.st==='unk');
+ return r.map(x=>`<div class="row ${x.st}"><div class="bar"></div><div><b>${x.p.job}</b> <span class="s">${x.txt}</span></div><span class="st">${x.lab}</span></div>`).join('')+(u.length?`<div class="row unk"><div class="bar"></div><div><b>Never logged</b> <span class="s">${u.map(x=>x.p.job).join(', ')}</span></div><span class="st">${u.length}</span></div>`:'')};
+const empty=c=>`<p class="small" style="padding:10px 0">Nothing logged for the ${c.chassis} yet. First entry can come from Discord:</p><code class="cmd">/garage odo car:${c.id} miles:&lt;reading&gt;</code>`;
+const botFor=c=>`<div><h3 style="font-size:15px;margin:10px 0 6px">Update from Discord</h3><code class="cmd">/garage log car:${c.id} job:"Oil change 5W-40" miles:194000</code><div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap"><button class="disc" type="button">${DISC} Open #garage</button><button class="ghost" type="button" data-copy='/garage log car:${c.id} job:"" miles:'>Copy command</button></div><p class="hint" style="margin-top:8px">The bot writes the log; this page just reads it.</p></div>`;
+const DISC=`<svg viewBox="0 0 24 24"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.4a18 18 0 0 1 4.4 2.2 15.6 15.6 0 0 0-15.2 0A18 18 0 0 1 8.8 3.4L8.6 3a19.8 19.8 0 0 0-4.9 1.4C.6 9 .1 13.5.3 17.9a19.9 19.9 0 0 0 6 3l1.3-2a12.3 12.3 0 0 1-2-1l.5-.4a14.1 14.1 0 0 0 11.8 0l.5.4-2 1 1.3 2a19.9 19.9 0 0 0 6-3c.3-5-.9-9.4-3.4-13.5ZM8.4 15.2c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4Zm7.2 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4Z"/></svg>`;
+const friends=()=>`<h2>Friends' cars</h2><div class="friends">${FRIENDS.map(f=>`<div class="friend"><span class="lock">🔒 ${f.lock}</span><b>${f.chassis} <span style="font-weight:400;font-size:15px">${f.model}</span></b><span class="who">${f.who}</span></div>`).join('')}<button class="friend add" type="button">+ Add a friend's car<br><span class="small">They run <code>/garage addcar</code> in Discord; their log stays private to them and you.</span></button></div>`;
+const botPanel=()=>`<h2>How updates get in</h2><div class="bot"><div><h3>Discord commands (the garage bot on the bots container)</h3><ul>
+<li><code class="cmd">/garage odo car:e36 miles:194000</code></li><li><code class="cmd">/garage log car:e36 job:"Valve cover gasket" miles:194000 parts:fcp</code></li><li><code class="cmd">/garage due car:e90</code></li><li><code class="cmd">/garage parts job:valve-cover</code> <span class="small">replies with the FCP kit links</span></li><li><code class="cmd">/garage addcar chassis:F30 model:328i year:2014</code></li></ul>
+<p class="small" style="margin-top:8px">Same pattern as the Bricked and Waymo claim bots: slash commands, a small API, allow-listed Discord users, a feed webhook. Friends get <code>addcar</code> and <code>log</code> for their own cars only.</p></div>
+<div><h3>What the feed posts</h3><div class="feed"><span class="n">Garage dude</span> · Branden logged <b>Oil change 5W-40</b> on the E36 at 194,000 mi. Next due 199,000 mi or Nov 2027.</div><div class="feed" style="margin-top:8px"><span class="n">Garage dude</span> · E36: coolant is <b>9 months overdue</b>. Weekly digest, Sundays.</div><p class="small" style="margin-top:10px">This page is static and rebuilt from the bot's API every night. It never holds the write password.</p></div></div>`;
+
+const M=document.getElementById('main');
+if(d==='bays'){
+ M.innerHTML=`<h2>Your bays</h2><div class="bays">${CARS.map((c,i)=>`<details class="bay" ${i===0?'open':''}><summary><div class="door"><span class="no">BAY ${i+1}</span><span class="lamp ${worst(c.data)}"></span></div><div class="plate"><b>${c.chassis}</b><span>${c.model} · ${c.meta}</span></div></summary><div class="inside"><div>${c.data?`<p class="small" style="margin-bottom:8px">${c.sub}</p>${drum(c.data)}<div style="margin-top:10px">${rows(c.data)}</div><p class="small" style="margin-top:8px"><a href="index.html#due">All due</a> · <a href="index.html#jobs">Jobs and FCP parts</a> · <a href="index.html#history">History</a></p>`:empty(c)}</div>${botFor(c)}</div></details>`).join('')}</div>
+ <h2>Guest bays</h2><div class="bays">${FRIENDS.map(f=>`<details class="bay guest"><summary><div class="door"><span class="no">GUEST</span><span class="lamp"></span></div><div class="plate"><b>${f.chassis}</b><span>${f.model} · 🔒 ${f.lock}</span></div></summary><div class="inside"><p class="small">${f.who}. The owner logs through Discord with <code>/garage log</code>; only they and you can open this bay.</p></div></details>`).join('')}<button class="addbay" type="button">+ Add a friend's car</button></div>${botPanel()}`;
+ document.querySelectorAll('.bay').forEach(b=>b.addEventListener('toggle',()=>{if(b.open)document.querySelectorAll('.bay[open]').forEach(o=>{if(o!==b)o.open=false})}));
+}
+if(d==='board'){
+ let sel='e36';
+ const render=()=>{const c=CARS.find(x=>x.id===sel),D=c.data,all=due(D);
+  M.innerHTML=`<div class="board"><aside class="rail"><h3>My cars</h3>${CARS.map(x=>`<button role="tab" aria-selected="${x.id===sel}" data-id="${x.id}"><span>${x.chassis} <span class="small">${x.model}</span></span><i class="${worst(x.data)}"></i></button>`).join('')}<h3>Friends</h3>${FRIENDS.map(f=>`<button disabled style="opacity:.6"><span>${f.chassis} <span class="small">${f.model}</span></span><span class="small">🔒</span></button>`).join('')}<button style="color:var(--gold)">+ Add a car</button></aside>
+  <section><div class="head"><div><h2>${c.chassis} ${c.model}</h2><p class="small">${c.sub}</p></div>${D?drum(D):''}</div>
+  ${D?all.map((x,i)=>`<details class="ticket ${x.st}" ${i===0?'open':''}><summary><b>${x.p.job}</b><span class="n">${x.txt}</span><span class="st">${x.lab}</span></summary><div class="body"><p class="small" style="margin:8px 0">Every ${[x.p.miles?x.p.miles.toLocaleString()+' mi':null,x.p.months?x.p.months+' months':null].filter(Boolean).join(' or ')}${x.p.safety?' · safety item':''}. Intervals are placeholders until you set your own.</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px"><button class="disc" type="button">${DISC} Log it done</button><a class="ghost" href="index.html#jobs" style="text-decoration:none">FCP parts for this job</a></div><code class="cmd" style="margin-top:10px">/garage log car:${c.id} job:"${x.p.job}" miles:${D.odometer.miles}</code></div></details>`).join(''):`<div class="ticket"><div class="body" style="border:0">${empty(c)}</div></div>`}
+  </section></div>${botPanel()}`;
+  M.querySelectorAll('.rail [data-id]').forEach(b=>b.onclick=()=>{sel=b.dataset.id;render()})};
+ render();
+}
+if(d==='tiles'){
+ let sel='e36';
+ const render=()=>{const c=CARS.find(x=>x.id===sel),D=c.data,all=due(D),over=all.filter(x=>x.st==='over').length,jobsN=D?D.visits.flatMap(v=>v.jobs).length:0;
+  M.innerHTML=`<div class="cars">${CARS.map(x=>`<button aria-pressed="${x.id===sel}" data-id="${x.id}">${x.chassis}</button>`).join('')}<button disabled style="opacity:.6">🔒 Friends (${FRIENDS.length})</button></div>
+  ${D?`<div class="grid">
+   <details class="tile" open><summary><b>Due</b><span class="k ${over?'over':'ok'}" style="color:var(${over?'--over':'--ok'})">${over} overdue</span></summary><div class="peek">${all.slice(0,2).map(x=>x.p.job).join(', ')}…</div><div class="full">${drum(D)}<div style="margin-top:10px">${rows(D,8)}</div></div></details>
+   <details class="tile"><summary><b>History</b><span class="k">${D.visits.length} visits</span></summary><div class="peek">${jobsN} jobs, ${k(D.visits[0].miles)} to ${k(D.odometer.miles)} mi</div><div class="full">${[...D.visits].reverse().slice(0,6).map(v=>`<div class="row ok"><div class="bar" style="background:var(--line)"></div><div><b>${v.miles?k(v.miles)+' mi':'—'}</b> <span class="s">${v.jobs.map(j=>j[0]).join(', ')}</span></div><span class="small">${fd(v.date)}</span></div>`).join('')}<p class="small" style="margin-top:8px"><a href="index.html#history">Full history</a></p></div></details>
+   <details class="tile"><summary><b>Parts</b><span class="k">FCP</span></summary><div class="peek">Kits per job, lifetime parts on the car</div><div class="full"><p class="small">Valve cover kit 11120034108KT, $154.09, part numbers checked on RealOEM.</p><p style="margin-top:8px"><a href="index.html#jobs">Jobs and parts</a> · <a href="index.html#lifetime">Lifetime parts</a></p></div></details>
+   <details class="tile"><summary><b>Update</b><span class="k" style="color:var(--disc)">Discord</span></summary><div class="peek">/garage log, /garage odo</div><div class="full">${botFor(c)}</div></details>
+   <details class="tile"><summary><b>Repair stories</b><span class="k">1</span></summary><div class="peek">Cooling: three radiators in 10k mi</div><div class="full"><p class="small">Symptom, diagnosis, cause, fix, verification. <a href="index.html#story">Read</a></p></div></details>
+   <details class="tile"><summary><b>Friends' cars</b><span class="k">🔒</span></summary><div class="peek">${FRIENDS.length} car, private</div><div class="full">${friends().replace("<h2>Friends' cars</h2>",'')}</div></details>
+  </div>`:`<div class="tile" style="margin-top:14px">${empty(c)}</div>`}${botPanel()}`;
+  M.querySelectorAll('.cars [data-id]').forEach(b=>b.onclick=()=>{sel=b.dataset.id;render()})};
+ render();
+}
+document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(b.dataset.copy));
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.getElementById('logo').classList.add('f1');
+</script>
+</body>
+</html>
