@@ -59,18 +59,23 @@ window.GARAGE = {
       id: "valve-cover", name: "Valve cover gasket", system: "Engine", match: ["valve cover"],
       kit: { title: "BMW Valve Cover Gasket Kit", sku: "11120034108KT", price: 154.09,
              url: "https://www.fcpeuro.com/products/bmw-valve-cover-gasket-kit-11120034108kt",
-             fits: "1996-1999 M3, 3.2L S52 (per FCP fitment)" },
+             fits: "1996-1999 M3, 3.2L S52 (per FCP fitment)",
+             realoem: "https://www.realoem.com/bmw/enUS/showparts?id=CD93-USA-02-1997-E36-BMW-M3&diagId=11_6149", realoemName: "Cylinder head cover (11_6149)" },
       parts: [
-        { name: "Valve cover gasket set, incl. spark plug tube seals", qty: 1, brand: "Elring", pn: "11120034108", price: 31.12, lifetime: true,
+        { name: "Valve cover gasket set, incl. spark plug tube seals", qty: 1, brand: "Elring", pn: "11120034108", roem: "03", price: 31.12, lifetime: true,
           url: "https://www.fcpeuro.com/products/bmw-engine-valve-cover-gasket-set-m3-z3-e36-11120034108" },
-        { name: "Valve cover grommet (rubber)", qty: 15, brand: "DPH", pn: "11121437395", price: 7.50, lifetime: true, url: null },
-        { name: "Valve cover washer (metal)", qty: 15, brand: "OE Supplier", pn: "11127838077", price: 79.35, each: 5.29, lifetime: true,
+        { name: "Valve cover grommet (rubber)", qty: 15, brand: "DPH", pn: "11121437395", roem: "09", price: 7.50, lifetime: true, url: null },
+        { name: "Valve cover washer (metal)", qty: 15, brand: "OE Supplier", pn: "11127838077", roem: "08", price: 79.35, each: 5.29, lifetime: true,
           url: "https://www.fcpeuro.com/products/bmw-valve-cover-washer-metal-11127838077" },
-        { name: "Oil filler cap gasket", qty: 1, brand: "Genuine BMW", pn: "11127526447", price: 36.12, lifetime: true, url: null }
+        { name: "Oil filler cap gasket", qty: 1, brand: "Genuine BMW", pn: "11127526447", roem: "14", price: 36.12, lifetime: true, url: null }
       ],
       extras: [
-        { name: "Spark plugs", why: "Coils are already out", note: "FCP does not list years for its M3 plugs. Confirm the 1996-99 S52 plug before buying.",
-          url: "https://www.fcpeuro.com/BMW-parts/M3/Spark-Plug/" }
+        { name: "Spark plugs, Bosch FGR 8 KQC", qty: 6, pn: "12129069877", roem: "08", each: 6.29, why: "Coils are already off",
+          url: "https://www.fcpeuro.com/products/bmw-spark-plug-bosch-7405",
+          realoem: "https://www.realoem.com/bmw/enUS/showparts?id=CD93-USA-02-1997-E36-BMW-M3&diagId=12_1977", realoemName: "Ignition coil/spark plug (12_1977)" },
+        { name: "Valve cover cap nuts", qty: 3, pn: "11121738608", roem: "07", each: 13.78, why: "On the same diagram; RealOEM lists 3 for your car",
+          url: "https://www.fcpeuro.com/products/bmw-valve-cover-cap-nut-genuine-bmw-11121738608",
+          realoem: "https://www.realoem.com/bmw/enUS/showparts?id=CD93-USA-02-1997-E36-BMW-M3&diagId=11_6149", realoemName: "Cylinder head cover (11_6149)" }
       ]
     },
     { id: "radiator", name: "Radiator and hoses", system: "Cooling", match: ["radiator", "hose"], kit: null },

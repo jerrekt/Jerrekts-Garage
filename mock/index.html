@@ -82,6 +82,7 @@ tr.got td:first-child,tr.got td:last-child{text-decoration:none}
 .kitactions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
 .extras{margin-top:22px;border-top:2px solid var(--ink);padding-top:12px}
 .mob{display:none}
+.roem{font-size:12px;font-weight:700;color:var(--ok);white-space:nowrap}
 .empty{padding:28px;text-align:left;color:var(--ink2)}
 
 /* Ledger */
@@ -329,13 +330,13 @@ function renderJobs(){
   document.getElementById('kit').innerHTML=`
    <div class="kithead"><div><h2 style="margin:0">${j.name}</h2><p class="small">${j.system}. ${lastTxt}</p></div><span class="life">Lifetime replacement</span></div>
    <div class="buykit"><div><b>Whole kit from FCP Euro</b><div class="small pn">${j.kit.sku} · fits ${j.kit.fits}</div></div><div style="display:flex;gap:14px;align-items:center"><span class="price num">${usd(j.kit.price)}</span><a class="btn" href="${j.kit.url}" target="_blank" rel="noopener">Open kit on FCP</a></div></div>
-   <p class="small" style="margin:-6px 0 14px">Check part numbers against <a href="${G.car.realoem}" target="_blank" rel="noopener">your car on RealOEM</a> (1997-02 US sedan, S52, manual).</p>
+   <p class="small" style="margin:-6px 0 14px">Every part number below matches RealOEM for your car (type CD93, Feb 1997 US sedan, S52, manual): <a href="${j.kit.realoem}" target="_blank" rel="noopener">${j.kit.realoemName}</a>. The number after ✓ is its spot on the diagram.</p>
    <table><thead><tr><th style="width:52px">Have</th><th>Part</th><th class="hide">Brand</th><th class="hide">Part no.</th><th class="r">Qty</th><th class="r">Price</th><th></th></tr></thead><tbody>
-   ${j.parts.map((p,i)=>`<tr class="${have.has(i)?'got':''}"><td><input type="checkbox" class="have" data-i="${i}" ${have.has(i)?'checked':''} aria-label="I already have ${p.name}"></td><td>${p.name}<div class="pn small mob">${p.brand} ${p.pn}</div></td><td class="hide">${p.brand}</td><td class="pn hide">${p.pn}</td><td class="r num">${p.qty}</td><td class="r num">${usd(p.price)}</td><td class="r">${p.url?`<a href="${p.url}" target="_blank" rel="noopener">FCP</a>`:`<span class="small">in kit</span>`}</td></tr>`).join('')}
+   ${j.parts.map((p,i)=>`<tr class="${have.has(i)?'got':''}"><td><input type="checkbox" class="have" data-i="${i}" ${have.has(i)?'checked':''} aria-label="I already have ${p.name}"></td><td>${p.name}<div class="pn small mob">${p.brand} ${p.pn}${p.roem?` <span class="roem">✓${p.roem}</span>`:''}</div></td><td class="hide">${p.brand}</td><td class="pn hide">${p.pn}${p.roem?` <span class="roem" title="Matches RealOEM diagram item ${p.roem}">✓${p.roem}</span>`:''}</td><td class="r num">${p.qty}</td><td class="r num">${usd(p.price)}</td><td class="r">${p.url?`<a href="${p.url}" target="_blank" rel="noopener">FCP</a>`:`<span class="small">in kit</span>`}</td></tr>`).join('')}
    </tbody></table>
    <div class="kitactions"><button class="btn" id="openall" ${need.length?'':'disabled'}>Open ${need.length} part${need.length===1?'':'s'} on FCP</button><span class="small num">Still to buy: ${usd(total)}</span></div>
-   <div class="extras"><h3>While you're in there</h3>${j.extras.map(e=>`<p style="margin-top:8px"><b>${e.name}.</b> ${e.why}. <span class="small">${e.note}</span> <a href="${e.url}" target="_blank" rel="noopener">See options on FCP</a></p>`).join('')}</div>
-   <p class="small" style="margin-top:16px">Prices and kit contents read from fcpeuro.com on Nov 5, 2026. Parts without their own link are only sold inside the kit.</p>`;
+   <div class="extras"><h3>While you're in there</h3><table style="margin-top:6px"><tbody>${j.extras.map(e=>`<tr><td><b>${e.name}</b><div class="small">${e.why}. <span class="pn">${e.pn}</span> <span class="roem">✓${e.roem}</span> on <a href="${e.realoem}" target="_blank" rel="noopener">${e.realoemName}</a></div></td><td class="r num">${e.qty} × ${usd(e.each)}</td><td class="r"><a href="${e.url}" target="_blank" rel="noopener">FCP</a></td></tr>`).join('')}</tbody></table></div>
+   <p class="small" style="margin-top:16px">Prices and kit contents read from fcpeuro.com, part numbers from RealOEM, both on Nov 5, 2026. Parts without their own FCP link are only sold inside the kit. Extras are priced each.</p>`;
   document.querySelectorAll('#kit .have').forEach(c=>c.onchange=()=>{const i=+c.dataset.i;c.checked?have.add(i):have.delete(i);renderJobs()});
   const oa=document.getElementById('openall');if(oa)oa.onclick=()=>{need.forEach(p=>window.open(p.url||j.kit.url,'_blank','noopener'))};
 }
