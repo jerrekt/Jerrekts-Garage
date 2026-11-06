@@ -1,0 +1,30 @@
+[Unit]
+Description=Jerrekt's Garage bot (Discord + API)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=bot-garage
+Group=bot-garage
+EnvironmentFile=/etc/garage-bot/bot.env
+Environment=GARAGE_DB=/var/lib/garage-bot/garage.db
+WorkingDirectory=/opt/garage-bot/src/bot
+ExecStart=/opt/garage-bot/venv/bin/uvicorn app:app --host 127.0.0.1 --port 8703 --proxy-headers --no-server-header
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ReadWritePaths=/var/lib/garage-bot
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+[Install]
+WantedBy=multi-user.target
