@@ -72,3 +72,6 @@ form.f .btn{min-height:46px}
 .kit{border-top:1px solid var(--line);padding:10px 0}.kit b{display:block}.kit a{display:block;font-size:14px;margin-top:3px;overflow-wrap:anywhere}.kit .small{display:block}
 .acts .rm{margin-left:auto;align-self:center;color:var(--muted);font-size:13px;text-decoration:none;padding:6px 2px}
 .acts .rm:hover{color:var(--over);text-decoration:underline}
+.hr{display:flex;align-items:center;gap:8px}
+.fold{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card2);color:var(--gold);font-weight:800;font-size:20px;line-height:1;cursor:pointer;flex:none}
+.sum{margin-top:10px;font-size:13px;color:var(--muted)}.sum .st{font-size:13px}

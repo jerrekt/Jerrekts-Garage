@@ -9,6 +9,16 @@
   const when = s => { if (!s) return ""; const p = s.slice(0, 10).split("-"); return p[1] ? `${MON[+p[1] - 1]} ${p[0]}` : p[0]; };
   const DISC = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.2.4a18 18 0 0 1 4.4 2.2 15.6 15.6 0 0 0-15.2 0A18 18 0 0 1 8.8 3.4L8.6 3a19.8 19.8 0 0 0-4.9 1.4C.6 9 .1 13.5.3 17.9a19.9 19.9 0 0 0 6 3l1.3-2a12.3 12.3 0 0 1-2-1l.5-.4a14.1 14.1 0 0 0 11.8 0l.5.4-2 1 1.3 2a19.9 19.9 0 0 0 6-3c.3-5-.9-9.4-3.4-13.5ZM8.4 15.2c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4Zm7.2 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.2 1.1 2.1 2.4c0 1.3-.9 2.4-2.1 2.4Z"/></svg>';
   let ME = null, open = {}; // open: car id -> which form is open
+  let folded = {}; try { folded = JSON.parse(localStorage.getItem("garage.folded") || "{}"); } catch (e) { folded = {}; }
+  const saveFold = () => { try { localStorage.setItem("garage.folded", JSON.stringify(folded)); } catch (e) {} };
+  function summary(c) {
+    const n = s => (c.due || []).filter(d => d.status === s).length, bits = [];
+    if (n("overdue")) bits.push(`<span class="st overdue">${n("overdue")} overdue</span>`);
+    if (n("soon")) bits.push(`<span class="st soon">${n("soon")} due soon</span>`);
+    if (!bits.length) bits.push(n("unknown") === (c.due || []).length ? '<span class="st">nothing logged</span>' : '<span class="st ok">all good</span>');
+    return `<div class="sum">${bits.join(" · ")}</div>`;
+  }
+  function fold(id) { folded[id] = !folded[id]; saveFold(); renderMe(); loadPublic.render(); }
 
   // ---- shared pieces ----
   function drum(m) {
@@ -24,19 +34,27 @@
     const rows = visits.map(v => `<div class="visit"><div class="when num">${esc(when(v.date))}<br>${v.miles != null ? k(v.miles) + " mi" : ""}</div><div class="jobs">${(v.jobs || []).map(j => `<span>${esc(j.name)}${j.system ? `<i class="sys">${esc(j.system)}</i>` : ""}${j.parts ? `<i class="small"> · ${esc(j.parts)}</i>` : ""}</span>`).join("")}</div></div>`).join("");
     return `<details class="hist"><summary><span>History</span><span class="small">${visits.length} visit${visits.length === 1 ? "" : "s"}</span></summary>${rows}</details>`;
   }
-  function head(c, extra) {
+  function head(c, extra, key) {
     const sub = [c.year, c.chassis ? c.chassis.toUpperCase() : ""].filter(Boolean).join(" · ");
-    return `<div class="head"><div><b>${esc(c.name)}</b>${extra || ""}<div class="small">${esc(sub)}${c.odometer && c.odometer.date ? ` · odometer ${esc(when(c.odometer.date))}` : ""}</div></div>${drum(c.odometer && c.odometer.miles)}</div>`;
+    const f = !!folded[key];
+    return `<div class="head"><div><b>${esc(c.name)}</b>${extra || ""}<div class="small">${esc(sub)}${c.odometer && c.odometer.date ? ` · odometer ${esc(when(c.odometer.date))}` : ""}</div></div><div class="hr">${drum(c.odometer && c.odometer.miles)}<button class="fold" data-fold="${esc(key)}" aria-expanded="${!f}" aria-label="${f ? "Expand" : "Minimize"} ${esc(c.name)}">${f ? "+" : "–"}</button></div></div>${f ? summary(c) : ""}`;
   }
+  const wrapBody = (key, html) => folded[key] ? "" : `<div class="body">${html}</div>`;
+  function wireFold(root) { root.querySelectorAll("[data-fold]").forEach(b => b.onclick = () => fold(b.dataset.fold)); }
 
   // ---- public bays ----
+  let PUB = [];
+  loadPublic.render = () => {
+    $cars.innerHTML = PUB.length ? PUB.map(c => `<article class="card">${head(c, "", "pub:" + c.id)}${wrapBody("pub:" + c.id, dueRows(c.due) + history(c.visits))}</article>`).join("")
+      : '<div class="card empty">No car is switched to public right now. The bays are full, the doors are just closed.</div>';
+    wireFold($cars);
+  };
   async function loadPublic() {
     try {
       const r = await fetch("api/public", { cache: "no-store" });
       if (!r.ok) throw new Error(r.status);
-      const cars = ((await r.json()).cars || []).slice().sort((a, b) => (a.year || 0) - (b.year || 0));
-      $cars.innerHTML = cars.length ? cars.map(c => `<article class="card">${head(c)}${dueRows(c.due)}${history(c.visits)}</article>`).join("")
-        : '<div class="card empty">No car is switched to public right now. The bays are full, the doors are just closed.</div>';
+      PUB = ((await r.json()).cars || []).slice().sort((a, b) => (a.year || 0) - (b.year || 0));
+      loadPublic.render();
     } catch (e) {
       $cars.innerHTML = '<div class="card empty">The garage bot isn\'t answering right now. Try again in a minute.</div>';
     }
@@ -89,7 +107,7 @@
     if (o === "odo") form += formOdo(c);
     if (o === "remove") form += `<div class="f"><p class="wide small">Remove ${esc(c.name)}? That deletes the car and every job logged on it (${(c.visits || []).length} visit${(c.visits || []).length === 1 ? "" : "s"}). No undo.</p><button class="btn bad wide" data-open="remove2" data-car="${esc(c.id)}">Yes, I want to remove it</button></div>`;
     if (o === "remove2") form += `<form class="f" data-act="remove" data-car="${esc(c.id)}" data-confirm="${esc(c.id)}">${field("sure", `Last check: type ${esc(c.id)} to confirm`, 'required autocomplete="off"', true)}<button class="btn bad wide" type="submit">Delete ${esc(c.name)} for good</button></form>`;
-    return `<article class="card" id="car-${esc(c.id)}">${head(c, pills + owner)}${dueRows(c.due)}${history(c.visits)}<div class="acts">${acts}</div>${form}<div class="msg" data-msg="${esc(c.id)}"></div></article>`;
+    return `<article class="card" id="car-${esc(c.id)}">${head(c, pills + owner, "me:" + c.id)}${wrapBody("me:" + c.id, dueRows(c.due) + history(c.visits) + `<div class="acts">${acts}</div>` + form + `<div class="msg" data-msg="${esc(c.id)}"></div>`)}</article>`;
   }
   function renderMe() {
     const failed = new URLSearchParams(location.search).get("signin") === "failed";
@@ -124,6 +142,7 @@
     renderMe();
   }
   function wire() {
+    wireFold($me);
     $me.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { const id = b.dataset.car; open[id] = open[id] === b.dataset.open ? null : b.dataset.open; renderMe(); });
     $me.querySelectorAll("button[data-act]").forEach(b => b.onclick = async () => {
       b.disabled = true;
