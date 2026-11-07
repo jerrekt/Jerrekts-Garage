@@ -140,7 +140,95 @@
       ]
     },
     {
+      "date": "2022-01-06",
+      "miles": null,
+      "jobs": [
+        {
+          "name": "Resonator delete",
+          "system": "engine",
+          "type": "upgrade",
+          "parts": "$190"
+        }
+      ]
+    },
+    {
+      "date": "2022-01-27",
+      "miles": 126100,
+      "jobs": [
+        {
+          "name": "Oil change",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2022-01",
+      "miles": 126300,
+      "jobs": [
+        {
+          "name": "Tire rotation, front to back",
+          "system": "tires",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
       "date": null,
+      "miles": 127500,
+      "jobs": [
+        {
+          "name": "Valve cover gasket",
+          "system": "engine",
+          "type": "corrective"
+        }
+      ]
+    },
+    {
+      "date": null,
+      "miles": 130000,
+      "jobs": [
+        {
+          "name": "Oil change",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Tire rotation",
+          "system": "tires",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": null,
+      "miles": 133000,
+      "jobs": [
+        {
+          "name": "Spark plugs",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2022-12-25",
+      "miles": 134400,
+      "jobs": [
+        {
+          "name": "Oil change",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Tire rotation",
+          "system": "tires",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2023-07-28",
       "miles": 140800,
       "jobs": [
         {
