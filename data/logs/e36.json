@@ -1,55 +1,331 @@
 {
-  "car": {"id": "e36", "name": "BMW E36 M3", "chassis": "e36", "year": 1997},
+  "car": {
+    "id": "e36",
+    "name": "BMW E36 M3",
+    "chassis": "e36",
+    "year": 1997,
+    "plans": {
+      "Oil change": {
+        "miles": 3000,
+        "months": 12
+      }
+    }
+  },
   "source": "Owner's OneNote timeline, transcribed 2026-11-03. Dates missing where the source has none; '?' marks unclear entries.",
   "visits": [
-    {"date": "2022-07-16", "miles": 175200, "jobs": [{"name": "Bought the car", "system": "other", "type": null}]},
-    {"date": "2022-07-21", "miles": 175300, "jobs": [{"name": "Oil change 10W-40 Pennzoil", "system": "engine", "type": "preventive"}]},
-    {"date": "2022-07", "miles": 175300, "jobs": [
-      {"name": "Valve cover gasket", "system": "engine", "type": "corrective"},
-      {"name": "Idle control hose", "system": "engine", "type": "corrective"},
-      {"name": "Spark plugs", "system": "engine", "type": "preventive"}]},
-    {"date": "2022-08-14", "miles": null, "jobs": [{"name": "Trunk latch reinforcement", "system": "body", "type": "corrective"}]},
-    {"date": "2022-08-18", "miles": 175800, "jobs": [
-      {"name": "Brake rotors and pads", "system": "brakes", "type": "preventive"},
-      {"name": "Rear left brake squeak fixed (grease, anti-seize)", "system": "brakes", "type": "corrective"}]},
-    {"date": "2022-12-12", "miles": 177500, "jobs": [
-      {"name": "Alignment", "system": "suspension", "type": "preventive"},
-      {"name": "Coilovers", "system": "suspension", "type": "upgrade"},
-      {"name": "Engine air filter", "system": "engine", "type": "preventive"}]},
-    {"date": "2023-01-03", "miles": 177700, "jobs": [{"name": "Oil change 10W-40 Mobil 1", "system": "engine", "type": "preventive"}]},
-    {"date": "2023-01-31", "miles": null, "jobs": [{"name": "Sway bar end link", "system": "suspension", "type": "corrective"}]},
-    {"date": "2023-02-01", "miles": null, "jobs": [{"name": "ASC throttle cable", "system": "engine", "type": "corrective"}]},
-    {"date": "2023-05", "miles": 178800, "raw": "2023-04 to 05", "jobs": [
-      {"name": "Radiator", "system": "cooling", "type": "corrective"},
-      {"name": "Upper and lower radiator hoses", "system": "cooling", "type": "corrective"},
-      {"name": "Electric fan, clutch fan delete", "system": "cooling", "type": "upgrade"},
-      {"name": "Pulley kit", "system": "engine", "type": "upgrade"},
-      {"name": "Oil change 5W-40 Castrol", "system": "engine", "type": "preventive"},
-      {"name": "Diff oil 75W-140", "system": "drivetrain", "type": "preventive"}]},
-    {"date": "2024-01", "miles": 182000, "raw": "182k (183k also written ?)", "jobs": [{"name": "Oil change 5W-40 Castrol", "system": "engine", "type": "preventive"}]},
-    {"date": "2024-02-13", "miles": 183000, "jobs": [
-      {"name": "Radiator", "system": "cooling", "type": "corrective"},
-      {"name": "Coolant", "system": "cooling", "type": "preventive"},
-      {"name": "Camshaft position sensor", "system": "electrical", "type": "corrective"},
-      {"name": "M50 intake manifold", "system": "engine", "type": "upgrade"},
-      {"name": "Oil pan gasket", "system": "engine", "type": "corrective"},
-      {"name": "Power steering pump rebuild", "system": "steering", "type": "corrective"},
-      {"name": "Power steering lines", "system": "steering", "type": "corrective"},
-      {"name": "Inner and outer tie rods", "system": "steering", "type": "corrective"},
-      {"name": "Camber arm bushings", "system": "suspension", "type": "corrective"},
-      {"name": "Inner and outer ball joints", "system": "suspension", "type": "corrective"},
-      {"name": "Lollipop bushing", "system": "suspension", "type": "corrective"},
-      {"name": "Throttle cable", "system": "engine", "type": "corrective"},
-      {"name": "Oil change 5W-40 Castrol", "system": "engine", "type": "preventive"}]},
-    {"date": "2024-03-07", "miles": null, "jobs": [{"name": "Alignment (Tech 3), printout before and after", "system": "suspension", "type": "preventive"}]},
-    {"date": null, "miles": 186000, "jobs": [{"name": "Oil change 5W-40", "system": "engine", "type": "preventive"}]},
-    {"date": null, "miles": 189000, "jobs": [
-      {"name": "Oil change 5W-40", "system": "engine", "type": "preventive"},
-      {"name": "Radiator", "system": "cooling", "type": "corrective"},
-      {"name": "Radiator fan", "system": "cooling", "type": "corrective"}]},
-    {"date": null, "miles": 189700, "jobs": [
-      {"name": "Tires on RK003", "system": "tires", "type": "preventive"},
-      {"name": "Alignment", "system": "suspension", "type": "preventive"}]},
-    {"date": "2025-07", "miles": 193500, "jobs": [{"name": "Oil change 5W-40", "system": "engine", "type": "preventive"}]}
+    {
+      "date": "2022-07-16",
+      "miles": 175200,
+      "jobs": [
+        {
+          "name": "Bought the car",
+          "system": "other",
+          "type": null
+        }
+      ]
+    },
+    {
+      "date": "2022-07-21",
+      "miles": 175300,
+      "jobs": [
+        {
+          "name": "Oil change 10W-40 Pennzoil",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2022-07",
+      "miles": 175300,
+      "jobs": [
+        {
+          "name": "Valve cover gasket",
+          "system": "engine",
+          "type": "corrective"
+        },
+        {
+          "name": "Idle control hose",
+          "system": "engine",
+          "type": "corrective"
+        },
+        {
+          "name": "Spark plugs",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2022-08-14",
+      "miles": null,
+      "jobs": [
+        {
+          "name": "Trunk latch reinforcement",
+          "system": "body",
+          "type": "corrective"
+        }
+      ]
+    },
+    {
+      "date": "2022-08-18",
+      "miles": 175800,
+      "jobs": [
+        {
+          "name": "Brake rotors and pads",
+          "system": "brakes",
+          "type": "preventive"
+        },
+        {
+          "name": "Rear left brake squeak fixed (grease, anti-seize)",
+          "system": "brakes",
+          "type": "corrective"
+        }
+      ]
+    },
+    {
+      "date": "2022-12-12",
+      "miles": 177500,
+      "jobs": [
+        {
+          "name": "Alignment",
+          "system": "suspension",
+          "type": "preventive"
+        },
+        {
+          "name": "Coilovers",
+          "system": "suspension",
+          "type": "upgrade"
+        },
+        {
+          "name": "Engine air filter",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2023-01-03",
+      "miles": 177700,
+      "jobs": [
+        {
+          "name": "Oil change 10W-40 Mobil 1",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2023-01-31",
+      "miles": null,
+      "jobs": [
+        {
+          "name": "Sway bar end link",
+          "system": "suspension",
+          "type": "corrective"
+        }
+      ]
+    },
+    {
+      "date": "2023-02-01",
+      "miles": null,
+      "jobs": [
+        {
+          "name": "ASC throttle cable",
+          "system": "engine",
+          "type": "corrective"
+        }
+      ]
+    },
+    {
+      "date": "2023-05",
+      "miles": 178800,
+      "raw": "2023-04 to 05",
+      "jobs": [
+        {
+          "name": "Radiator",
+          "system": "cooling",
+          "type": "corrective"
+        },
+        {
+          "name": "Upper and lower radiator hoses",
+          "system": "cooling",
+          "type": "corrective"
+        },
+        {
+          "name": "Electric fan, clutch fan delete",
+          "system": "cooling",
+          "type": "upgrade"
+        },
+        {
+          "name": "Pulley kit",
+          "system": "engine",
+          "type": "upgrade"
+        },
+        {
+          "name": "Oil change 5W-40 Castrol",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Diff oil 75W-140",
+          "system": "drivetrain",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2024-01",
+      "miles": 182000,
+      "raw": "182k (183k also written ?)",
+      "jobs": [
+        {
+          "name": "Oil change 5W-40 Castrol",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2024-02-13",
+      "miles": 183000,
+      "jobs": [
+        {
+          "name": "Radiator",
+          "system": "cooling",
+          "type": "corrective"
+        },
+        {
+          "name": "Coolant",
+          "system": "cooling",
+          "type": "preventive"
+        },
+        {
+          "name": "Camshaft position sensor",
+          "system": "electrical",
+          "type": "corrective"
+        },
+        {
+          "name": "M50 intake manifold",
+          "system": "engine",
+          "type": "upgrade"
+        },
+        {
+          "name": "Oil pan gasket",
+          "system": "engine",
+          "type": "corrective"
+        },
+        {
+          "name": "Power steering pump rebuild",
+          "system": "steering",
+          "type": "corrective"
+        },
+        {
+          "name": "Power steering lines",
+          "system": "steering",
+          "type": "corrective"
+        },
+        {
+          "name": "Inner and outer tie rods",
+          "system": "steering",
+          "type": "corrective"
+        },
+        {
+          "name": "Camber arm bushings",
+          "system": "suspension",
+          "type": "corrective"
+        },
+        {
+          "name": "Inner and outer ball joints",
+          "system": "suspension",
+          "type": "corrective"
+        },
+        {
+          "name": "Lollipop bushing",
+          "system": "suspension",
+          "type": "corrective"
+        },
+        {
+          "name": "Throttle cable",
+          "system": "engine",
+          "type": "corrective"
+        },
+        {
+          "name": "Oil change 5W-40 Castrol",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2024-03-07",
+      "miles": null,
+      "jobs": [
+        {
+          "name": "Alignment (Tech 3), printout before and after",
+          "system": "suspension",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": null,
+      "miles": 186000,
+      "jobs": [
+        {
+          "name": "Oil change 5W-40",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": null,
+      "miles": 189000,
+      "jobs": [
+        {
+          "name": "Oil change 5W-40",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Radiator",
+          "system": "cooling",
+          "type": "corrective"
+        },
+        {
+          "name": "Radiator fan",
+          "system": "cooling",
+          "type": "corrective"
+        }
+      ]
+    },
+    {
+      "date": null,
+      "miles": 189700,
+      "jobs": [
+        {
+          "name": "Tires on RK003",
+          "system": "tires",
+          "type": "preventive"
+        },
+        {
+          "name": "Alignment",
+          "system": "suspension",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2025-07",
+      "miles": 193500,
+      "jobs": [
+        {
+          "name": "Oil change 5W-40",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    }
   ]
 }

@@ -46,6 +46,12 @@ def main():
         for job, match, miles, months, safety in g.DEFAULT_PLANS:
             con.execute("INSERT OR IGNORE INTO plans(car_id, job, match, miles, months, safety) VALUES(?,?,?,?,?,?)",
                         (cid, job, match, miles, months, safety))
+        # intervals the owner set in the log file win over the defaults
+        for job, pl in (car.get("plans") or {}).items():
+            match = next((m for j, m, *_ in g.DEFAULT_PLANS if j == job), job.lower())
+            con.execute("INSERT INTO plans(car_id, job, match, miles, months, safety) VALUES(?,?,?,?,?,0) "
+                        "ON CONFLICT(car_id, job) DO UPDATE SET miles=excluded.miles, months=excluded.months",
+                        (cid, job, match, pl.get("miles"), pl.get("months")))
         old = con.execute("SELECT id FROM visits WHERE car_id=? AND via='import'", (cid,)).fetchall()
         if old:
             con.executemany("DELETE FROM jobs WHERE visit_id=?", [(r["id"],) for r in old])

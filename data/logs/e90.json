@@ -8,7 +8,13 @@
     "notes": [
       "Timing chain, no service interval; there is no timing belt on the N51.",
       "Serpentine belt 11287628650 (6PK1990); OEM kit 11288624196 with tensioner and pulleys, tensioner every 40k to 60k mi."
-    ]
+    ],
+    "plans": {
+      "Oil change": {
+        "miles": 6000,
+        "months": 12
+      }
+    }
   },
   "source": "Owner's notes and OneNote, transcribed 2026-11-05/06. Dates missing where the source has none.",
   "visits": [
