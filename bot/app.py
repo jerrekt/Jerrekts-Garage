@@ -354,9 +354,37 @@ def guess_system(job: str) -> str:
     return "other"
 
 
+def _d(s) -> date | None:
+    try:
+        s = s[:10] if len(s) > 7 else s + "-01"
+        return datetime.strptime(s, "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        return None
+
+
+def pace(con, car_id: str, today: date | None = None) -> dict | None:
+    """Miles per day from the odometer history: the latest reading against the oldest
+    reading within the last two years that is at least 30 days and 200 miles earlier.
+    None when there is not enough to go on."""
+    today = today or date.today()
+    rows = [(d, r["miles"]) for r in con.execute("SELECT miles, on_date FROM odometer WHERE car_id=? ORDER BY miles DESC", (car_id,))
+            if (d := _d(r["on_date"]))]
+    if len(rows) < 2:
+        return None
+    last_d, last_m = rows[0]
+    cands = [(d, m) for d, m in rows[1:] if d < last_d and (last_d - d).days >= 30 and last_m - m >= 200 and (last_d - d).days <= 730]
+    if not cands:
+        return None
+    first_d, first_m = min(cands)
+    per_day = (last_m - first_m) / (last_d - first_d).days
+    return {"miles_per_day": round(per_day, 2), "from": first_d.isoformat(), "to": last_d.isoformat(),
+            "stale_days": (today - last_d).days}
+
+
 def due_list(con, car_id: str, today: date | None = None) -> list[dict]:
     today = today or date.today()
     miles_now, _ = current_miles(con, car_id)
+    pc = pace(con, car_id, today)
     plans = con.execute("SELECT * FROM plans WHERE car_id=? ORDER BY job", (car_id,)).fetchall()
     out = []
     for p in plans:
@@ -368,25 +396,29 @@ def due_list(con, car_id: str, today: date | None = None) -> list[dict]:
             item.update(status="unknown", label="No record", text="Never logged", last=None)
             out.append(item)
             continue
-        worst, parts = 1.0, []
+        worst, parts, eta, by_pace = 1.0, [], None, False
         if p["miles"] and last["miles"] is not None and miles_now is not None:
             left = last["miles"] + p["miles"] - miles_now
             worst = min(worst, left / p["miles"])
             parts.append(f"{abs(left):,} mi {'over' if left < 0 else 'left'}")
-        if p["months"] and last["on_date"]:
-            try:
-                ld = datetime.strptime(last["on_date"][:10] if len(last["on_date"]) > 7 else last["on_date"] + "-01", "%Y-%m-%d").date()
-                dd = ld + timedelta(days=round(p["months"] * 30.44))
-                days = (dd - today).days
-                worst = min(worst, days / (p["months"] * 30.44))
-                parts.append(f"{abs(days) // 30} months over" if days < 0 else f"by {dd.strftime('%b %Y')}")
-            except ValueError:
-                pass
+            if left > 0 and pc and pc["miles_per_day"] > 0:
+                eta, by_pace = today + timedelta(days=round(left / pc["miles_per_day"])), True
+        if p["months"] and last["on_date"] and (ld := _d(last["on_date"])):
+            dd = ld + timedelta(days=round(p["months"] * 30.44))
+            days = (dd - today).days
+            worst = min(worst, days / (p["months"] * 30.44))
+            parts.append(f"{abs(days) // 30} months over" if days < 0 else f"by {dd.strftime('%b %Y')}")
+            if days >= 0 and (eta is None or dd <= eta):
+                eta, by_pace = dd, False
         if not parts:
             item.update(status="unknown", label="No record", text="Mileage or date missing")
         else:
             st = "overdue" if worst < 0 else "soon" if worst < SOON else "ok"
             item.update(status=st, label={"overdue": "Overdue", "soon": "Due soon", "ok": "OK"}[st], text=", ".join(parts))
+            if eta and st != "overdue":
+                item["eta"] = eta.isoformat()
+                if by_pace:
+                    item["text"] += f" · about {eta.strftime('%b %Y')} at your pace"
         item["last"] = {"date": last["on_date"], "miles": last["miles"]}
         out.append(item)
     order = {"overdue": 0, "soon": 1, "unknown": 2, "ok": 3}
@@ -415,7 +447,7 @@ def car_full(con, car) -> dict:
         jobs = con.execute("SELECT name, system, work_type, parts FROM jobs WHERE visit_id=?", (v["id"],)).fetchall()
         out.append({"id": v["id"], "date": v["on_date"], "miles": v["miles"], "raw": v["raw"],
                     "jobs": [dict(j) for j in jobs]})
-    d.update(visits=out, due=due_list(con, car["id"]))
+    d.update(visits=out, due=due_list(con, car["id"]), pace=pace(con, car["id"]))
     return d
 
 

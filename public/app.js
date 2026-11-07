@@ -79,10 +79,15 @@
     if (ME.admin && c.status === "pending") acts += `<button class="btn ok" data-act="approve" data-car="${esc(c.id)}">Approve</button><button class="btn bad" data-act="reject" data-car="${esc(c.id)}">Reject</button>`;
     if (ME.admin && c.status === "active") acts += `<button class="btn" data-act="public" data-car="${esc(c.id)}" data-show="${c.public ? 0 : 1}">${c.public ? "Hide from public" : "Show on public"}</button>`;
     acts += `<button class="btn bad" data-open="remove" data-car="${esc(c.id)}" aria-pressed="${o === "remove"}">Remove</button>`;
-    let form = "";
-    if (o === "log") form = formLog(c);
-    if (o === "odo") form = formOdo(c);
-    if (o === "remove") form = `<div class="f"><p class="wide small">Deletes ${esc(c.name)} and every job logged on it. No undo.</p><button class="btn bad wide" data-act="remove" data-car="${esc(c.id)}">Yes, remove it</button></div>`;
+    const od = c.odometer || {}, stale = od.miles == null ? null : od.date ? Math.round((Date.now() - new Date(od.date.length > 7 ? od.date : od.date + "-01")) / 864e5) : null;
+    const nudge = od.miles == null ? "No odometer reading yet. Add one (with the date) and the due list comes alive."
+      : stale == null ? "The last odometer reading has no date. Save a fresh one with today's date so the estimates work."
+      : stale > 45 ? `Last odometer reading is from ${esc(when(od.date))}. Save a fresh one and the dates update.` : "";
+    const paceLine = c.pace ? `<span class="small">Your pace: about ${k(Math.round(c.pace.miles_per_day * 30.44))} mi a month.</span>` : "";
+    let form = nudge ? `<p class="msg" style="color:var(--soon)">${nudge} ${paceLine}</p>` : (paceLine ? `<p class="msg">${paceLine}</p>` : "");
+    if (o === "log") form += formLog(c);
+    if (o === "odo") form += formOdo(c);
+    if (o === "remove") form += `<div class="f"><p class="wide small">Deletes ${esc(c.name)} and every job logged on it. No undo.</p><button class="btn bad wide" data-act="remove" data-car="${esc(c.id)}">Yes, remove it</button></div>`;
     return `<article class="card" id="car-${esc(c.id)}">${head(c, pills + owner)}${dueRows(c.due)}${history(c.visits)}<div class="acts">${acts}</div>${form}<div class="msg" data-msg="${esc(c.id)}"></div></article>`;
   }
   function renderMe() {
