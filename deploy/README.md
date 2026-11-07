@@ -36,8 +36,10 @@ One URL for everyone: the public bays need no sign-in; "Sign in with Discord" un
 5. Service logs from the vault: `bot/import_log.py` (see its docstring); idempotent.
 
 ## Updating
-    GARAGE_BRANCH=main bash /opt/garage-bot/src/deploy/install.sh   # pulls, restarts the bot; nginx serves the new page at once
-    bash /opt/garage-bot/src/deploy/install-site.sh                 # only when deploy/nginx-garage.conf changed
+Automatic: `garage-update.timer` checks GitHub every 10 minutes and, when the branch in
+`/etc/garage-bot/branch` (default `main`) moved, pulls, reinstalls requirements, restarts the
+bot and reloads nginx if its config changed. Push to that branch and wait ten minutes.
+By hand, same thing now: `garage-update` (or `GARAGE_BRANCH=main bash /opt/garage-bot/src/deploy/install.sh`).
 
 Never run these with `umask 077` set in the shell: the checkout inherits it and nginx answers 403. Fix: `chmod -R u=rwX,go=rX /opt/garage-bot/src`.
 

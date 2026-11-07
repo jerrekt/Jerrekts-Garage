@@ -1,0 +1,7 @@
+[Unit]
+Description=Pull Jerrekt's Garage from GitHub when it changed
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/garage-update

@@ -26,7 +26,16 @@ if [ -f "$cfg" ] && ! grep -q "hostname: $host" "$cfg"; then
   systemctl restart cloudflared
 fi
 
+# auto-update timer: pulls from GitHub when the branch moved
+install -o root -g root -m 0755 "$src/deploy/garage-update.sh" /usr/local/sbin/garage-update
+install -o root -g root -m 0644 "$src/deploy/garage-update.service" /etc/systemd/system/garage-update.service
+install -o root -g root -m 0644 "$src/deploy/garage-update.timer" /etc/systemd/system/garage-update.timer
+[ -f /etc/garage-bot/branch ] || echo main > /etc/garage-bot/branch
+systemctl daemon-reload
+systemctl enable -q --now garage-update.timer
+
 sleep 1
+echo "auto-update: $(systemctl is-active garage-update.timer) every 10 min, branch $(cat /etc/garage-bot/branch)"
 echo "local page: $(curl -s -o /dev/null -w '%{http_code}' -H "Host: $host" 127.0.0.1:8080/)"
 echo "local api:  $(curl -s -H "Host: $host" 127.0.0.1:8080/api/public | head -c 80)"
 echo "ingress:    $(grep -c "hostname: $host" "$cfg" 2>/dev/null || echo 0) rule(s) for $host"
