@@ -1,39 +1,45 @@
-# Deploying the garage bot
+# Deploying the garage
 
-Runs as a third bot in the shared bots container on Kratos (CT 160), next to
-the Bricked and Waymo claim bots, with the same isolation:
+Everything lives in its own container on Kratos (CT 170 "garage", unprivileged, firewalled),
+with the same isolation pattern as the Bricked and Waymo bots:
 
-| Per bot | Garage |
+| Piece | Where |
 |---|---|
 | Linux user (no login) | `bot-garage` |
 | Code (root-owned, read-only to the bot) | `/opt/garage-bot/src` (this repo) |
 | Data (only the bot can write) | `/var/lib/garage-bot/garage.db` |
 | Secrets (root-only, 0600) | `/etc/garage-bot/bot.env` |
-| Service | `garage-bot.service` |
-| Port, localhost only | `127.0.0.1:8703` |
-| Public hostname | `garage-api.adsuaracloud.com` via the container's `bots` tunnel |
+| Bot service | `garage-bot.service`, `127.0.0.1:8703` |
+| Site | nginx-light, `127.0.0.1:8080`, serves `public/` and proxies `/api/*` and `/auth/*` to the bot |
+| Tunnel `garage` | `jerrekts-garage.adsuaracloud.com` → 8080 (the site), `garage-api.adsuaracloud.com` → 8703 (Discord interactions only) |
 
-The Bricked-Sorting repo's `deploy/bots/add-bot.sh` makes the user and folders.
+One URL for everyone: the public bays need no sign-in; "Sign in with Discord" unlocks your cars.
 
-## Install (inside CT 160, as root)
-    bash install.sh            # idempotent: clone or pull, venv, unit, env skeleton, start, health
+## Install (inside the container, as root)
+    GARAGE_BRANCH=main bash install.sh      # bot: clone or pull, venv, unit, env skeleton, start, health
+    bash install-site.sh                    # nginx + tunnel ingress for the site
 
 ## Then, by hand
-1. `/etc/garage-bot/bot.env`: fill from `bot.env.example` (nano, never paste secrets into chat).
+1. `/etc/garage-bot/bot.env`: fill from `bot.env.example` (type secrets in the terminal, never paste them into chat).
    `GARAGE_SITE_TOKEN`: `openssl rand -hex 32`.
-2. Discord: Developer Portal, New Application "Jerrekt's Garage". Public key into `bot.env`,
-   restart, then set the Interactions Endpoint URL to `https://garage-api.adsuaracloud.com/discord/interactions`.
-   Install in the server with the `applications.commands` scope. A webhook in the feed channel into `bot.env`.
-3. Register the commands once from your PC: `bot/register_commands.py` (token used once, then reset).
-4. Tunnel: add to `/etc/cloudflared/config.yml`
-       - hostname: garage-api.adsuaracloud.com
-         service: http://127.0.0.1:8703
-   above the 404 line, `cloudflared tunnel ingress validate`, restart cloudflared, then the DNS route
-   (`cloudflared tunnel login`, `cloudflared tunnel route dns bots garage-api.adsuaracloud.com`, delete the cert again).
+2. Discord Developer Portal, application "Jerrekt's Garage":
+   - General Information: Public Key → `DISCORD_PUBLIC_KEY`; Interactions Endpoint URL
+     `https://garage-api.adsuaracloud.com/discord/interactions` (saves only if the key is right and the bot is up).
+   - Installation: Guild install with the `applications.commands` scope; open the install link, add to the server.
+   - OAuth2: Client ID → `DISCORD_CLIENT_ID`, Reset Secret → `DISCORD_CLIENT_SECRET`,
+     Redirect `https://jerrekts-garage.adsuaracloud.com/auth/callback`.
+   - A webhook in the feed channel → `DISCORD_WEBHOOK_URL`.
+3. Register the slash commands once, from the container (it has Python and httpx; the bot token is used once, then reset in the portal):
+       export DISCORD_APP_ID=<app id> DISCORD_GUILD_ID=<server id>; read -r -s -p "Bot token: " DISCORD_BOT_TOKEN; echo; export DISCORD_BOT_TOKEN
+       /opt/garage-bot/venv/bin/python /opt/garage-bot/src/bot/register_commands.py; unset DISCORD_BOT_TOKEN
+4. DNS for a new hostname on the tunnel: `cloudflared tunnel login && cloudflared tunnel route dns garage <host>` then `rm -f /root/.cloudflared/cert.pem`.
+5. Service logs from the vault: `bot/import_log.py` (see its docstring); idempotent.
 
 ## Updating
-    cd /opt/garage-bot/src && git pull --ff-only
-    /opt/garage-bot/venv/bin/python -m py_compile bot/app.py && systemctl restart garage-bot
+    GARAGE_BRANCH=main bash /opt/garage-bot/src/deploy/install.sh   # pulls, restarts the bot; nginx serves the new page at once
+    bash /opt/garage-bot/src/deploy/install-site.sh                 # only when deploy/nginx-garage.conf changed
+
+Never run these with `umask 077` set in the shell: the checkout inherits it and nginx answers 403. Fix: `chmod -R u=rwX,go=rX /opt/garage-bot/src`.
 
 ## Off switch
-`systemctl stop garage-bot`. Discord commands then fail with an error; nothing else is affected.
+`systemctl stop garage-bot`: Discord commands fail with an error, the site shows the public bays only. `systemctl stop nginx`: site down, bot still answers Discord.

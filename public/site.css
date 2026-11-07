@@ -52,3 +52,21 @@ h2{font-size:24px;font-weight:800;font-stretch:75%;margin:36px 0 12px}
 .empty{color:var(--muted);font-style:italic}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:40px 18px 50px}
 @media(max-width:420px){.visit{grid-template-columns:1fr}.drum span{width:20px;height:30px;font-size:20px}}
+
+/* your garage */
+.me-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.me-head b{font-size:18px}
+.link{background:none;border:0;color:var(--gold);cursor:pointer;padding:0;font-size:14px;text-decoration:underline}
+.pill.pending{border-color:var(--soon);color:var(--soon)}.pill.rejected{border-color:var(--over);color:var(--over)}.pill.pub{border-color:var(--ok);color:var(--ok)}
+.acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{font:inherit;font-size:14px;font-weight:700;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:9px 12px;cursor:pointer}
+.btn.gold{background:var(--gold);color:#1a1405;border-color:var(--gold)}.btn.ok{border-color:var(--ok);color:var(--ok)}.btn.bad{border-color:var(--over);color:var(--over)}
+.btn[aria-pressed=true]{border-color:var(--gold);color:var(--gold)}
+.btn:disabled{opacity:.5;cursor:default}
+form.f{margin-top:12px;border-top:1px solid var(--line);padding-top:12px;display:grid;gap:10px;grid-template-columns:1fr 1fr}
+form.f .wide{grid-column:1/-1}
+form.f label{display:block;font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+form.f input,form.f select{display:block;width:100%;margin-top:4px;font:inherit;font-size:17px;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;text-transform:none;letter-spacing:0}
+form.f .btn{min-height:46px}
+.msg{font-size:14px;margin-top:8px}.msg.err{color:var(--over)}.msg.ok{color:var(--ok)}
+.kit{border-top:1px solid var(--line);padding:10px 0}.kit b{display:block}.kit a{display:block;font-size:14px;margin-top:3px;overflow-wrap:anywhere}.kit .small{display:block}

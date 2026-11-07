@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install or update the garage bot inside the bots container. Run as root in CT 160.
+# Install or update the garage bot inside the garage container (CT 170). Run as root there.
 # Safe to run again: it pulls, reinstalls requirements, and restarts.
 set -euo pipefail
 name=garage-bot

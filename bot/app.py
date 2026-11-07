@@ -1,7 +1,7 @@
 """Jerrekt's Garage bot.
 
-Owners log work on their cars from Discord (slash commands) or from the private
-app. This server holds the cars, visits, odometer readings and intervals in
+Owners log work on their cars from Discord (slash commands) or from the site
+after signing in with Discord. This server holds the cars, visits, odometer readings and intervals in
 SQLite, works out what is due, and answers the public and private sites over
 a small read API.
 
@@ -20,21 +20,26 @@ No secret is ever written in this repo.
 """
 from __future__ import annotations
 
+import base64
+import hashlib
+import hmac
 import json
 import logging
 import os
 import re
+import secrets
 import sqlite3
 import threading
 import time
 from collections import defaultdict, deque
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from urllib.parse import urlencode
 
 import httpx
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse, Response
 from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 from starlette.concurrency import run_in_threadpool
@@ -69,7 +74,11 @@ class Config:
     @property
     def kits_path(self): return env("GARAGE_KITS_PATH")         # JSON file of job kits (FCP links)
     @property
-    def site_token(self): return env("GARAGE_SITE_TOKEN")       # bearer for the private app behind Access
+    def site_token(self): return env("GARAGE_SITE_TOKEN")       # secret that signs the site's session cookies
+    @property
+    def client_id(self): return env("DISCORD_CLIENT_ID")        # Discord OAuth2 (sign in on the site)
+    @property
+    def client_secret(self): return env("DISCORD_CLIENT_SECRET")
 
     @property
     def discord_users(self) -> dict[str, str]:
@@ -221,12 +230,26 @@ def visible_cars(con, who: Who) -> list[sqlite3.Row]:
     return con.execute("SELECT * FROM cars WHERE owner_id=? ORDER BY created_at", (who.id,)).fetchall()
 
 
+def known_user(con, uid: str, fallback_name: str = "") -> Who | None:
+    """Who this Discord user is to the garage: on the allow list, or the owner of a car
+    that is not rejected (someone who signed in on the site and added one)."""
+    name = CFG.discord_users.get(uid)
+    if not name:
+        r = con.execute("SELECT owner_name FROM cars WHERE owner_id=? AND status!='rejected' ORDER BY created_at LIMIT 1", (uid,)).fetchone()
+        name = r["owner_name"] if r else ""
+    return Who(uid, name or fallback_name) if name else None
+
+
 def add_car(who: Who, name: str, chassis: str = "", year=None, miles=None, via="discord") -> dict:
     name = clean(name, 60)
     if not name:
         raise HTTPException(400, "Give the car a name, like 2008 Civic Si.")
     base = slug(chassis or name)
     with _db_lock, db() as con:
+        # Someone not on the allow list may have one car waiting for approval, not a pile.
+        if not who.is_admin and who.id not in CFG.discord_users and \
+                con.execute("SELECT 1 FROM cars WHERE owner_id=? AND status='pending'", (who.id,)).fetchone():
+            raise HTTPException(403, f"You already have a car waiting for {CFG.admin_name}.")
         cid, n = base, 2
         while con.execute("SELECT 1 FROM cars WHERE id=?", (cid,)).fetchone():
             cid, n = f"{base}-{n}", n + 1
@@ -457,24 +480,203 @@ def api_public():
     return JSONResponse({"cars": out, "generated": time.time()}, headers={"Cache-Control": "no-store"})
 
 
-def site_user(request: Request) -> Who:
-    """The private app sits behind Cloudflare Access, which puts the signed-in email in a header.
-    A shared bearer token proves the request came through that app, not straight from the internet."""
-    tok = request.headers.get("authorization", "")
-    if not CFG.site_token or tok != "Bearer " + CFG.site_token:
+# ---------- the site: Discord sign-in, session cookie, private API ----------
+# One URL for everyone. The public part needs no sign-in. "Sign in with Discord"
+# sends the browser to Discord (scope: identify only), Discord sends it back here
+# with a code, we swap the code for the user's id and name, and set a signed,
+# HttpOnly cookie. No password, nothing from Discord stored beyond id and name.
+
+SESSION_COOKIE, STATE_COOKIE = "garage_s", "garage_o"
+SESSION_DAYS = 30
+DISCORD_API = "https://discord.com/api/v10"
+
+
+def _sign(payload: dict, ttl: int) -> str:
+    body = json.dumps({**payload, "exp": int(time.time()) + ttl}, separators=(",", ":")).encode()
+    b = base64.urlsafe_b64encode(body).decode().rstrip("=")
+    mac = hmac.new(CFG.site_token.encode(), b.encode(), hashlib.sha256).hexdigest()
+    return f"{b}.{mac}"
+
+
+def _verify(token: str) -> dict | None:
+    if not token or "." not in token or not CFG.site_token:
+        return None
+    b, mac = token.rsplit(".", 1)
+    want = hmac.new(CFG.site_token.encode(), b.encode(), hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(mac, want):
+        return None
+    try:
+        data = json.loads(base64.urlsafe_b64decode(b + "=" * (-len(b) % 4)))
+    except Exception:
+        return None
+    return data if data.get("exp", 0) > time.time() else None
+
+
+def _secure() -> bool:
+    return CFG.origin.startswith("https://")
+
+
+def set_cookie(resp: Response, name: str, value: str, max_age: int):
+    resp.set_cookie(name, value, max_age=max_age, httponly=True, secure=_secure(), samesite="lax", path="/")
+
+
+def session(request: Request) -> dict | None:
+    return _verify(request.cookies.get(SESSION_COOKIE, ""))
+
+
+def web_user(request: Request) -> Who:
+    """Signed-in and known to the garage; the private API needs both."""
+    sess = session(request)
+    if not sess:
         raise HTTPException(401, "Not signed in.")
-    uid = request.headers.get("x-garage-user", "")
-    name = CFG.discord_users.get(uid)
-    if not name:
-        raise HTTPException(403, "Not on the list.")
-    return Who(uid, name)
-
-
-@app.get("/api/me/cars")
-def api_my_cars(request: Request):
-    who = site_user(request)
     with _db_lock, db() as con:
-        return {"cars": [car_full(con, c) for c in visible_cars(con, who)], "admin": who.is_admin, "kits": load_kits()}
+        who = known_user(con, str(sess.get("uid", "")), sess.get("name", ""))
+    if who is None:
+        raise HTTPException(403, "Not on the list yet.")
+    return who
+
+
+def same_site(request: Request):
+    """Writes must come from our own page: the custom header forces a CORS preflight for
+    anyone else, and the Origin must match. Together with SameSite=Lax that stops CSRF."""
+    if request.headers.get("x-garage-web") != "1":
+        raise HTTPException(403, "Bad request origin.")
+    origin = request.headers.get("origin", "")
+    if origin and origin != CFG.origin:
+        raise HTTPException(403, "Bad request origin.")
+
+
+@app.get("/auth/login")
+def auth_login():
+    if not CFG.client_id:
+        raise HTTPException(503, "Sign-in is not set up.")
+    state = secrets.token_urlsafe(24)
+    q = urlencode({"client_id": CFG.client_id, "response_type": "code", "scope": "identify",
+                   "redirect_uri": CFG.origin + "/auth/callback", "state": state, "prompt": "none"})
+    resp = RedirectResponse("https://discord.com/oauth2/authorize?" + q, status_code=302)
+    set_cookie(resp, STATE_COOKIE, _sign({"s": state}, 600), 600)
+    return resp
+
+
+@app.get("/auth/callback")
+async def auth_callback(request: Request, code: str = "", state: str = "", error: str = ""):
+    st = _verify(request.cookies.get(STATE_COOKIE, ""))
+    if error or not code or not st or not hmac.compare_digest(st.get("s", ""), state):
+        return RedirectResponse("/?signin=failed", status_code=302)
+    if LIMITS.over("oauth", 60, 600):
+        raise HTTPException(429, "Too many sign-ins right now.")
+    LIMITS.add("oauth")
+    try:
+        async with httpx.AsyncClient(timeout=10) as cl:
+            tok = await cl.post(f"{DISCORD_API}/oauth2/token", data={
+                "grant_type": "authorization_code", "code": code, "redirect_uri": CFG.origin + "/auth/callback"},
+                auth=(CFG.client_id, CFG.client_secret))
+            tok.raise_for_status()
+            me = await cl.get(f"{DISCORD_API}/users/@me", headers={"Authorization": "Bearer " + tok.json()["access_token"]})
+            me.raise_for_status()
+            u = me.json()
+    except Exception as e:
+        log.warning("discord sign-in failed: %s", e)
+        return RedirectResponse("/?signin=failed", status_code=302)
+    uid = str(u.get("id", ""))
+    if not uid.isdigit():
+        return RedirectResponse("/?signin=failed", status_code=302)
+    name = clean(u.get("global_name") or u.get("username") or "someone", 32)
+    resp = RedirectResponse("/#garage", status_code=302)
+    set_cookie(resp, SESSION_COOKIE, _sign({"uid": uid, "name": name}, SESSION_DAYS * 86400), SESSION_DAYS * 86400)
+    resp.delete_cookie(STATE_COOKIE, path="/")
+    return resp
+
+
+@app.post("/auth/logout")
+def auth_logout(request: Request):
+    same_site(request)
+    resp = JSONResponse({"ok": True})
+    resp.delete_cookie(SESSION_COOKIE, path="/")
+    return resp
+
+
+@app.get("/api/me")
+def api_me(request: Request):
+    """Everything the signed-in person may see. Not signed in: just that. Signed in but
+    unknown: their name, so the page can offer to add a car (which makes them known, pending)."""
+    sess = session(request)
+    hdr = {"Cache-Control": "no-store"}
+    if not sess:
+        return JSONResponse({"signed_in": False, "login": bool(CFG.client_id)}, headers=hdr)
+    uid, dname = str(sess.get("uid", "")), sess.get("name", "")
+    with _db_lock, db() as con:
+        who = known_user(con, uid, dname)
+        if who is None:
+            return JSONResponse({"signed_in": True, "known": False, "user": {"name": dname}, "admin_name": CFG.admin_name}, headers=hdr)
+        cars = [car_full(con, c) for c in visible_cars(con, who)]
+    return JSONResponse({"signed_in": True, "known": True, "user": {"name": who.name}, "admin": who.is_admin,
+                         "admin_name": CFG.admin_name, "cars": cars, "kits": load_kits()}, headers=hdr)
+
+
+@app.post("/api/act")
+async def api_act(request: Request, bg: BackgroundTasks):
+    """Writes from the page. Same actions as the slash commands, same checks."""
+    same_site(request)
+    sess = session(request)
+    if not sess:
+        raise HTTPException(401, "Not signed in.")
+    uid, dname = str(sess.get("uid", "")), sess.get("name", "")
+    if LIMITS.over("web:" + uid, WRITE_LIMIT, WRITE_WINDOW):
+        raise HTTPException(429, "Too many changes. Wait a few minutes.")
+    LIMITS.add("web:" + uid)
+    try:
+        o = await request.json()
+    except Exception:
+        raise HTTPException(400, "Bad JSON.")
+    if not isinstance(o, dict):
+        raise HTTPException(400, "Bad JSON.")
+    act = o.get("action", "")
+    return await run_in_threadpool(web_action, uid, dname, act, o, bg)
+
+
+def web_action(uid: str, dname: str, act: str, o: dict, bg: BackgroundTasks) -> dict:
+    with _db_lock, db() as con:
+        who = known_user(con, uid, dname)
+        if who is None:
+            if act != "addcar":
+                raise HTTPException(403, "Not on the list yet.")
+            who = Who(uid, clean(dname, 32) or "someone")  # add_car caps strangers at one pending car
+    name = who.name
+    if act == "addcar":
+        c = add_car(who, o.get("name", ""), o.get("chassis", ""), o.get("year"), o.get("miles"), via="web")
+        if c["status"] == "pending":
+            bg.add_task(post_feed, f"**{name}** added **{c['name']}** (`{c['id']}`) on the site. {CFG.admin_name}: `/garage approve car:{c['id']}`")
+        else:
+            bg.add_task(post_feed, f"**{name}** added **{c['name']}** (`{c['id']}`).")
+        return {"ok": True, "car": c}
+    if act in ("approve", "reject"):
+        c = set_status(who, o.get("car", ""), "active" if act == "approve" else "rejected", via="web")
+        bg.add_task(post_feed, f"**{name}** {act}d **{c['name']}** (`{c['id']}`), owner {c['owner']}.")
+        return {"ok": True, "car": c}
+    if act == "odo":
+        r = log_odo(who, o.get("car", ""), o.get("miles"), o.get("date", ""), via="web")
+        return {"ok": True, **r}
+    if act == "log":
+        r = log_work(who, o.get("car", ""), o.get("job", ""), o.get("miles"), o.get("date", ""),
+                     o.get("type", ""), o.get("system", ""), o.get("parts", ""), via="web")
+        m = f"{r['miles']:,} mi" if r["miles"] is not None else "no mileage"
+        bg.add_task(post_feed, f"**{name}** logged **{r['job']}** on `{r['car']}` at {m}." + (f" Next: {r['next']}." if r["next"] else ""))
+        return {"ok": True, **r}
+    if act == "remove":
+        cid = remove_car(who, o.get("car", ""), via="web")
+        bg.add_task(post_feed, f"**{name}** removed `{cid}` and its log.")
+        return {"ok": True, "car": cid}
+    if act == "public":
+        if not who.is_admin:
+            raise HTTPException(403, f"Only {CFG.admin_name} can change what's public.")
+        with _db_lock, db() as con:
+            car = get_car(con, o.get("car", ""), who)
+            on = 1 if o.get("show") else 0
+            con.execute("UPDATE cars SET public=? WHERE id=?", (on, car["id"]))
+            audit(con, car["id"], name, "web", "public", str(on))
+        return {"ok": True, "car": car["id"], "public": bool(on)}
+    raise HTTPException(400, "Unknown action.")
 
 
 # ---------- Discord interactions ----------
@@ -520,10 +722,11 @@ def options(data: dict) -> tuple[str, dict]:
 def handle_command(data: dict, bg: BackgroundTasks) -> dict:
     user = (data.get("member") or {}).get("user") or data.get("user") or {}
     uid = str(user.get("id", ""))
-    name = CFG.discord_users.get(uid)
-    if not name:
-        return reply(f"You're not on the garage list yet. Ask {CFG.admin_name} to add you.")
-    who = Who(uid, name)
+    with _db_lock, db() as con:
+        who = known_user(con, uid)
+    if who is None:
+        return reply(f"You're not on the garage list yet. Ask {CFG.admin_name} to add you, or sign in on {CFG.origin} and add your car.")
+    name = who.name
     if LIMITS.over("discord:" + uid, WRITE_LIMIT, WRITE_WINDOW):
         return reply("Too many commands. Wait a few minutes.")
     LIMITS.add("discord:" + uid)

@@ -23,21 +23,22 @@
   <div id="cars" aria-live="polite"><div class="card small">Loading the garage…</div></div>
   <p class="small gap">Every job is logged with date and mileage from Discord; the garage works out what's due by miles or months, whichever comes first. Only cars switched to public show here. VINs and plates never do.</p>
 
-  <h2>Add your car</h2>
+  <h2 id="garage">Your garage</h2>
+  <div id="me" aria-live="polite"><div class="card small">Checking who you are…</div></div>
+
+  <h2>How it works</h2>
   <div class="card">
     <ol class="how">
-      <li><b>Ask Jerrekt on Discord.</b> Tell him the car. He adds you to the garage list, which is the spam filter: no sign-ups, no passwords.</li>
-      <li><b>Add it yourself</b> from your phone: <code>/garage addcar name:2008 Civic Si chassis:civic miles:112000</code></li>
-      <li><b>Jerrekt approves it.</b> Every car is approved by hand. Until then it's just a request.</li>
-      <li><b>Log as you go:</b> <code>/garage log car:civic job:Oil change miles:112300</code> and <code>/garage due car:civic</code> tells you what's next.</li>
+      <li><b>Sign in with Discord.</b> No account to make, no password. The garage only learns your Discord name and id.</li>
+      <li><b>Add your car.</b> It waits as <i>pending</i> until Jerrekt approves it. Every car is approved by hand; that's the spam filter.</li>
+      <li><b>Log as you go</b>, here or from Discord: <code>/garage log car:civic job:Oil change miles:112300</code>. <code>/garage due car:civic</code> says what's next.</li>
     </ol>
-    <div id="ask" class="ask"></div>
   </div>
 
   <h2>Questions</h2>
   <div class="card faq">
-    <details open><summary>Who can see my car?</summary><p>You and Jerrekt. Nothing about your car shows on this page unless you turn that on later, and even then: no VIN, no plate, no name.</p></details>
-    <details><summary>Why Discord?</summary><p>The garage runs as a Discord bot, so you log work with slash commands anyway. Same account, nothing new to sign up for.</p></details>
+    <details open><summary>Who can see my car?</summary><p>You and Jerrekt. Nothing about your car shows in the public bays unless Jerrekt switches it on, and even then: no VIN, no plate, no name.</p></details>
+    <details><summary>Why Discord?</summary><p>The garage runs as a Discord bot, so you log work with slash commands anyway. Same account, nothing new to sign up for. Signing in asks Discord only for your name and id.</p></details>
     <details><summary>What do I get?</summary><p>A due list by miles and months, a history of every job, and for BMWs parts kits with FCP Euro links (lifetime warranty, so you want to know what you bought). <code>/garage parts job:valve-cover</code>.</p></details>
     <details><summary>Can I delete it?</summary><p>Yes. <code>/garage remove car:civic</code> deletes the car and its whole log. Jerrekt can't read a deleted log either.</p></details>
   </div>

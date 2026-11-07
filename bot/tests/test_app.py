@@ -24,6 +24,9 @@ def env(tmp_path, monkeypatch):
     monkeypatch.setenv("GARAGE_SITE_TOKEN", "tok")
     monkeypatch.setenv("GARAGE_KITS_PATH", str(Path(__file__).resolve().parents[2] / "data" / "kits.json"))
     monkeypatch.setenv("DISCORD_WEBHOOK_URL", "")
+    monkeypatch.setenv("GARAGE_ALLOWED_ORIGIN", "http://testserver")
+    monkeypatch.setenv("DISCORD_CLIENT_ID", "app123")
+    monkeypatch.setenv("DISCORD_CLIENT_SECRET", "shh")
     import app as mod
     mod.LIMITS.reset()
     mod._kits.update(data=None, at=0)
@@ -131,18 +134,74 @@ def test_public_export_hides_everything_not_public(env):
     assert "Only" in cmd(c, key, JASON, "public", car="civic", show=True)
 
 
-def test_private_api_needs_token_and_scopes_by_user(env):
+def signin(c, mod, uid, name):
+    c.cookies.set(mod.SESSION_COOKIE, mod._sign({"uid": uid, "name": name}, 3600))
+
+
+def act(c, **o):
+    return c.post("/api/act", json=o, headers={"x-garage-web": "1", "origin": "http://testserver"})
+
+
+def test_site_needs_sign_in_and_scopes_by_user(env):
     mod, key = env
     c = TestClient(mod.app)
     cmd(c, key, ADMIN, "addcar", name="BMW E36 M3", chassis="e36")
     cmd(c, key, JASON, "addcar", name="Civic", chassis="civic")
-    assert c.get("/api/me/cars").status_code == 401
-    h = {"Authorization": "Bearer tok"}
-    assert c.get("/api/me/cars", headers={**h, "x-garage-user": STRANGER}).status_code == 403
-    mine = c.get("/api/me/cars", headers={**h, "x-garage-user": JASON}).json()
-    assert [x["id"] for x in mine["cars"]] == ["civic"] and mine["admin"] is False
-    all_ = c.get("/api/me/cars", headers={**h, "x-garage-user": ADMIN}).json()
-    assert sorted(x["id"] for x in all_["cars"]) == ["civic", "e36"] and all_["admin"] is True
+    assert c.get("/api/me").json() == {"signed_in": False, "login": True}
+    assert act(c, action="log", car="e36", job="x").status_code == 401
+    signin(c, mod, JASON, "jason")
+    mine = c.get("/api/me").json()
+    assert mine["known"] and [x["id"] for x in mine["cars"]] == ["civic"] and mine["admin"] is False
+    assert act(c, action="log", car="e36", job="Oil change").status_code == 404
+    assert act(c, action="approve", car="civic").status_code == 403
+    signin(c, mod, ADMIN, "whatever")
+    all_ = c.get("/api/me").json()
+    assert sorted(x["id"] for x in all_["cars"]) == ["civic", "e36"] and all_["admin"] is True and all_["user"]["name"] == "Branden"
+    assert act(c, action="approve", car="civic").json()["car"]["status"] == "active"
+    assert act(c, action="log", car="e36", job="Oil change 5W-40", miles=193600).json()["system"] == "engine"
+    assert act(c, action="public", car="e36", show=True).json()["public"] is True
+    assert c.get("/api/public").json()["cars"][0]["id"] == "e36"
+
+
+def test_site_writes_need_our_header_and_origin(env):
+    mod, key = env
+    c = TestClient(mod.app)
+    signin(c, mod, ADMIN, "b")
+    assert c.post("/api/act", json={"action": "addcar", "name": "x"}).status_code == 403
+    assert c.post("/api/act", json={"action": "addcar", "name": "x"}, headers={"x-garage-web": "1", "origin": "https://evil.example"}).status_code == 403
+    bad = mod._sign({"uid": ADMIN, "name": "b"}, 3600)[:-2] + "zz"
+    c.cookies.set(mod.SESSION_COOKIE, bad)
+    assert c.get("/api/me").json()["signed_in"] is False
+
+
+def test_stranger_may_add_one_car_then_is_known(env):
+    mod, key = env
+    c = TestClient(mod.app)
+    signin(c, mod, STRANGER, "newguy")
+    me = c.get("/api/me").json()
+    assert me["signed_in"] and me["known"] is False and me["user"]["name"] == "newguy"
+    assert act(c, action="log", car="e36", job="x").status_code == 403
+    r = act(c, action="addcar", name="2008 Civic Si", chassis="civic", miles=112000)
+    assert r.status_code == 200 and r.json()["car"]["status"] == "pending"
+    assert act(c, action="addcar", name="Another").status_code == 403
+    me = c.get("/api/me").json()
+    assert me["known"] and me["cars"][0]["id"] == "civic" and me["user"]["name"] == "newguy"
+    # now the slash commands work for them too, on their own car only
+    assert "civic" in cmd(c, key, STRANGER, "cars")
+    assert "No car called e36" in cmd(c, key, STRANGER, "due", car="e36")
+    assert "not on the garage list" in cmd(c, key, "444", "cars")
+
+
+def test_oauth_login_redirect_and_bad_callback(env):
+    mod, key = env
+    c = TestClient(mod.app, follow_redirects=False)
+    r = c.get("/auth/login")
+    assert r.status_code == 302 and "discord.com/oauth2/authorize" in r.headers["location"] and "scope=identify" in r.headers["location"]
+    assert mod.STATE_COOKIE in r.cookies
+    r = c.get("/auth/callback?code=abc&state=wrong")
+    assert r.status_code == 302 and r.headers["location"].endswith("signin=failed")
+    r = c.post("/auth/logout", headers={"x-garage-web": "1"})
+    assert r.status_code == 200
 
 
 def test_remove_deletes_log(env):
