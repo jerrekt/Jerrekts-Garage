@@ -337,7 +337,7 @@
       "miles": 162000,
       "jobs": [
         {
-          "name": "Valve cover and gasket",
+          "name": "Valve cover replaced (whole cover, with gasket)",
           "system": "engine",
           "type": "corrective"
         },
@@ -358,7 +358,7 @@
       "miles": 163500,
       "jobs": [
         {
-          "name": "Oil change 5W-40 Mobil",
+          "name": "Oil change 5W-40 Mobil 1 European Car Formula",
           "system": "engine",
           "type": "preventive"
         }
