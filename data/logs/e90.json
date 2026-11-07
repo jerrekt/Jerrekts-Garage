@@ -1,0 +1,24 @@
+{
+  "car": {"id": "e90", "name": "BMW E90 328i", "chassis": "e90", "year": 2011},
+  "source": "Owner's OneNote, transcribed 2026-11-05; the source starts at 140.8k so earlier history is not here. Dates missing where the source has none.",
+  "visits": [
+    {"date": null, "miles": 140800, "jobs": [
+      {"name": "Oil change 5W-30", "system": "engine", "type": "preventive"},
+      {"name": "Tire rotation", "system": "tires", "type": "preventive"}]},
+    {"date": null, "miles": 142321, "raw": "dealer multi-point inspection, all items passing, tread 6/32+ all four", "jobs": [
+      {"name": "Dealer multi-point inspection (all passing, tread 6/32+)", "system": "other", "type": "diagnostic"}]},
+    {"date": "2024-03", "miles": 145000, "jobs": [
+      {"name": "Oil change 5W-40", "system": "engine", "type": "preventive"},
+      {"name": "Tire rotation", "system": "tires", "type": "preventive"}]},
+    {"date": null, "miles": 149300, "jobs": [{"name": "Note: tires needed", "system": "tires", "type": "diagnostic"}]},
+    {"date": null, "miles": 150000, "jobs": [{"name": "Apex wheels and tires", "system": "tires", "type": "upgrade"}]},
+    {"date": null, "miles": 152000, "jobs": [{"name": "Oil change 5W-40", "system": "engine", "type": "preventive"}]},
+    {"date": null, "miles": 153000, "jobs": [{"name": "Fender liners fixed", "system": "body", "type": "corrective"}]},
+    {"date": "2025-11-26", "miles": 157500, "jobs": [{"name": "Oil change 5W-30 Mobil 1 Extended", "system": "engine", "type": "preventive"}]},
+    {"date": null, "miles": 162000, "jobs": [
+      {"name": "Valve cover and gasket", "system": "engine", "type": "corrective"},
+      {"name": "Spark plugs", "system": "engine", "type": "preventive"},
+      {"name": "Underside cleaning", "system": "body", "type": "preventive"}]},
+    {"date": null, "miles": 163500, "jobs": [{"name": "Oil change 5W-40 Mobil", "system": "engine", "type": "preventive"}]}
+  ]
+}

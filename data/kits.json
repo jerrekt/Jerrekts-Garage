@@ -1,0 +1,73 @@
+{
+ "_note": "FCP Euro job kits. Prices as of 2026-11-05. No VINs here.",
+ "jobs": [
+  {
+   "id": "valve-cover",
+   "name": "Valve cover gasket",
+   "system": "Engine",
+   "fits": "1996-1999 E36 M3 S52 (RealOEM CD93 checked 2026-11-05)",
+   "kit": {
+    "sku": "11120034108KT",
+    "price": 154.09,
+    "url": "https://www.fcpeuro.com/products/bmw-valve-cover-gasket-kit-11120034108kt",
+    "realoem": "https://www.realoem.com/bmw/enUS/showparts?id=CD93-USA-02-1997-E36-BMW-M3&diagId=11_6149"
+   },
+   "parts": [
+    {
+     "name": "Valve cover gasket set, incl. spark plug tube seals",
+     "qty": 1,
+     "brand": "Elring",
+     "pn": "11120034108",
+     "price": 31.12,
+     "url": "https://www.fcpeuro.com/products/bmw-engine-valve-cover-gasket-set-m3-z3-e36-11120034108",
+     "realoem_item": "03"
+    },
+    {
+     "name": "Valve cover grommet (rubber)",
+     "qty": 15,
+     "brand": "DPH",
+     "pn": "11121437395",
+     "price": 7.5,
+     "url": null,
+     "realoem_item": "09"
+    },
+    {
+     "name": "Valve cover washer (metal)",
+     "qty": 15,
+     "brand": "OE Supplier",
+     "pn": "11127838077",
+     "price": 79.35,
+     "url": "https://www.fcpeuro.com/products/bmw-valve-cover-washer-metal-11127838077",
+     "realoem_item": "08"
+    },
+    {
+     "name": "Oil filler cap gasket",
+     "qty": 1,
+     "brand": "Genuine BMW",
+     "pn": "11127526447",
+     "price": 36.12,
+     "url": null,
+     "realoem_item": "14"
+    }
+   ],
+   "extras": [
+    {
+     "name": "Spark plugs, Bosch FGR 8 KQC",
+     "qty": 6,
+     "pn": "12129069877",
+     "each": 6.29,
+     "url": "https://www.fcpeuro.com/products/bmw-spark-plug-bosch-7405",
+     "realoem": "https://www.realoem.com/bmw/enUS/showparts?id=CD93-USA-02-1997-E36-BMW-M3&diagId=12_1977"
+    },
+    {
+     "name": "Valve cover cap nuts",
+     "qty": 3,
+     "pn": "11121738608",
+     "each": 13.78,
+     "url": "https://www.fcpeuro.com/products/bmw-valve-cover-cap-nut-genuine-bmw-11121738608",
+     "realoem": "https://www.realoem.com/bmw/enUS/showparts?id=CD93-USA-02-1997-E36-BMW-M3&diagId=11_6149"
+    }
+   ]
+  }
+ ]
+}
