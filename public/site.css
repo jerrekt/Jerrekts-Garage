@@ -70,3 +70,5 @@ form.f input,form.f select{display:block;width:100%;margin-top:4px;font:inherit;
 form.f .btn{min-height:46px}
 .msg{font-size:14px;margin-top:8px}.msg.err{color:var(--over)}.msg.ok{color:var(--ok)}
 .kit{border-top:1px solid var(--line);padding:10px 0}.kit b{display:block}.kit a{display:block;font-size:14px;margin-top:3px;overflow-wrap:anywhere}.kit .small{display:block}
+.acts .rm{margin-left:auto;align-self:center;color:var(--muted);font-size:13px;text-decoration:none;padding:6px 2px}
+.acts .rm:hover{color:var(--over);text-decoration:underline}

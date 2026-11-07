@@ -78,7 +78,7 @@
     let acts = `<button class="btn" data-open="log" data-car="${esc(c.id)}" aria-pressed="${o === "log"}">Log work</button><button class="btn" data-open="odo" data-car="${esc(c.id)}" aria-pressed="${o === "odo"}">Odometer</button>`;
     if (ME.admin && c.status === "pending") acts += `<button class="btn ok" data-act="approve" data-car="${esc(c.id)}">Approve</button><button class="btn bad" data-act="reject" data-car="${esc(c.id)}">Reject</button>`;
     if (ME.admin && c.status === "active") acts += `<button class="btn" data-act="public" data-car="${esc(c.id)}" data-show="${c.public ? 0 : 1}">${c.public ? "Hide from public" : "Show on public"}</button>`;
-    acts += `<button class="btn bad" data-open="remove" data-car="${esc(c.id)}" aria-pressed="${o === "remove"}">Remove</button>`;
+    acts += `<button class="link rm" data-open="remove" data-car="${esc(c.id)}">${o === "remove" || o === "remove2" ? "cancel" : "remove car"}</button>`;
     const od = c.odometer || {}, stale = od.miles == null ? null : od.date ? Math.round((Date.now() - new Date(od.date.length > 7 ? od.date : od.date + "-01")) / 864e5) : null;
     const nudge = od.miles == null ? "No odometer reading yet. Add one (with the date) and the due list comes alive."
       : stale == null ? "The last odometer reading has no date. Save a fresh one with today's date so the estimates work."
@@ -87,7 +87,8 @@
     let form = nudge ? `<p class="msg" style="color:var(--soon)">${nudge} ${paceLine}</p>` : (paceLine ? `<p class="msg">${paceLine}</p>` : "");
     if (o === "log") form += formLog(c);
     if (o === "odo") form += formOdo(c);
-    if (o === "remove") form += `<div class="f"><p class="wide small">Deletes ${esc(c.name)} and every job logged on it. No undo.</p><button class="btn bad wide" data-act="remove" data-car="${esc(c.id)}">Yes, remove it</button></div>`;
+    if (o === "remove") form += `<div class="f"><p class="wide small">Remove ${esc(c.name)}? That deletes the car and every job logged on it (${(c.visits || []).length} visit${(c.visits || []).length === 1 ? "" : "s"}). No undo.</p><button class="btn bad wide" data-open="remove2" data-car="${esc(c.id)}">Yes, I want to remove it</button></div>`;
+    if (o === "remove2") form += `<form class="f" data-act="remove" data-car="${esc(c.id)}" data-confirm="${esc(c.id)}">${field("sure", `Last check: type ${esc(c.id)} to confirm`, 'required autocomplete="off"', true)}<button class="btn bad wide" type="submit">Delete ${esc(c.name)} for good</button></form>`;
     return `<article class="card" id="car-${esc(c.id)}">${head(c, pills + owner)}${dueRows(c.due)}${history(c.visits)}<div class="acts">${acts}</div>${form}<div class="msg" data-msg="${esc(c.id)}"></div></article>`;
   }
   function renderMe() {
@@ -135,6 +136,7 @@
       ev.preventDefault();
       const body = { action: f.dataset.act, car: f.dataset.car };
       new FormData(f).forEach((v, n) => { if (String(v).trim() !== "") body[n] = String(v).trim(); });
+      if (f.dataset.confirm && body.sure !== f.dataset.confirm) { say(f.dataset.car, `That's not "${f.dataset.confirm}". Nothing removed.`, false); return; }
       const btn = f.querySelector("button[type=submit]"); btn.disabled = true;
       const r = await act(body, f.dataset.car || "new");
       if (r) { if (f.dataset.car) open[f.dataset.car] = null; await refresh(); if (r.warning) say(f.dataset.car, r.warning, false); if (!f.dataset.car && r.car) say("new", r.car.status === "pending" ? `Added ${r.car.name}. Waiting for approval.` : `Added ${r.car.name}.`, true); loadPublic(); }
