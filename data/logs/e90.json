@@ -5,12 +5,71 @@
     "chassis": "e90",
     "year": 2011
   },
-  "source": "Owner's OneNote, transcribed 2026-11-05; the source starts at 140.8k so earlier history is not here. Dates missing where the source has none. 2020 entries from an R1 Concepts order and the owner's memory (2026-11-06).",
+  "source": "Owner's notes and OneNote, transcribed 2026-11-05/06. Dates missing where the source has none.",
   "visits": [
+    {
+      "date": "2019-07-06",
+      "miles": 104400,
+      "jobs": [
+        {
+          "name": "Bought the car",
+          "system": "other",
+          "type": null
+        }
+      ]
+    },
+    {
+      "date": "2019",
+      "miles": 105000,
+      "raw": "timing belt (as written; N51 has a chain, likely the serpentine belt), air filter, oil change",
+      "jobs": [
+        {
+          "name": "Serpentine belt (written as timing belt)",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Engine air filter",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Oil change",
+          "system": "engine",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2020-06-20",
+      "miles": 112000,
+      "jobs": [
+        {
+          "name": "Oil change",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Coolant flush",
+          "system": "cooling",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2020-11-22",
+      "miles": 113500,
+      "jobs": [
+        {
+          "name": "Transmission pan drop, filter and gasket",
+          "system": "drivetrain",
+          "type": "preventive"
+        }
+      ]
+    },
     {
       "date": "2020-12-05",
       "miles": 114000,
-      "raw": "Oil change (?) around 12/05/2020, 114k, from memory",
       "jobs": [
         {
           "name": "Oil change",
@@ -29,6 +88,54 @@
           "system": "brakes",
           "type": "preventive",
           "parts": "R1 Concepts carbon alloy rotors x4, R1 Optimum OE pads x2 sets, hardware kits x2, wear sensor wires x2"
+        }
+      ]
+    },
+    {
+      "date": "2021-07-20",
+      "miles": 120000,
+      "jobs": [
+        {
+          "name": "Oil change",
+          "system": "engine",
+          "type": "preventive"
+        },
+        {
+          "name": "Valve cover gasket",
+          "system": "engine",
+          "type": "corrective"
+        }
+      ]
+    },
+    {
+      "date": "2021-10-27",
+      "miles": 123300,
+      "jobs": [
+        {
+          "name": "Tie rod",
+          "system": "steering",
+          "type": "corrective"
+        },
+        {
+          "name": "Front M3 control arms",
+          "system": "suspension",
+          "type": "upgrade"
+        },
+        {
+          "name": "Tires",
+          "system": "tires",
+          "type": "preventive"
+        }
+      ]
+    },
+    {
+      "date": "2021-11-04",
+      "miles": 123400,
+      "jobs": [
+        {
+          "name": "Alignment",
+          "system": "suspension",
+          "type": "preventive"
         }
       ]
     },
