@@ -120,7 +120,8 @@
         {
           "name": "Tie rod",
           "system": "steering",
-          "type": "corrective"
+          "type": "corrective",
+          "parts": "KIT-32106765235KT"
         },
         {
           "name": "Front M3 control arms",
@@ -180,7 +181,7 @@
       ]
     },
     {
-      "date": null,
+      "date": "2022-03",
       "miles": 127500,
       "jobs": [
         {
@@ -188,7 +189,8 @@
           "system": "engine",
           "type": "corrective"
         }
-      ]
+      ],
+      "raw": "date from the parts order (FCP Euro 2022-03-16)"
     },
     {
       "date": null,
@@ -333,25 +335,28 @@
       ]
     },
     {
-      "date": null,
+      "date": "2026-07",
       "miles": 162000,
       "jobs": [
         {
           "name": "Valve cover replaced (whole cover, with gasket)",
           "system": "engine",
-          "type": "corrective"
+          "type": "corrective",
+          "parts": "11127552281 cover, 11127582245 gasket set, 11127552280 eccentric shaft seal, 11127559699 Valvetronic gasket, 11127575422 coil guides x6"
         },
         {
           "name": "Spark plugs",
           "system": "engine",
-          "type": "preventive"
+          "type": "preventive",
+          "parts": "KIT-12120037663KT1"
         },
         {
           "name": "Underside cleaning",
           "system": "body",
           "type": "preventive"
         }
-      ]
+      ],
+      "raw": "date from the parts orders (FCP Euro 2026-06-24 to 07-07)"
     },
     {
       "date": null,
