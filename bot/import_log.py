@@ -42,6 +42,10 @@ def main():
             print(f"created {cid} ({car['name']})")
         elif a.public:
             con.execute("UPDATE cars SET public=1 WHERE id=?", (cid,))
+        # plans added to the defaults later reach existing cars too (never overwrites the owner's own)
+        for job, match, miles, months, safety in g.DEFAULT_PLANS:
+            con.execute("INSERT OR IGNORE INTO plans(car_id, job, match, miles, months, safety) VALUES(?,?,?,?,?,?)",
+                        (cid, job, match, miles, months, safety))
         old = con.execute("SELECT id FROM visits WHERE car_id=? AND via='import'", (cid,)).fetchall()
         if old:
             con.executemany("DELETE FROM jobs WHERE visit_id=?", [(r["id"],) for r in old])

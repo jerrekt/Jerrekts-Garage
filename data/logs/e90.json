@@ -3,7 +3,12 @@
     "id": "e90",
     "name": "BMW E90 328i",
     "chassis": "e90",
-    "year": 2011
+    "year": 2011,
+    "engine": "N51 (SULEV N52), 3.0 L straight six",
+    "notes": [
+      "Timing chain, no service interval; there is no timing belt on the N51.",
+      "Serpentine belt 11287628650 (6PK1990); OEM kit 11288624196 with tensioner and pulleys, tensioner every 40k to 60k mi."
+    ]
   },
   "source": "Owner's notes and OneNote, transcribed 2026-11-05/06. Dates missing where the source has none.",
   "visits": [
@@ -24,9 +29,10 @@
       "raw": "timing belt (as written; N51 has a chain, likely the serpentine belt), air filter, oil change",
       "jobs": [
         {
-          "name": "Serpentine belt (written as timing belt)",
+          "name": "Serpentine (drive) belt, written as timing belt",
           "system": "engine",
-          "type": "preventive"
+          "type": "preventive",
+          "parts": "11287628650"
         },
         {
           "name": "Engine air filter",

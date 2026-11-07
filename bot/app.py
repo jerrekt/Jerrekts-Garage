@@ -193,6 +193,7 @@ DEFAULT_PLANS = [  # placeholders until the owner sets their own; same as the mo
     ("Diff oil", "diff oil", 30000, 48, 0),
     ("Alignment", "alignment", 12000, None, 0),
     ("Brake pads", "pads", 30000, None, 1),
+    ("Drive belt and tensioner", "belt", 60000, None, 0),
 ]
 
 
