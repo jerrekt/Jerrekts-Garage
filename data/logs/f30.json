@@ -1,0 +1,79 @@
+{
+  "car": {
+    "id": "f30",
+    "name": "BMW F30 328i (Dad's)",
+    "chassis": "f30",
+    "year": null,
+    "engine": "N20 2.0 L turbo four",
+    "notes": [
+      "Dad's car, kept under Jerrekt's cars.",
+      "FCP garage lists it as a 2013 BMW 320i; Jerrekt calls it the F30 328i. Both are N20.",
+      "N20 timing chain guides are the known failure; chain kit done 2026-09."
+    ]
+  },
+  "source": "Built from Jerrekt's FCP Euro orders 2026-08-20 and 2026-09-02 (dates are parts delivery months; mileage not given yet).",
+  "visits": [
+    {
+      "date": "2026-08",
+      "miles": null,
+      "raw": "parts delivered 2026-08-23 (FCP)",
+      "jobs": [
+        {
+          "name": "Oil filter housing gasket",
+          "system": "engine",
+          "type": "corrective",
+          "parts": "KIT-11428637821KT8"
+        },
+        {
+          "name": "Oil temperature and pressure sensor",
+          "system": "engine",
+          "type": "corrective",
+          "parts": "12618613333"
+        },
+        {
+          "name": "Crankcase vent hose",
+          "system": "engine",
+          "type": "corrective",
+          "parts": "11127588417"
+        },
+        {
+          "name": "Coolant top-up",
+          "system": "cooling",
+          "type": "preventive",
+          "parts": "82141467704 x1"
+        }
+      ]
+    },
+    {
+      "date": "2026-09",
+      "miles": null,
+      "raw": "parts delivered 2026-09-05 (FCP)",
+      "jobs": [
+        {
+          "name": "Timing chain kit (N20)",
+          "system": "engine",
+          "type": "corrective",
+          "parts": "KIT-11318648732KT"
+        },
+        {
+          "name": "Oil pan",
+          "system": "engine",
+          "type": "corrective",
+          "parts": "FEB-179835"
+        },
+        {
+          "name": "Oil change 5W-40",
+          "system": "engine",
+          "type": "preventive",
+          "parts": "KIT-11427953125KT2, drain plug STC-SP00176"
+        },
+        {
+          "name": "Windshield cowl cover",
+          "system": "body",
+          "type": "corrective",
+          "parts": "51717258177"
+        }
+      ]
+    }
+  ]
+}
